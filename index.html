@@ -40,9 +40,7 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 .tile{position:relative;background:linear-gradient(135deg,#312e81,#7c3aed);overflow:hidden}
 .tile:before{content:"?";position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:24px;font-weight:1000}
 .tile.revealed{
-    /* За онлайн визуализация ползваме стабилен външен линк към математическа графика. 
-       Когато изтеглите HTML файла при вас локално, променете URL адреса на: url("image_2c0a55.png") */
-    background-image:url("https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1200&q=80");
+    background-image:url("puzzle.png"); /* Зареждане на локалната картинка */
     background-size:600% 500%;
     background-position:var(--pos);
     background-repeat:no-repeat;
@@ -120,7 +118,7 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 </head>
 <body>
 <main class="app">
-<header><section class="hero"><div class="tag">Подготовка за класна работа · 8. клас</div><h1>Тестови задачи по математика:<br>Класна работа № 2</h1></section>
+<header><section class="hero"><div class="tag">Подготовка за класна работа · 8. клас</div><h1>Тестови задачи по математика:<br>Класна работа № 2</h1><p style="font-size:15px; margin-top:-5px; color:rgba(255,255,255,0.85);"><em>Ресурсът е създаден от Gemini AI по идея на Валя Витковска.</em></p></section>
 <aside class="reveal"><h2>Разкриване на графично изображение</h2><p>При всеки правилен отговор се разкрива част от изображение.</p><div class="puzzle" id="puzzleBoard"></div></aside></header>
 <section class="stats"><div class="stat"><small>Въпрос</small><strong id="statQuestion">0/30</strong></div><div class="stat"><small>Точки</small><strong id="statScore">0</strong></div><div class="stat"><small>Верни</small><strong id="statCorrect">0</strong></div><div class="stat"><small>Ниво</small><strong id="statLevel">Старт</strong></div></section>
 <section class="game"><aside class="map"><h2>Карта на теста</h2><div class="progress-wrap"><div class="progress" id="progress"></div></div><div class="dots" id="dots"></div><div class="legend"><div>🟠 текущ въпрос</div><div>🟢 правилен отговор</div><div>🌹 грешен отговор</div><div>🔢 избор на въпрос</div></div></aside><section id="screen"></section></section>
@@ -315,22 +313,23 @@ function qVietaFractions() {
     }
 }
 
-// 9. Търсене на коефициент/корен
+// 9. Търсене на коефициент/корен (Винаги търсим параметър)
 function qFindRootCoeff() {
     let x1 = rnd(2, 6), x2 = rnd(-5, -1), p = -(x1+x2), q_val = x1*x2;
     let ok, ds, qText, explain;
     
-    if(Math.random() < 0.5) {
-        ok = `$x_2 = ${x2}$`;
-        ds = [`$x_2 = ${-x2}$`, `$x_2 = ${p}$`, `$x_2 = ${-p}$`]; 
-        qText = `Дадено е квадратното уравнение $$x^2 + px ${q_val>=0?'+ '+q_val:'- '+Math.abs(q_val)} = 0$$ Ако $x_1 = ${x1}$ е корен на уравнението, да се намери другият корен $x_2$.`;
-        explain = `Съгласно формулите на Виет, $x_1 \\cdot x_2 = ${q_val}$.<br> Следователно $${x1} \\cdot x_2 = ${q_val}$, откъдето се установява, че $x_2 = ${x2}$.`;
-    } else {
+    if (Math.random() < 0.5) {
         ok = `$p = ${p}$`;
         ds = [`$p = ${-p}$`, `$p = ${x2}$`, `$p = ${-x2}$`]; 
         qText = `Дадено е квадратното уравнение $$x^2 + px ${q_val>=0?'+ '+q_val:'- '+Math.abs(q_val)} = 0$$ Ако $x_1 = ${x1}$ е корен на уравнението, да се намери стойността на параметъра $p$.`;
-        explain = `От формулите на Виет се намира другият корен: $x_2 = \\frac{${q_val}}{${x1}} = ${x2}$.<br> Тогава $-p = x_1 + x_2 = ${x1} + (${x2}) = ${x1+x2}$, следователно $p = ${p}$.`;
+        explain = `От формулите на Виет намираме другия корен: $x_2 = \\frac{${q_val}}{${x1}} = ${x2}$.<br> Тогава $-p = x_1 + x_2 = ${x1} + (${x2}) = ${x1+x2}$, следователно $p = ${p}$.`;
+    } else {
+        ok = `$q = ${q_val}$`;
+        ds = [`$q = ${-q_val}$`, `$q = ${x2}$`, `$q = ${p}$`]; 
+        qText = `Дадено е квадратното уравнение $$x^2 ${p>=0?'+ '+p:'- '+Math.abs(p)}x + q = 0$$ Ако $x_1 = ${x1}$ е корен на уравнението, да се намери стойността на параметъра $q$.`;
+        explain = `От формулите на Виет намираме другия корен: $x_1 + x_2 = ${-p} \\Rightarrow ${x1} + x_2 = ${-p} \\Rightarrow x_2 = ${x2}$.<br> Тогава $q = x_1 \\cdot x_2 = ${x1} \\cdot (${x2}) = ${q_val}$.`;
     }
+
     return { type: "Параметри и Виет", difficulty: "Повишена", q: qText, ...makeOptions(ok, ds), explain: explain, visual: "vieta" }
 }
 
