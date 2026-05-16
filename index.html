@@ -35,20 +35,25 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 .reveal{padding:18px;display:grid;gap:12px}
 .reveal h2,.map h2{margin:0;font-size:20px}.reveal p{margin:0;color:var(--muted);font-size:14px;line-height:1.4}
 
-/* Стил за пъзела */
-.puzzle{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,1fr);gap:5px;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:#cbd5e1;border:4px solid rgba(79,70,229,.15)}
-.tile{position:relative;background:linear-gradient(135deg,#312e81,#7c3aed);overflow:hidden}
+/* Стил за пъзела (gap e 0, за да не се реже изображението) */
+.puzzle{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,1fr);gap:0;aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:#cbd5e1;border:4px solid rgba(79,70,229,.15)}
+.tile{position:relative;background:linear-gradient(135deg,#312e81,#7c3aed);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);}
 .tile:before{content:"?";position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:24px;font-weight:1000}
 .tile.revealed{
-    background-image:url("image_29cc59.jpg"); /* Използвам най-новото ви изображение */
+    background-image:url("puzzle.png"); /* Точното име, зададено за GitHub */
     background-size:600% 500%;
     background-position:var(--pos);
     background-repeat:no-repeat;
     animation:pop .6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    transform:scale(1.02);
-    z-index:2
+    z-index:2;
+    box-shadow:none;
 }
-.tile.revealed:before{display:none}@keyframes pop{0%{transform:scale(.3) rotate(-15deg);opacity:0;filter:brightness(2)}100%{transform:scale(1.02) rotate(0);opacity:1;filter:brightness(1)}}
+.tile.revealed:before{display:none}
+@keyframes pop{
+    0%{transform:scale(.3) rotate(-15deg);opacity:0;filter:brightness(2)}
+    60%{transform:scale(1.05) rotate(2deg);opacity:1;filter:brightness(1.1)}
+    100%{transform:scale(1) rotate(0);opacity:1;filter:brightness(1)}
+}
 
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
 .stat{background:rgba(255,255,255,.82);border-radius:20px;padding:14px 16px;box-shadow:0 12px 26px rgba(15,23,42,.08)}
@@ -58,7 +63,7 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 .progress-wrap{height:16px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:10px 0 14px}.progress{height:100%;width:0;background:linear-gradient(90deg,#4f46e5,#f97316);border-radius:999px;transition:.35s}
 .dots{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.dot{border:0;border-radius:12px;aspect-ratio:1;font-weight:900;background:#e2e8f0;color:#475569;cursor:pointer;box-shadow:inset 0 -3px 0 rgba(15,23,42,.08)}.dot:hover{outline:2px solid rgba(79,70,229,.35)}.dot.active{background:#f97316;color:white;transform:scale(1.08)}.dot.correct{background:#22c55e;color:white}.dot.wrong{background:#fb7185;color:white}
 .legend{margin-top:14px;display:grid;gap:8px;color:var(--muted);font-size:14px}
-.card{padding:26px;min-height:560px}.start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}.info{border-radius:22px;padding:18px;background:rgba(79,70,229,.08);border:1px solid rgba(79,70,229,.16)}.info.orange{background:rgba(249,115,22,.09)}.info.green{background:rgba(34,197,94,.09)}.info h3{margin:0 0 8px}.info p,.info ul{margin:0;line-height:1.55;color:#475569}
+.card{padding:26px;min-height:560px;position:relative;}.start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}.info{border-radius:22px;padding:18px;background:rgba(79,70,229,.08);border:1px solid rgba(79,70,229,.16)}.info.orange{background:rgba(249,115,22,.09)}.info.green{background:rgba(34,197,94,.09)}.info h3{margin:0 0 8px}.info p,.info ul{margin:0;line-height:1.55;color:#475569}
 .btn{border:0;border-radius:16px;padding:13px 18px;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 12px 22px rgba(15,23,42,.14);transition:.18s}.btn:hover{transform:translateY(-2px)}.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}.primary{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white}.orange-btn{background:linear-gradient(135deg,#f97316,#f59e0b);color:white}.ghost{background:#e2e8f0;color:#334155;box-shadow:none}
 .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
 .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px;}
@@ -68,15 +73,27 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 .qtext{font-size:clamp(19px,2vw,22px);line-height:1.6;margin:16px 0 20px;font-weight:700}
 .options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
 
-.solver-character{position:absolute;top:20px;right:26px;width:70px;height:70px;z-index:10;animation:slideInBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;}
-.solver-character .emoji-student{font-size:46px;position:relative;z-index:2;animation:bounceThink 1.2s infinite alternate ease-in-out;}
-.solver-character .math-symbol{position:absolute;font-weight:900;font-size:18px;color:var(--violet);opacity:0;}
-.math-symbol.s1{top:-5px;left:-10px;animation:floatUp 2s infinite linear 0s;}
-.math-symbol.s2{top:15px;right:-15px;animation:floatUp 2.5s infinite linear 0.5s;color:var(--orange);}
-.math-symbol.s3{top:-15px;left:25px;animation:floatUp 2.2s infinite linear 1.2s;color:var(--green);}
-@keyframes floatUp{0%{transform:translateY(0) scale(0.5) rotate(0deg);opacity:0;}20%{opacity:1;transform:translateY(-10px) scale(1) rotate(10deg);}80%{opacity:1;}100%{transform:translateY(-40px) scale(1.2) rotate(-15deg);opacity:0;}}
-@keyframes bounceThink{0%{transform:translateY(0px) rotate(-3deg);}100%{transform:translateY(-6px) rotate(3deg);}}
-@keyframes slideInBounce{0%{transform:translateX(50px) scale(0.5);opacity:0;}100%{transform:translateX(0) scale(1);opacity:1;}}
+/* Тематична икона (Ключ, Врата, Книга) */
+.escape-status {
+    position: absolute;
+    top: -24px;
+    right: 24px;
+    width: 72px;
+    height: 72px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 8px 20px rgba(15,23,42,0.15);
+    display: grid;
+    place-items: center;
+    border: 3px solid #e2e8f0;
+    z-index: 10;
+    transition: all 0.3s;
+}
+.escape-status.unanswered { border-color: #cbd5e1; animation: floatIcon 3s infinite ease-in-out; }
+.escape-status.correct { border-color: #22c55e; background: #f0fdf4; transform: scale(1.05); }
+.escape-status.wrong { border-color: #ef4444; background: #fef2f2; }
+.escape-status svg { width: 44px; height: 44px; }
+@keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
 @keyframes slideInUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 .option{border:2px solid transparent;text-align:left;background:rgba(255,255,255,.94);border-radius:18px;padding:15px 16px;font-size:18px;cursor:pointer;min-height:62px;box-shadow:0 9px 20px rgba(15,23,42,.08);opacity:0;animation:slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;}
@@ -128,6 +145,46 @@ const TOTAL=30, PTS=100/TOTAL; let questions=[],current=0,score=0,correct=0,sele
 const $=id=>document.getElementById(id), screen=$("screen"), dots=$("dots"), statQuestion=$("statQuestion"), statScore=$("statScore"), statCorrect=$("statCorrect"), statLevel=$("statLevel"), progress=$("progress"), puzzleBoard=$("puzzleBoard");
 const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a, choice=a=>a[Math.floor(Math.random()*a.length)], shuffle=a=>{let c=[...a];for(let i=c.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}return c};
 
+// Векторни икони за темата (Ключ/Ключалка, Отворена врата, Книга/Заключена врата)
+const svgUnanswered = `<svg viewBox="0 0 100 100">
+    <g transform="translate(18, -5) rotate(15)">
+        <path d="M25 65 L55 35 L65 35 L65 25 L75 25 L75 15 L85 15 L85 25 L75 35 L55 35 L25 65 Z" fill="#fbbf24" stroke="#b45309" stroke-width="2"/>
+        <circle cx="15" cy="75" r="12" fill="none" stroke="#fbbf24" stroke-width="4"/>
+    </g>
+    <g transform="translate(-8, 12)">
+        <rect x="50" y="45" width="40" height="35" rx="5" fill="#cbd5e1" stroke="#475569" stroke-width="3"/>
+        <path d="M60 45 V30 A10 10 0 0 1 80 30 V45" fill="none" stroke="#475569" stroke-width="4"/>
+        <circle cx="70" cy="58" r="4" fill="#475569"/>
+        <path d="M70 58 L70 68" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+    </g>
+</svg>`;
+
+const svgCorrect = `<svg viewBox="0 0 100 100">
+    <polygon points="50,85 95,75 95,15 50,25" fill="#fef08a" opacity="0.7"/>
+    <path d="M30 85 L30 15 L70 15 L70 85" fill="none" stroke="#475569" stroke-width="4"/>
+    <polygon points="30,15 55,25 55,75 30,85" fill="#22c55e" stroke="#166534" stroke-width="2"/>
+    <circle cx="48" cy="50" r="2" fill="#fff"/>
+    <path d="M80 40 L83 30 L86 40 L96 43 L86 46 L83 56 L80 46 L70 43 Z" fill="#fbbf24"/>
+    <path d="M65 25 L67 18 L69 25 L76 27 L69 29 L67 36 L65 29 L58 27 Z" fill="#fbbf24" transform="scale(0.6) translate(40, -10)"/>
+</svg>`;
+
+const svgWrong = `<svg viewBox="0 0 100 100">
+    <path d="M15 85 L15 15 L55 15 L55 85" fill="none" stroke="#475569" stroke-width="4"/>
+    <rect x="17" y="17" width="36" height="68" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
+    <circle cx="45" cy="50" r="2" fill="#fff"/>
+    <rect x="25" y="45" width="20" height="15" rx="2" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
+    <path d="M29 45 V38 A6 6 0 0 1 41 38 V45" fill="none" stroke="#334155" stroke-width="3"/>
+    <g transform="translate(45, 45)">
+        <path d="M10 35 L45 35 L50 15 L15 15 Z" fill="#3b82f6" stroke="#1e3a8a" stroke-width="2"/>
+        <path d="M10 35 L15 15 L20 15 L15 35 Z" fill="#fff" stroke="#1e3a8a" stroke-width="1"/>
+        <path d="M15 35 L50 35" stroke="#fff" stroke-width="2"/>
+        <line x1="22" y1="20" x2="42" y2="20" stroke="#bfdbfe" stroke-width="2"/>
+        <line x1="20" y1="25" x2="40" y2="25" stroke="#bfdbfe" stroke-width="2"/>
+        <line x1="18" y1="30" x2="38" y2="30" stroke="#bfdbfe" stroke-width="2"/>
+    </g>
+</svg>`;
+
+
 // Извиква MathJax за рендиране на LaTeX формулите в DOM-а
 function updateMath() {
     if (window.MathJax && window.MathJax.typesetPromise) {
@@ -156,8 +213,6 @@ function makeOptions(ok, ds){
     let m = shuffle([ok, u[0], u[1], u[2]]);
     return {options:m, answer:m.indexOf(ok)};
 }
-
-function poly(b,c,v="x"){return `${v}^2 ${b>=0?"+ "+b:"- "+Math.abs(b)}${v} ${c>=0?"+ "+c:"- "+Math.abs(c)}`}
 
 // 1. Уравнения с изнасяне на множител
 function qEqFactor() {
@@ -410,7 +465,7 @@ function qAngles() {
     let ds = askPer ? [`$${central}^\\circ$`, `$${central*2}^\\circ$`, `$${180-per}^\\circ$`] : [`$${per}^\\circ$`, `$${per/2}^\\circ$`, `$${180-central}^\\circ$`]; 
     return {
         type: "Вписани и централни ъгли", difficulty: "Средна",
-        q: askPer ? `В окръжност с център $O$ е даден централен ъгъл $\\angle AOB = ${central}^\\circ$. Да се намери мярката на съответния му вписан ъгъл $\\angle ACB$.` : `В окръжност с център $O$ е даден вписан ъгъл $\\angle ACB = ${per}^\\circ$. Да се намери мярката на съответния му централен ъгъл $\\angle AOB$.`,
+        q: askPer ? `Точките $A, B$ и $C$ лежат на окръжност с център $O$, като $C$ принадлежи на по-голямата дъга $\\widehat{AB}$. Ако централният ъгъл $\\angle AOB = ${central}^\\circ$, да се намери мярката на вписания ъгъл $\\angle ACB$.` : `Точките $A, B$ и $C$ лежат на окръжност с център $O$, като $C$ принадлежи на по-голямата дъга $\\widehat{AB}$. Ако вписаният ъгъл $\\angle ACB = ${per}^\\circ$, да се намери мярката на централния ъгъл $\\angle AOB$.`,
         ...makeOptions(ok, ds),
         explain: askPer ? `Съгласно теоремата, вписаният ъгъл се измерва с половината от съответния му централен ъгъл: $\\frac{${central}^\\circ}{2} = ${per}^\\circ$.` : `Съгласно теоремата, централният ъгъл е два пъти по-голям от съответния му вписан ъгъл: $2 \\cdot ${per}^\\circ = ${central}^\\circ$.`, visual: "angles"
     }
@@ -427,7 +482,7 @@ function qArcRatio() {
     let ds = [`$${arc1}^\\circ$`, `$${arc1*2}^\\circ$`, `$${(q*part)/2}^\\circ$`];
     return {
         type: "Ъгли в окръжност", difficulty: "Средна",
-        q: `Хорда разделя окръжност на две дъги, чиито мерки се отнасят както $${p} : ${q}$. Да се намери мярката на вписания ъгъл, който се опира на по-малката дъга.`,
+        q: `Хорда разделя окръжност на две дъги, несъдържащи общи вътрешни точки, чиито мерки се отнасят както $${p} : ${q}$. Да се намери мярката на вписания ъгъл, който се опира на по-малката от двете дъги.`,
         ...makeOptions(ok, ds),
         explain: `Мярката на цялата окръжност е $360^\\circ$. По-малката дъга е $\\frac{${p}}{${p+q}} \\cdot 360^\\circ = ${arc1}^\\circ$.<br> Вписаният ъгъл се измерва с половината от дъгата: $\\frac{${arc1}^\\circ}{2} = ${arc1/2}^\\circ$.`,
         visual: "angles"
@@ -442,7 +497,7 @@ function qTangentSegments() {
     if (ds.includes(ok)) ds[2] = `$${alpha/2}^\\circ$`;
     return {
         type: "Свойства на допирателните", difficulty: "Средна",
-        q: `През външна за окръжността точка $P$ са построени допирателни $PA$ и $PB$ ($A$ и $B$ са точки на допиране). Ако $\\angle APB = ${alpha}^\\circ$, да се намери мярката на $\\angle PAB$.`,
+        q: `През външна за окръжността точка $P$ са построени допирателни $PA$ и $PB$ ($A$ и $B$ са точките на допиране). Ако $\\angle APB = ${alpha}^\\circ$, да се намери мярката на $\\angle PAB$.`,
         ...makeOptions(ok, ds),
         explain: `Допирателните от външна точка са равни ($PA = PB$), следователно $\\triangle PAB$ е равнобедрен.<br> Оттук $\\angle PAB = \\frac{180^\\circ - ${alpha}^\\circ}{2} = ${(180-alpha)/2}^\\circ$.`,
         visual: "externalAngle"
@@ -456,7 +511,7 @@ function qInternalAngle() {
     let ds = [`$${arc1+arc2}^\\circ$`, `$${Math.abs(arc1-arc2)/2}^\\circ$`, `$${180 - (arc1+arc2)/2}^\\circ$`]; 
     return {
         type: "Ъгли в окръжност", difficulty: "Висока", 
-        q: `В дадена окръжност хордите $AB$ и $CD$ се пресичат във вътрешна точка $M$. Ако мерките на съответните дъги са $\\widehat{AD} = ${arc1}^\\circ$ и $\\widehat{CB} = ${arc2}^\\circ$, да се намери мярката на $\\angle AMD$.`,
+        q: `В окръжност хордите $AB$ и $CD$ се пресичат в точка $M$. Ако дъгите $\\widehat{AD}$ и $\\widehat{BC}$, заключени между раменете на връхните ъгли $\\angle AMD$ и $\\angle BMC$, имат мерки съответно ${arc1}^\\circ$ и ${arc2}^\\circ$, да се намери $\\angle AMD$.`,
         ...makeOptions(ok, ds),
         explain: `Съгласно теоремата за ъгъл с връх вътре в окръжност, мярката му е равна на полусбора от прилежащите му дъги: $\\frac{${arc1}^\\circ + ${arc2}^\\circ}{2} = ${(arc1+arc2)/2}^\\circ$.`, visual: "chords" 
     }
@@ -470,7 +525,7 @@ function qExternalAngle() {
     let ds = [`$${(a1+a2)/2}^\\circ$`, `$${a1-a2}^\\circ$`, `$${180 - (a1-a2)/2}^\\circ$`]; 
     return {
         type: "Ъгли в окръжност", difficulty: "Повишена", 
-        q: `През точка $P$, външна за окръжност, са построени секащите $PA$ и $PB$. Ако принадлежащите им дъги имат мерки съответно $\\widehat{AB} = ${a1}^\\circ$ и $\\widehat{CD} = ${a2}^\\circ$ (като $C$ и $D$ лежат съответно на $PA$ и $PB$), да се намери $\\angle APB$.`,
+        q: `През външна за окръжността точка $P$ са построени секащите $PA$ и $PB$, които пресичат окръжността съответно в точки $C$ и $D$ ($C$ е между $P$ и $A$, а $D$ е между $P$ и $B$). Ако дъгите, заключени между раменете на $\\angle APB$, имат мерки $\\widehat{AB} = ${a1}^\\circ$ и $\\widehat{CD} = ${a2}^\\circ$, да се намери $\\angle APB$.`,
         ...makeOptions(ok, ds),
         explain: `Съгласно теоремата за ъгъл с връх вън от окръжността, мярката му е равна на полуразликата от прилежащите му дъги: $\\frac{${a1}^\\circ - ${a2}^\\circ}{2} = ${(a1-a2)/2}^\\circ$.`, visual: "externalAngle"
     }
@@ -483,7 +538,7 @@ function qPeripheralAngle() {
     let ds = [`$${arc}^\\circ$`, `$${180-arc/2}^\\circ$`, `$${90-arc/2}^\\circ$`]; 
     return {
         type: "Периферен ъгъл", difficulty: "Средна", 
-        q: `През края $T$ на хордата $TA$ в дадена окръжност е построена допирателна $p$. Ако мярката на дъгата $\\widehat{TA}$ е ${arc}^\\circ$, да се намери мярката на периферния ъгъл, заключен между хордата и допирателната.`,
+        q: `През точка $T$ от окръжност са построени хорда $TA$ и допирателна $p$. Ако съответната дъга $\\widehat{TA}$, намираща се във вътрешността на периферния ъгъл, има мярка ${arc}^\\circ$, да се намери мярката на този периферен ъгъл.`,
         ...makeOptions(ok, ds),
         explain: `Съгласно теоремата, периферният ъгъл се измерва с половината от мярката на прилежащата му дъга: $\\frac{${arc}^\\circ}{2} = ${arc/2}^\\circ$.`, visual: "peripheralAngle"
     }
@@ -497,7 +552,7 @@ function qThalesTheorem() {
     let ds = [`$${a}^\\circ$`, `$${90+a}^\\circ$`, `$${180-a}^\\circ$`, `$90^\\circ$`];
     return {
         type: "Свойства на диаметъра", difficulty: "Средна", 
-        q: `В окръжност $k$ е построен диаметър $AB$. Точка $C$ лежи на окръжността така, че $\\angle BAC = ${a}^\\circ$. Да се намери мярката на $\\angle ABC$.`,
+        q: `В окръжност е построен диаметър $AB$. Точка $C$ лежи на окръжността, като по-малката дъга $\\widehat{BC}$ има мярка ${2*a}^\\circ$ (т.е. $\\angle BAC = ${a}^\\circ$). Да се намери мярката на $\\angle ABC$.`,
         ...makeOptions(ok, ds),
         explain: `Тъй като хордата $AB$ е диаметър, вписаният $\\angle ACB$ се опира на полуокръжност и следователно е прав ($\\angle ACB = 90^\\circ$). Сумата от ъглите в $\\triangle ABC$ е $180^\\circ$, откъдето $\\angle ABC = 90^\\circ - ${a}^\\circ = ${b}^\\circ$.`, visual: "thales"
     }
@@ -682,17 +737,17 @@ function render(){
     let action=saved?(count===TOTAL?`<button class="btn orange-btn animate-enter" onclick="finishGame()">Резултати от теста ➜</button>`:`<button class="btn orange-btn animate-enter" onclick="goNext()">Следващ въпрос ➜</button>`):`<button class="btn primary" id="checkBtn" onclick="checkAnswer()" disabled>Избор на отговор</button>`;
     let feed=saved?`<div class="feedback show ${saved.ok?"good":"bad"}"><b>${saved.ok?"✓ Правилен отговор.":"✗ Грешен отговор."}</b><br>${item.explain}</div>`:`<div class="feedback" id="feedback"></div>`;
     
-    let solverAnim = !saved ? `
-        <div class="solver-character">
-            <div class="math-symbol s1">\\sqrt{}</div>
-            <div class="math-symbol s2">x^2</div>
-            <div class="math-symbol s3">\\div</div>
-            <div class="emoji-student">🧑‍🏫</div>
-        </div>
-    ` : '';
+    let escapeAnim = '';
+    if (!saved) {
+        escapeAnim = `<div class="escape-status unanswered">${svgUnanswered}</div>`;
+    } else if (saved.ok) {
+        escapeAnim = `<div class="escape-status correct">${svgCorrect}</div>`;
+    } else {
+        escapeAnim = `<div class="escape-status wrong">${svgWrong}</div>`;
+    }
 
     screen.innerHTML=`<div class="card animate-enter">
-        ${solverAnim}
+        ${escapeAnim}
         <div class="q-header">
             <div class="q-meta">
                 <span class="pill diff">Сложност: ${item.difficulty}</span>
@@ -727,7 +782,6 @@ function checkAnswer(){
     answers[current]={ok,selected,explain:item.explain};
     let f=$("feedback");f.className="feedback show "+(ok?"good":"bad");f.innerHTML=(ok?"<b>✓ Правилен отговор.</b><br> ":"<b>✗ Грешен отговор.</b><br> ")+item.explain;
     document.querySelector(".actions").innerHTML=answers.filter(Boolean).length===TOTAL?`<button class="btn orange-btn animate-enter" onclick="finishGame()">Резултати от теста ➜</button>`:`<button class="btn orange-btn animate-enter" onclick="goNext()">Следващ въпрос ➜</button>`;
-    let character = document.querySelector(".solver-character"); if(character) character.style.display="none";
     update();
     updateMath();
 }
