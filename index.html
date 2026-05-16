@@ -40,7 +40,7 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 .tile{position:relative;background:linear-gradient(135deg,#312e81,#7c3aed);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);}
 .tile:before{content:"?";position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:24px;font-weight:1000}
 .tile.revealed{
-    background-image:url("puzzle.png"); /* Точното име, зададено за GitHub */
+    background-image:url("puzzle-image.png"); /* Изображението трябва да е в същата папка като HTML файла */
     background-size:600% 500%;
     background-position:var(--pos);
     background-repeat:no-repeat;
@@ -159,6 +159,12 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 @keyframes bookOpen{0%{transform:scaleX(.22);opacity:.55}100%{transform:scaleX(1);opacity:1}}
 
 .svg{width:100%;height:100%;position:absolute;inset:0;}
+.visual.geometry-drawing{
+    min-height:170px;
+    margin:12px 0 18px;
+    background:linear-gradient(135deg,#0f172a,#111827);
+}
+
 
 .feedback{min-height:58px;padding:14px 16px;border-radius:18px;margin-top:14px;font-weight:500;display:none;line-height:1.6;font-size:18px;}.feedback.show{display:block}.good{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}.bad{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
 .confetti{position:fixed;width:10px;height:16px;top:-20px;border-radius:3px;animation:fall 2.4s linear forwards;z-index:9}@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
@@ -874,10 +880,13 @@ function render(){
     
     let escapeState = !saved ? "question" : (saved.ok ? "correct" : "wrong");
     let escapeAnim = `<div class="escape-status ${escapeState === "question" ? "unanswered" : escapeState}">${escapeState === "correct" ? svgCorrect : escapeState === "wrong" ? svgWrong : svgUnanswered}</div>`;
+    const geometryVisualTypes = ["angles", "chords", "externalAngle", "peripheralAngle", "thales", "lineCircle", "twoCircles"];
+    const geometryDrawing = geometryVisualTypes.includes(item.visual) ? `<div class="visual geometry-drawing">${visual(item.visual)}</div>` : "";
 
     screen.innerHTML=`<div class="card animate-enter">
         ${escapeAnim}
         <div class="escape-scene ${escapeState}" id="escapeScene">${escapeScene(escapeState)}</div>
+        ${geometryDrawing}
         <div class="q-header">
             <div class="q-meta">
                 <span class="pill diff">Сложност: ${item.difficulty}</span>
