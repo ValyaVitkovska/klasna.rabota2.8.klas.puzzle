@@ -127,11 +127,19 @@ function makeOptions(ok, ds){
     for(let d of ds) {
         if(d !== ok && !u.includes(d)) u.push(d);
     }
+    let fallbacks = [
+        ok.replace(/\d+/g, m => Number(m)+1),
+        ok.replace(/\d+/g, m => Number(m)+2),
+        ok.replace(/\d+/g, m => Math.max(0, Number(m)-1)),
+        ok.replace(/\d+/g, m => Number(m)*2)
+    ];
+    for(let fb of fallbacks) {
+        if(u.length >= 3) break;
+        if(fb !== ok && !u.includes(fb)) u.push(fb);
+    }
     let m = shuffle([ok, u[0], u[1], u[2]]);
     return {options:m, answer:m.indexOf(ok)};
 }
-
-function poly(b,c,v="x"){return `${v}^2 ${b>=0?"+ "+b:"- "+Math.abs(b)}${v} ${c>=0?"+ "+c:"- "+Math.abs(c)}`}
 
 // 1. Уравнения с изнасяне на множител
 function qEqFactor() {
@@ -149,15 +157,31 @@ function qEqFactor() {
     }
 }
 
-// 2. Биквадратно уравнение
+// 2. Уравнения с изнасяне на множител (търси се сумата на корените)
+function qEqFactor2() {
+    let A = rnd(2, 4), B = rnd(1, 5), x2 = rnd(1, 5), C = A * (x2 + B);
+    let ok = `$${B + x2}$`;
+    let d1 = `$${B}$`; 
+    let d2 = `$${x2}$`; 
+    let d3 = `$${-B - x2}$`; 
+    return {
+        type: "Уравнения", difficulty: "Средна", 
+        q: `Да се намери сумата от корените на уравнението: <br>$$${A}(x - ${B})(x + ${B}) = ${C}(x - ${B})$$`,
+        ...makeOptions(ok, [d1, d2, d3]),
+        explain: `Корените се намират чрез изнасяне на множител: $x_1 = ${B}$ и $x_2 = ${x2}$.<br> Тяхната сума е $${B} + ${x2} = ${B + x2}$.`,
+        visual: "roots"
+    }
+}
+
+// 3. Биквадратно уравнение
 function qBiquad(){
     let y1=choice([1,4,9,16]), y2=choice([4,9,16,25].filter(v=>v!==y1));
     let b=-(y1+y2), c=y1*y2;
     let roots=[...new Set([Math.sqrt(y1),-Math.sqrt(y1),Math.sqrt(y2),-Math.sqrt(y2)])].sort((a,b)=>a-b);
-    let ok = `$x = ${roots.join("; ")}$`;
-    let d1 = `$x = \\sqrt{${y1}}; \\sqrt{${y2}}$`; 
-    let d2 = `$x = ${y1}; ${y2}$`; 
-    let d3 = `$x = \\pm ${y1}; \\pm ${y2}$`; 
+    let ok = `$x \\in \\{${roots.join("; ")}\\}$`;
+    let d1 = `$x \\in \\{\\sqrt{${y1}}; \\sqrt{${y2}}\\}$`; 
+    let d2 = `$x \\in \\{${y1}; ${y2}\\}$`; 
+    let d3 = `$x \\in \\{\\pm ${y1}; \\pm ${y2}\\}$`; 
     let bStr = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
     let cStr = c >= 0 ? `+ ${c}` : `- ${Math.abs(c)}`;
     return{
@@ -169,7 +193,28 @@ function qBiquad(){
     }
 }
 
-// 3. Уравнения с полагане
+// 4. Брой корени на биквадратно уравнение
+function qBiquadRootsCount() {
+    let type = rnd(1, 3);
+    let y1, y2;
+    if(type===1) { y1 = rnd(1, 5); y2 = rnd(6, 10); }
+    else if(type===2) { y1 = rnd(1, 5); y2 = -rnd(1, 5); }
+    else { y1 = -rnd(1, 5); y2 = -rnd(6, 10); }
+    let b = -(y1+y2), c = y1*y2;
+    let bStr = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
+    let cStr = c >= 0 ? `+ ${c}` : `- ${Math.abs(c)}`;
+    let ok = type===1 ? "Четири" : (type===2 ? "Два" : "Нула");
+    let ds = ["Нула", "Един", "Два", "Четири"].filter(x=>x!==ok);
+    return {
+        type: "Биквадратни уравнения", difficulty: "Средна",
+        q: `Да се определи броят на реалните корени на биквадратното уравнение: <br>$$x^4 ${bStr}x^2 ${cStr} = 0$$`,
+        ...makeOptions(ok, ds),
+        explain: `След полагане $x^2 = y$ се получават корени $y_1=${y1}$ и $y_2=${y2}$.<br> Тъй като $x^2 \\ge 0$, уравнението има ${ok.toLowerCase()} реални корена.`,
+        visual: "biquadratic"
+    }
+}
+
+// 5. Уравнения с полагане
 function qSubst() {
     let y1 = rnd(1, 4), y2 = rnd(-4, -1), sum = y1+y2, prod = y1*y2;
     let b = rnd(-3, 3) || 1;
@@ -189,7 +234,7 @@ function qSubst() {
     }
 }
 
-// 4. Разлагане на тричлен с а != 1
+// 6. Разлагане на тричлен с а != 1
 function qFactorHard() {
     let a = rnd(2, 5), n = rnd(-3, 3) || 1, m = rnd(-5, 5) || 2; 
     let b = -(a*n + m), c = m*n;
@@ -207,7 +252,7 @@ function qFactorHard() {
     }
 }
 
-// 5. Виетови формули - Изрази
+// 7. Виетови формули - Изрази
 function qVietaExpr() {
     let r1 = rnd(-4, 4) || 1, r2 = rnd(-3, 5) || 2;
     if(r1===r2) r2++;
@@ -233,7 +278,24 @@ function qVietaExpr() {
     }
 }
 
-// 6. Търсене на коефициент/корен
+// 8. Виетови формули - Дроби
+function qVietaFractions() {
+    let pairs = [[2,3], [3,4], [3,5], [4,5], [5,6], [5,7]];
+    let pair = choice(pairs);
+    let x1 = pair[0], x2 = pair[1];
+    let b = -(x1+x2), c = x1*x2;
+    let ok = `$\\frac{${-b}}{${c}}$`;
+    let ds = [`$\\frac{${b}}{${c}}$`, `$\\frac{${c}}{${-b}}$`, `$-\\frac{${c}}{${-b}}$`];
+    return {
+        type: "Формули на Виет", difficulty: "Висока",
+        q: `За корените $x_1$ и $x_2$ на уравнението $$x^2 ${b}x + ${c} = 0$$ да се пресметне стойността на израза $\\frac{1}{x_1} + \\frac{1}{x_2}$.`,
+        ...makeOptions(ok, ds),
+        explain: `След привеждане под общ знаменател: $\\frac{1}{x_1} + \\frac{1}{x_2} = \\frac{x_1+x_2}{x_1 x_2}$.<br> От формулите на Виет се замества $\\frac{-b}{c} = \\frac{${-b}}{${c}}$.`,
+        visual: "vieta"
+    }
+}
+
+// 9. Търсене на коефициент/корен
 function qFindRootCoeff() {
     let x1 = rnd(2, 6), x2 = rnd(-5, -1), p = -(x1+x2), q_val = x1*x2;
     let ok, ds, qText, explain;
@@ -252,7 +314,123 @@ function qFindRootCoeff() {
     return { type: "Параметри и Виет", difficulty: "Повишена", q: qText, ...makeOptions(ok, ds), explain: explain, visual: "vieta" }
 }
 
-// 7. Вътрешен ъгъл между пресичащи хорди
+// 10. Знаци на корените
+function qRootsSigns() {
+    let type = rnd(1, 3);
+    let b, c, D;
+    do {
+        if(type===1) { b = -rnd(3,8); c = rnd(1,2); } 
+        else if(type===2) { b = rnd(3,8); c = rnd(1,2); } 
+        else { b = rnd(-5,5); c = -rnd(1,5); }
+        D = b*b - 4*c;
+    } while(D <= 0);
+
+    let ok = type === 1 ? "Два положителни" : (type === 2 ? "Два отрицателни" : "Един положителен и един отрицателен");
+    let ds = ["Няма реални корени", "Два положителни", "Два отрицателни", "Един положителен и един отрицателен"].filter(x=>x!==ok);
+    let bStr = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
+    let cStr = c >= 0 ? `+ ${c}` : `- ${Math.abs(c)}`;
+    
+    let expl = type === 1 ? `Дискриминантата $D > 0$. От $x_1 x_2 = ${c} > 0$ и $x_1 + x_2 = ${-b} > 0$ следва, че корените са положителни.` :
+               type === 2 ? `Дискриминантата $D > 0$. От $x_1 x_2 = ${c} > 0$ и $x_1 + x_2 = ${-b} < 0$ следва, че корените са отрицателни.` :
+               `Тъй като $x_1 x_2 = ${c} < 0$, корените са с различни знаци.`;
+
+    return {
+        type: "Знаци на корените", difficulty: "Средна",
+        q: `Без да се решава уравнението, да се определят знаците на реалните му корени (ако съществуват): <br>$$x^2 ${bStr}x ${cStr} = 0$$`,
+        ...makeOptions(ok, ds),
+        explain: expl,
+        visual: "vieta"
+    }
+}
+
+// 11. Съставяне на уравнение
+function qFormEquation() {
+    let x1 = rnd(1, 5), x2 = -rnd(1, 5);
+    let b = -(x1+x2), c = x1*x2;
+    let ok = `$x^2 ${b>=0?'+ '+b:'- '+Math.abs(b)}x ${c>=0?'+ '+c:'- '+Math.abs(c)} = 0$`;
+    let ds;
+    if (b === 0) {
+        ds = [`$x^2 - ${x1}x ${c>=0?'+ '+c:'- '+Math.abs(c)} = 0$`, `$x^2 + ${x1}x ${c>=0?'+ '+c:'- '+Math.abs(c)} = 0$`, `$x^2 - ${x1*x1} = 0$`];
+    } else {
+        let wb1 = -b, wc1 = c;
+        let d1 = `$x^2 ${wb1>=0?'+ '+wb1:'- '+Math.abs(wb1)}x ${wc1>=0?'+ '+wc1:'- '+Math.abs(wc1)} = 0$`;
+        let wb2 = b, wc2 = -c;
+        let d2 = `$x^2 ${wb2>=0?'+ '+wb2:'- '+Math.abs(wb2)}x ${wc2>=0?'+ '+wc2:'- '+Math.abs(wc2)} = 0$`;
+        let wb3 = -b, wc3 = -c;
+        let d3 = `$x^2 ${wb3>=0?'+ '+wb3:'- '+Math.abs(wb3)}x ${wc3>=0?'+ '+wc3:'- '+Math.abs(wc3)} = 0$`;
+        ds = [d1, d2, d3];
+    }
+    
+    return {
+        type: "Съставяне на уравнение", difficulty: "Повишена",
+        q: `Да се състави квадратно уравнение, чиито корени са $x_1 = ${x1}$ и $x_2 = ${x2}$.`,
+        ...makeOptions(ok, ds),
+        explain: `По формулите на Виет, $p = -(x_1 + x_2) = ${b}$ и $q = x_1 \\cdot x_2 = ${c}$.<br> Търсеното уравнение е $x^2 + px + q = 0$.`,
+        visual: "vieta"
+    }
+}
+
+// 12. Дискриминанта
+function qDiscriminant() {
+    let a = choice([1, 1, 2]), r1 = rnd(-5, 6), r2 = rnd(-5, 6);
+    let b = -a * (r1 + r2), c = a * r1 * r2, D = b * b - 4 * a * c, ok = `$D = ${D}$`;
+    let signB = b >= 0 ? "+ " + b : "- " + Math.abs(b), signC = c >= 0 ? "+ " + c : "- " + Math.abs(c);
+    let ds = [`$D = ${b*b + 4*a*c}$`, `$D = ${-b*b - 4*a*c}$`, `$D = ${b*b - a*c}$`]; 
+    return {
+        type: "Квадратни уравнения", difficulty: "Средна",
+        q: `Да се пресметне дискриминантата на квадратното уравнение: <br>$$${a === 1 ? "" : a}x^2 ${signB}x ${signC} = 0$$`,
+        ...makeOptions(ok, ds),
+        explain: `Използва се формулата за дискриминанта: $D = b^2 - 4ac = (${b})^2 - 4 \\cdot ${a} \\cdot (${c}) = ${D}$.`, visual: "discriminant"
+    }
+}
+
+// 13. Централен и вписан ъгъл
+function qAngles() {
+    let central = choice([60, 72, 80, 90, 100, 120, 140]), per = central / 2, askPer = Math.random() < .5;
+    let ok = `$${askPer ? per : central}^\\circ$`;
+    let ds = askPer ? [`$${central}^\\circ$`, `$${central*2}^\\circ$`, `$${180-per}^\\circ$`] : [`$${per}^\\circ$`, `$${per/2}^\\circ$`, `$${180-central}^\\circ$`]; 
+    return {
+        type: "Вписани и централни ъгли", difficulty: "Средна",
+        q: askPer ? `В окръжност с център $O$ е даден централен ъгъл $\\angle AOB = ${central}^\\circ$. Да се намери мярката на съответния му вписан ъгъл $\\angle ACB$.` : `В окръжност с център $O$ е даден вписан ъгъл $\\angle ACB = ${per}^\\circ$. Да се намери мярката на съответния му централен ъгъл $\\angle AOB$.`,
+        ...makeOptions(ok, ds),
+        explain: askPer ? `Съгласно теоремата, вписаният ъгъл се измерва с половината от съответния му централен ъгъл: $\\frac{${central}^\\circ}{2} = ${per}^\\circ$.` : `Съгласно теоремата, централният ъгъл е два пъти по-голям от съответния му вписан ъгъл: $2 \\cdot ${per}^\\circ = ${central}^\\circ$.`, visual: "angles"
+    }
+}
+
+// 14. Отношение на дъги
+function qArcRatio() {
+    let ratios = [[1, 2], [1, 3], [1, 4], [1, 5], [2, 3], [3, 5], [4, 5]];
+    let pair = choice(ratios);
+    let p = pair[0], q = pair[1];
+    let part = 360 / (p+q);
+    let arc1 = p * part;
+    let ok = `$${arc1/2}^\\circ$`;
+    let ds = [`$${arc1}^\\circ$`, `$${arc1*2}^\\circ$`, `$${(q*part)/2}^\\circ$`];
+    return {
+        type: "Ъгли в окръжност", difficulty: "Средна",
+        q: `Хорда разделя окръжност на две дъги, чиито мерки се отнасят както $${p} : ${q}$. Да се намери мярката на вписания ъгъл, който се опира на по-малката дъга.`,
+        ...makeOptions(ok, ds),
+        explain: `Мярката на цялата окръжност е $360^\\circ$. По-малката дъга е $\\frac{${p}}{${p+q}} \\cdot 360^\\circ = ${arc1}^\\circ$.<br> Вписаният ъгъл се измерва с половината от дъгата: $\\frac{${arc1}^\\circ}{2} = ${arc1/2}^\\circ$.`,
+        visual: "angles"
+    }
+}
+
+// 15. Допирателни
+function qTangentSegments() {
+    let alpha = rnd(4, 8)*10;
+    let ok = `$${(180-alpha)/2}^\\circ$`;
+    let ds = [`$${180-alpha}^\\circ$`, `$${alpha}^\\circ$`, `$${90-alpha/2}^\\circ$`];
+    if (ds.includes(ok)) ds[2] = `$${alpha/2}^\\circ$`;
+    return {
+        type: "Свойства на допирателните", difficulty: "Средна",
+        q: `През външна за окръжността точка $P$ са построени допирателни $PA$ и $PB$ ($A$ и $B$ са точки на допиране). Ако $\\angle APB = ${alpha}^\\circ$, да се намери мярката на $\\angle PAB$.`,
+        ...makeOptions(ok, ds),
+        explain: `Допирателните от външна точка са равни ($PA = PB$), следователно $\\triangle PAB$ е равнобедрен.<br> Оттук $\\angle PAB = \\frac{180^\\circ - ${alpha}^\\circ}{2} = ${(180-alpha)/2}^\\circ$.`,
+        visual: "externalAngle"
+    }
+}
+
+// 16. Вътрешен ъгъл между пресичащи хорди
 function qInternalAngle() {
     let arc1 = rnd(30, 80), arc2 = rnd(20, 60);
     let ok = `$${(arc1+arc2)/2}^\\circ$`;
@@ -265,7 +443,7 @@ function qInternalAngle() {
     }
 }
 
-// 8. Външен ъгъл
+// 17. Външен ъгъл
 function qExternalAngle() {
     let a1 = rnd(10, 16)*10, a2 = rnd(2, 8)*10;
     if (a1 <= a2) a1 = a2 + 40;
@@ -279,7 +457,7 @@ function qExternalAngle() {
     }
 }
 
-// 9. Периферен ъгъл
+// 18. Периферен ъгъл
 function qPeripheralAngle() {
     let arc = rnd(4, 14)*10;
     let ok = `$${arc/2}^\\circ$`;
@@ -292,7 +470,7 @@ function qPeripheralAngle() {
     }
 }
 
-// 10. Вписан ъгъл и диаметър (Теорема на Талес)
+// 19. Вписан ъгъл и диаметър (Теорема на Талес)
 function qThalesTheorem() {
     let a = choice([25, 30, 35, 40, 50, 55, 60]);
     let b = 90 - a;
@@ -306,7 +484,7 @@ function qThalesTheorem() {
     }
 }
 
-// 11. Взаимно положение на права и окръжност
+// 20. Взаимно положение на права и окръжност
 function qLineCirclePos() {
     let r = rnd(5, 12), diff = rnd(1, 4), type = rnd(1, 3);
     let d, ans, explain_text;
@@ -323,7 +501,7 @@ function qLineCirclePos() {
     }
 }
 
-// 12. Взаимно положение на две окръжности
+// 21. Взаимно положение на две окръжности
 function qTwoCirclesPos() {
     let r1 = rnd(6, 10), r2 = rnd(2, 5), type = rnd(1, 4);
     let d, ans, explain_text;
@@ -341,49 +519,22 @@ function qTwoCirclesPos() {
     }
 }
 
-// 13. Дискриминанта
-function qDiscriminant() {
-    let a = choice([1, 1, 2]), r1 = rnd(-5, 6), r2 = rnd(-5, 6);
-    let b = -a * (r1 + r2), c = a * r1 * r2, D = b * b - 4 * a * c, ok = `$D = ${D}$`;
-    let signB = b >= 0 ? "+ " + b : "- " + Math.abs(b), signC = c >= 0 ? "+ " + c : "- " + Math.abs(c);
-    let ds = [`$D = ${b*b + 4*a*c}$`, `$D = ${-b*b - 4*a*c}$`, `$D = ${b*b - a*c}$`]; 
-    return {
-        type: "Квадратни уравнения", difficulty: "Средна",
-        q: `Да се пресметне дискриминантата на квадратното уравнение: <br>$$${a === 1 ? "" : a}x^2 ${signB}x ${signC} = 0$$`,
-        ...makeOptions(ok, ds),
-        explain: `Използва се формулата за дискриминанта: $D = b^2 - 4ac = (${b})^2 - 4 \\cdot ${a} \\cdot (${c}) = ${D}$.`, visual: "discriminant"
-    }
-}
-
-// 14. Централен и вписан ъгъл
-function qAngles() {
-    let central = choice([60, 72, 80, 90, 100, 120, 140]), per = central / 2, askPer = Math.random() < .5;
-    let ok = `$${askPer ? per : central}^\\circ$`;
-    let ds = askPer ? [`$${central}^\\circ$`, `$${central*2}^\\circ$`, `$${180-per}^\\circ$`] : [`$${per}^\\circ$`, `$${per/2}^\\circ$`, `$${180-central}^\\circ$`]; 
-    return {
-        type: "Вписани и централни ъгли", difficulty: "Средна",
-        q: askPer ? `В окръжност с център $O$ е даден централен ъгъл $\\angle AOB = ${central}^\\circ$. Да се намери мярката на съответния му вписан ъгъл $\\angle ACB$.` : `В окръжност с център $O$ е даден вписан ъгъл $\\angle ACB = ${per}^\\circ$. Да се намери мярката на съответния му централен ъгъл $\\angle AOB$.`,
-        ...makeOptions(ok, ds),
-        explain: askPer ? `Съгласно теоремата, вписаният ъгъл се измерва с половината от съответния му централен ъгъл: $\\frac{${central}^\\circ}{2} = ${per}^\\circ$.` : `Съгласно теоремата, централният ъгъл е два пъти по-голям от съответния му вписан ъгъл: $2 \\cdot ${per}^\\circ = ${central}^\\circ$.`, visual: "angles"
-    }
-}
-
 function generate(){
     let makers=[
-        qEqFactor, qEqFactor,            
-        qBiquad,                         
-        qSubst, qSubst,                  
-        qFactorHard, qFactorHard,        
-        qVietaExpr, qVietaExpr,          
-        qFindRootCoeff, qFindRootCoeff,  
-        qAngles, qAngles,                
-        qInternalAngle, qExternalAngle,  
-        qPeripheralAngle, qThalesTheorem,
-        qLineCirclePos, qTwoCirclesPos,  
-        qDiscriminant                    
+        qEqFactor, qEqFactor2, qBiquad, qBiquadRootsCount, qSubst,
+        qFactorHard, qVietaExpr, qVietaFractions, qFindRootCoeff, qRootsSigns,
+        qFormEquation, qDiscriminant, qAngles, qArcRatio, qTangentSegments,
+        qInternalAngle, qExternalAngle, qPeripheralAngle, qThalesTheorem,
+        qLineCirclePos, qTwoCirclesPos
     ];
+    
     let list=[];
-    while(list.length<TOTAL) list.push(choice(makers)());
+    let pool = shuffle([...makers]);
+    for(let m of pool) list.push(m());
+    
+    pool = shuffle([...makers]);
+    for(let i=0; i<TOTAL - makers.length; i++) list.push(pool[i]());
+    
     return shuffle(list);
 }
 
@@ -482,7 +633,6 @@ const mapping = {
     "factor": v.hexagons,
     "vieta": v.polygons,
     "discriminant": v.polygons,
-    // Свързване на геометричните задачи с истински чертежи
     "chords": v.chords,
     "externalAngle": v.externalAngle,
     "peripheralAngle": v.peripheralAngle,
