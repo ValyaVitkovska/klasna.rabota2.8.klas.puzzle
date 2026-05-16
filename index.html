@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Тестови задачи: Класна работа 2</title>
 
-<!-- KaTeX Styles and Scripts за истинска математическа символика -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+<!-- MathJax скриптове за перфектна математическа символика -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  startup: {
+    typeset: false
+  }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <style>
 *{box-sizing:border-box}
@@ -25,11 +34,24 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 .reveal,.map,.card{background:var(--card);border:1px solid rgba(255,255,255,.75);position:relative;}
 .reveal{padding:18px;display:grid;gap:12px}
 .reveal h2,.map h2{margin:0;font-size:20px}.reveal p{margin:0;color:var(--muted);font-size:14px;line-height:1.4}
+
+/* Стил за пъзела */
 .puzzle{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,1fr);gap:5px;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:#cbd5e1;border:4px solid rgba(79,70,229,.15)}
 .tile{position:relative;background:linear-gradient(135deg,#312e81,#7c3aed);overflow:hidden}
 .tile:before{content:"?";position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:24px;font-weight:1000}
-.tile.revealed{background-image:url("image_38637b.png");background-size:600% 500%;background-position:var(--pos);background-repeat:no-repeat;animation:pop .6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;transform:scale(1.02);z-index:2}
+.tile.revealed{
+    /* За онлайн визуализация ползваме стабилен външен линк към математическа графика. 
+       Когато изтеглите HTML файла при вас локално, променете URL адреса на: url("image_2c0a55.png") */
+    background-image:url("https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1200&q=80");
+    background-size:600% 500%;
+    background-position:var(--pos);
+    background-repeat:no-repeat;
+    animation:pop .6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform:scale(1.02);
+    z-index:2
+}
 .tile.revealed:before{display:none}@keyframes pop{0%{transform:scale(.3) rotate(-15deg);opacity:0;filter:brightness(2)}100%{transform:scale(1.02) rotate(0);opacity:1;filter:brightness(1)}}
+
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
 .stat{background:rgba(255,255,255,.82);border-radius:20px;padding:14px 16px;box-shadow:0 12px 26px rgba(15,23,42,.08)}
 .stat small{display:block;color:var(--muted);font-weight:800;margin-bottom:5px}.stat strong{font-size:24px}
@@ -45,10 +67,9 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 .q-meta{display:flex;gap:8px;flex-wrap:wrap;z-index:2;}
 .pill{display:inline-flex;padding:8px 12px;border-radius:999px;background:#eef2ff;color:#4338ca;font-weight:900;font-size:14px;}
 .diff{background:#ccfbf1;color:#0f766e}
-.qtext{font-size:clamp(19px,2vw,22px);line-height:1.5;margin:16px 0 20px;font-weight:700}
+.qtext{font-size:clamp(19px,2vw,22px);line-height:1.6;margin:16px 0 20px;font-weight:700}
 .options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
 
-/* Анимирано човече-математик */
 .solver-character{position:absolute;top:20px;right:26px;width:70px;height:70px;z-index:10;animation:slideInBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;}
 .solver-character .emoji-student{font-size:46px;position:relative;z-index:2;animation:bounceThink 1.2s infinite alternate ease-in-out;}
 .solver-character .math-symbol{position:absolute;font-weight:900;font-size:18px;color:var(--violet);opacity:0;}
@@ -60,7 +81,7 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 @keyframes slideInBounce{0%{transform:translateX(50px) scale(0.5);opacity:0;}100%{transform:translateX(0) scale(1);opacity:1;}}
 
 @keyframes slideInUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
-.option{border:2px solid transparent;text-align:left;background:rgba(255,255,255,.94);border-radius:18px;padding:15px 16px;font-size:17px;cursor:pointer;min-height:62px;box-shadow:0 9px 20px rgba(15,23,42,.08);opacity:0;animation:slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;}
+.option{border:2px solid transparent;text-align:left;background:rgba(255,255,255,.94);border-radius:18px;padding:15px 16px;font-size:18px;cursor:pointer;min-height:62px;box-shadow:0 9px 20px rgba(15,23,42,.08);opacity:0;animation:slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;}
 .option:hover{transform:translateY(-2px)}
 .option:nth-child(1) { border-left: 5px solid #3b82f6; background: linear-gradient(to right, #eff6ff 0%, #ffffff 20%); }
 .option:nth-child(2) { border-left: 5px solid #ec4899; background: linear-gradient(to right, #fdf2f8 0%, #ffffff 20%); }
@@ -70,7 +91,7 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 .option.correct{border-color:#16a34a;background:#dcfce7}
 .option.wrong{border-color:#dc2626;background:#fee2e2}
 
-/* Визуална абстрактна кутия за анимациите */
+/* Визуална абстрактна кутия */
 .visual{
     min-height: 180px;
     border-radius: 24px;
@@ -85,7 +106,7 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 }
 .svg{width:100%;height:100%;position:absolute;inset:0;}
 
-.feedback{min-height:58px;padding:14px 16px;border-radius:18px;margin-top:14px;font-weight:800;display:none;line-height:1.5;}.feedback.show{display:block}.good{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}.bad{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
+.feedback{min-height:58px;padding:14px 16px;border-radius:18px;margin-top:14px;font-weight:500;display:none;line-height:1.6;font-size:18px;}.feedback.show{display:block}.good{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}.bad{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
 .confetti{position:fixed;width:10px;height:16px;top:-20px;border-radius:3px;animation:fall 2.4s linear forwards;z-index:9}@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
 @keyframes slideUpFade { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 .animate-enter { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -93,7 +114,7 @@ h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spaci
 .shake { animation: shake 0.4s ease-in-out; }
 @keyframes scalePop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
 .pop-correct { animation: scalePop 0.4s ease-out; }
-.result{font-size:clamp(56px,8vw,96px);line-height:1;font-weight:1000;background:linear-gradient(135deg,#4f46e5,#f97316);-webkit-background-clip:text;color:transparent;margin:18px 0 8px}.review{margin-top:18px;display:grid;gap:9px;max-height:330px;overflow:auto}.row{padding:11px 13px;border-radius:15px;background:rgba(241,245,249,.88);border-left:6px solid #94a3b8}.row.ok{border-left-color:#16a34a}.row.no{border-left-color:#dc2626}
+.result{font-size:clamp(56px,8vw,96px);line-height:1;font-weight:1000;background:linear-gradient(135deg,#4f46e5,#f97316);-webkit-background-clip:text;color:transparent;margin:18px 0 8px}.review{margin-top:18px;display:grid;gap:9px;max-height:330px;overflow:auto}.row{padding:11px 13px;border-radius:15px;background:rgba(241,245,249,.88);border-left:6px solid #94a3b8;font-size:16px;line-height:1.6;}.row.ok{border-left-color:#16a34a}.row.no{border-left-color:#dc2626}
 @media(max-width:950px){header,.game,.start-grid{grid-template-columns:1fr}.map{position:static}.stats{grid-template-columns:repeat(2,1fr)}.options{grid-template-columns:1fr}}@media(max-width:520px){.app{width:min(100% - 20px,1240px);padding-top:14px}.hero,.card{padding:20px;border-radius:22px}.stats{grid-template-columns:1fr}.dots{grid-template-columns:repeat(6,1fr)}}
 </style>
 </head>
@@ -109,19 +130,16 @@ const TOTAL=30, PTS=100/TOTAL; let questions=[],current=0,score=0,correct=0,sele
 const $=id=>document.getElementById(id), screen=$("screen"), dots=$("dots"), statQuestion=$("statQuestion"), statScore=$("statScore"), statCorrect=$("statCorrect"), statLevel=$("statLevel"), progress=$("progress"), puzzleBoard=$("puzzleBoard");
 const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a, choice=a=>a[Math.floor(Math.random()*a.length)], shuffle=a=>{let c=[...a];for(let i=c.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}return c};
 
-// Извиква KaTeX за рендиране на LaTeX формулите в DOM-а
-function renderMath() {
-    if (window.renderMathInElement) {
-        renderMathInElement(document.body, {
-            delimiters: [
-                {left: "$$", right: "$$", display: true},
-                {left: "$", right: "$", display: false}
-            ],
-            throwOnError: false
-        });
+// Извиква MathJax за рендиране на LaTeX формулите в DOM-а
+function updateMath() {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([document.getElementById("screen")]).catch((err) => console.log(err));
+    } else {
+        setTimeout(updateMath, 100);
     }
 }
 
+// Гарантирано връща 4 уникални опции (вярна + 3 типични грешки)
 function makeOptions(ok, ds){
     let u = [];
     for(let d of ds) {
@@ -140,6 +158,8 @@ function makeOptions(ok, ds){
     let m = shuffle([ok, u[0], u[1], u[2]]);
     return {options:m, answer:m.indexOf(ok)};
 }
+
+function poly(b,c,v="x"){return `${v}^2 ${b>=0?"+ "+b:"- "+Math.abs(b)}${v} ${c>=0?"+ "+c:"- "+Math.abs(c)}`}
 
 // 1. Уравнения с изнасяне на множител
 function qEqFactor() {
@@ -288,7 +308,7 @@ function qVietaFractions() {
     let ds = [`$\\frac{${b}}{${c}}$`, `$\\frac{${c}}{${-b}}$`, `$-\\frac{${c}}{${-b}}$`];
     return {
         type: "Формули на Виет", difficulty: "Висока",
-        q: `За корените $x_1$ и $x_2$ на уравнението $$x^2 ${b}x + ${c} = 0$$ да се пресметне стойността на израза $\\frac{1}{x_1} + \\frac{1}{x_2}$.`,
+        q: `За корените $x_1$ и $x_2$ на уравнението $$x^2 ${b>=0?'+ '+b:'- '+Math.abs(b)}x + ${c} = 0$$ да се пресметне стойността на израза $\\frac{1}{x_1} + \\frac{1}{x_2}$.`,
         ...makeOptions(ok, ds),
         explain: `След привеждане под общ знаменател: $\\frac{1}{x_1} + \\frac{1}{x_2} = \\frac{x_1+x_2}{x_1 x_2}$.<br> От формулите на Виет се замества $\\frac{-b}{c} = \\frac{${-b}}{${c}}$.`,
         visual: "vieta"
@@ -688,7 +708,7 @@ function render(){
     </div>`;
     
     update();
-    renderMath(); 
+    updateMath(); 
 }
 
 function goNext(){let n=nextUnanswered();if(n===-1)finishGame();else{current=n;render()}}
@@ -710,7 +730,7 @@ function checkAnswer(){
     document.querySelector(".actions").innerHTML=answers.filter(Boolean).length===TOTAL?`<button class="btn orange-btn animate-enter" onclick="finishGame()">Резултати от теста ➜</button>`:`<button class="btn orange-btn animate-enter" onclick="goNext()">Следващ въпрос ➜</button>`;
     let character = document.querySelector(".solver-character"); if(character) character.style.display="none";
     update();
-    renderMath();
+    updateMath();
 }
 
 function finishGame(){
@@ -719,7 +739,7 @@ function finishGame(){
     let review=answers.map((a,i)=>`<div class="row ${a.ok?"ok":"no"}"><strong>${i+1}. ${a.ok?"Правилен":"Грешен"}:</strong> ${a.explain}</div>`).join("");
     screen.innerHTML=`<div class="card animate-enter"><h2>Резултати от теста</h2><div class="result">${s}/100</div><p style="font-size:20px;line-height:1.55;color:#475569">${msg}</p><div class="info green"><h3>Резултат</h3><p>Правилно решени задачи: <strong>${correct}</strong> от общо <strong>${TOTAL}</strong></p></div><h3>Анализ на решенията</h3><div class="review">${review}</div><div class="actions"><button class="btn primary" onclick="startGame()">🔁 Нов вариант на теста</button><button class="btn ghost" onclick="showStart()">Начален екран</button></div></div>`;
     update();
-    renderMath();
+    updateMath();
 }
 
 function confetti(n){let colors=["#4f46e5","#f97316","#22c55e","#06b6d4","#ec4899","#facc15"];for(let i=0;i<n;i++){let p=document.createElement("div");p.className="confetti";p.style.left=Math.random()*100+"vw";p.style.background=choice(colors);p.style.animationDelay=Math.random()*.4+"s";document.body.appendChild(p);setTimeout(()=>p.remove(),2800)}}
