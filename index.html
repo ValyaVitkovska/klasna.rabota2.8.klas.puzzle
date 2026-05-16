@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Математическа мисия: Квадратно уравнение и окръжност</title>
+<title>Тестови задачи: Класна работа 2</title>
+
+<!-- KaTeX Styles and Scripts за истинска математическа символика -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
 <style>
 *{box-sizing:border-box}
 :root{--ink:#1e293b;--muted:#64748b;--violet:#4f46e5;--orange:#f97316;--green:#16a34a;--red:#dc2626;--card:rgba(255,255,255,.92);--shadow:0 20px 60px rgba(30,41,59,.16);--radius:28px}
@@ -14,16 +20,16 @@ header{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;margin-bottom:18
 .hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white;padding:32px;overflow:hidden;position:relative}
 .hero:after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;border:22px solid rgba(255,255,255,.14);right:-75px;top:-60px}
 .tag{display:inline-flex;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);font-weight:800;margin-bottom:16px}
-h1{font-size:clamp(28px,4vw,46px);line-height:1.08;margin:0 0 12px;letter-spacing:-.03em}
+h1{font-size:clamp(26px,3.5vw,42px);line-height:1.1;margin:0 0 12px;letter-spacing:-.02em}
 .hero p{font-size:17px;line-height:1.55;margin:0;color:rgba(255,255,255,.92)}
-.reveal,.map,.card{background:var(--card);border:1px solid rgba(255,255,255,.75)}
+.reveal,.map,.card{background:var(--card);border:1px solid rgba(255,255,255,.75);position:relative;}
 .reveal{padding:18px;display:grid;gap:12px}
 .reveal h2,.map h2{margin:0;font-size:20px}.reveal p{margin:0;color:var(--muted);font-size:14px;line-height:1.4}
 .puzzle{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,1fr);gap:5px;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:#cbd5e1;border:4px solid rgba(79,70,229,.15)}
 .tile{position:relative;background:linear-gradient(135deg,#312e81,#7c3aed);overflow:hidden}
 .tile:before{content:"?";position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:24px;font-weight:1000}
-.tile.revealed{background-image:url("puzzle-image.png");background-size:600% 500%;background-position:var(--pos);background-repeat:no-repeat;animation:pop .42s ease;transform:scale(1.02)}
-.tile.revealed:before{display:none}@keyframes pop{0%{transform:scale(.65);opacity:.25}100%{transform:scale(1.02);opacity:1}}
+.tile.revealed{background-image:url("image_38637b.png");background-size:600% 500%;background-position:var(--pos);background-repeat:no-repeat;animation:pop .6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;transform:scale(1.02);z-index:2}
+.tile.revealed:before{display:none}@keyframes pop{0%{transform:scale(.3) rotate(-15deg);opacity:0;filter:brightness(2)}100%{transform:scale(1.02) rotate(0);opacity:1;filter:brightness(1)}}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
 .stat{background:rgba(255,255,255,.82);border-radius:20px;padding:14px 16px;box-shadow:0 12px 26px rgba(15,23,42,.08)}
 .stat small{display:block;color:var(--muted);font-weight:800;margin-bottom:5px}.stat strong{font-size:24px}
@@ -34,124 +40,538 @@ h1{font-size:clamp(28px,4vw,46px);line-height:1.08;margin:0 0 12px;letter-spacin
 .legend{margin-top:14px;display:grid;gap:8px;color:var(--muted);font-size:14px}
 .card{padding:26px;min-height:560px}.start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}.info{border-radius:22px;padding:18px;background:rgba(79,70,229,.08);border:1px solid rgba(79,70,229,.16)}.info.orange{background:rgba(249,115,22,.09)}.info.green{background:rgba(34,197,94,.09)}.info h3{margin:0 0 8px}.info p,.info ul{margin:0;line-height:1.55;color:#475569}
 .btn{border:0;border-radius:16px;padding:13px 18px;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 12px 22px rgba(15,23,42,.14);transition:.18s}.btn:hover{transform:translateY(-2px)}.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}.primary{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white}.orange-btn{background:linear-gradient(135deg,#f97316,#f59e0b);color:white}.ghost{background:#e2e8f0;color:#334155;box-shadow:none}
-.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}.qtop{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}.pill{display:inline-flex;padding:8px 12px;border-radius:999px;background:#eef2ff;color:#4338ca;font-weight:900}.cat{background:#ffedd5;color:#7c2d12}.diff{background:#ccfbf1;color:#0f766e}
-.qtext{font-size:clamp(21px,2.1vw,29px);line-height:1.35;margin:16px 0 20px;font-weight:900}.math{font-family:"Cambria Math","Times New Roman",serif;background:rgba(15,23,42,.06);padding:3px 8px;border-radius:8px;white-space:nowrap}
-.options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}.option{border:2px solid transparent;text-align:left;background:rgba(255,255,255,.94);border-radius:18px;padding:15px 16px;font-size:17px;cursor:pointer;min-height:62px;box-shadow:0 9px 20px rgba(15,23,42,.08)}.option:hover{border-color:rgba(79,70,229,.45);transform:translateY(-2px)}.option.selected{border-color:#4f46e5;background:#eef2ff}.option.correct{border-color:#16a34a;background:#dcfce7}.option.wrong{border-color:#dc2626;background:#fee2e2}
-.visual{min-height:158px;border-radius:24px;margin:14px 0;background:linear-gradient(135deg,rgba(238,242,255,.9),rgba(255,247,237,.9));border:1px solid rgba(148,163,184,.24);display:grid;place-items:center;overflow:hidden}.svg{width:min(460px,100%);height:158px}.pulse{animation:pulse 1.8s ease-in-out infinite;transform-origin:center}@keyframes pulse{50%{transform:scale(1.08);opacity:.65}}.bounce{animation:bounce 1.4s ease-in-out infinite}@keyframes bounce{50%{transform:translateY(-8px)}}
-.feedback{min-height:58px;padding:14px 16px;border-radius:18px;margin-top:14px;font-weight:800;display:none}.feedback.show{display:block}.good{background:#dcfce7;color:#166534}.bad{background:#fee2e2;color:#991b1b}.hint{background:#ffedd5;color:#9a3412}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px;}
+.q-meta{display:flex;gap:8px;flex-wrap:wrap;z-index:2;}
+.pill{display:inline-flex;padding:8px 12px;border-radius:999px;background:#eef2ff;color:#4338ca;font-weight:900;font-size:14px;}
+.diff{background:#ccfbf1;color:#0f766e}
+.qtext{font-size:clamp(19px,2vw,22px);line-height:1.5;margin:16px 0 20px;font-weight:700}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+
+/* Анимирано човече-математик */
+.solver-character{position:absolute;top:20px;right:26px;width:70px;height:70px;z-index:10;animation:slideInBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;}
+.solver-character .emoji-student{font-size:46px;position:relative;z-index:2;animation:bounceThink 1.2s infinite alternate ease-in-out;}
+.solver-character .math-symbol{position:absolute;font-weight:900;font-size:18px;color:var(--violet);opacity:0;}
+.math-symbol.s1{top:-5px;left:-10px;animation:floatUp 2s infinite linear 0s;}
+.math-symbol.s2{top:15px;right:-15px;animation:floatUp 2.5s infinite linear 0.5s;color:var(--orange);}
+.math-symbol.s3{top:-15px;left:25px;animation:floatUp 2.2s infinite linear 1.2s;color:var(--green);}
+@keyframes floatUp{0%{transform:translateY(0) scale(0.5) rotate(0deg);opacity:0;}20%{opacity:1;transform:translateY(-10px) scale(1) rotate(10deg);}80%{opacity:1;}100%{transform:translateY(-40px) scale(1.2) rotate(-15deg);opacity:0;}}
+@keyframes bounceThink{0%{transform:translateY(0px) rotate(-3deg);}100%{transform:translateY(-6px) rotate(3deg);}}
+@keyframes slideInBounce{0%{transform:translateX(50px) scale(0.5);opacity:0;}100%{transform:translateX(0) scale(1);opacity:1;}}
+
+@keyframes slideInUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.option{border:2px solid transparent;text-align:left;background:rgba(255,255,255,.94);border-radius:18px;padding:15px 16px;font-size:17px;cursor:pointer;min-height:62px;box-shadow:0 9px 20px rgba(15,23,42,.08);opacity:0;animation:slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;}
+.option:hover{transform:translateY(-2px)}
+.option:nth-child(1) { border-left: 5px solid #3b82f6; background: linear-gradient(to right, #eff6ff 0%, #ffffff 20%); }
+.option:nth-child(2) { border-left: 5px solid #ec4899; background: linear-gradient(to right, #fdf2f8 0%, #ffffff 20%); }
+.option:nth-child(3) { border-left: 5px solid #f59e0b; background: linear-gradient(to right, #fffbeb 0%, #ffffff 20%); }
+.option:nth-child(4) { border-left: 5px solid #8b5cf6; background: linear-gradient(to right, #f5f3ff 0%, #ffffff 20%); }
+.option.selected{border-color:#4f46e5;background:#eef2ff}
+.option.correct{border-color:#16a34a;background:#dcfce7}
+.option.wrong{border-color:#dc2626;background:#fee2e2}
+
+/* Визуална абстрактна кутия за анимациите */
+.visual{
+    min-height: 180px;
+    border-radius: 24px;
+    margin: 16px 0;
+    background: #0f172a; 
+    border: 2px solid #1e293b;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 10px 30px rgba(0,0,0,0.5);
+}
+.svg{width:100%;height:100%;position:absolute;inset:0;}
+
+.feedback{min-height:58px;padding:14px 16px;border-radius:18px;margin-top:14px;font-weight:800;display:none;line-height:1.5;}.feedback.show{display:block}.good{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}.bad{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
 .confetti{position:fixed;width:10px;height:16px;top:-20px;border-radius:3px;animation:fall 2.4s linear forwards;z-index:9}@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@keyframes slideUpFade { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.animate-enter { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+.shake { animation: shake 0.4s ease-in-out; }
+@keyframes scalePop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+.pop-correct { animation: scalePop 0.4s ease-out; }
 .result{font-size:clamp(56px,8vw,96px);line-height:1;font-weight:1000;background:linear-gradient(135deg,#4f46e5,#f97316);-webkit-background-clip:text;color:transparent;margin:18px 0 8px}.review{margin-top:18px;display:grid;gap:9px;max-height:330px;overflow:auto}.row{padding:11px 13px;border-radius:15px;background:rgba(241,245,249,.88);border-left:6px solid #94a3b8}.row.ok{border-left-color:#16a34a}.row.no{border-left-color:#dc2626}
 @media(max-width:950px){header,.game,.start-grid{grid-template-columns:1fr}.map{position:static}.stats{grid-template-columns:repeat(2,1fr)}.options{grid-template-columns:1fr}}@media(max-width:520px){.app{width:min(100% - 20px,1240px);padding-top:14px}.hero,.card{padding:20px;border-radius:22px}.stats{grid-template-columns:1fr}.dots{grid-template-columns:repeat(6,1fr)}}
 </style>
 </head>
 <body>
 <main class="app">
-<header><section class="hero"><div class="tag">🎮 8. клас · генератор на интерактивен пъзел</div><h1>Математическа мисия:<br>Квадратно уравнение и окръжност</h1><p>При всяко стартиране се генерират 30 различни задачи. След всеки отговор се открива част от тайното изображение.</p></section>
-<aside class="reveal"><h2>🖼️ Тайно изображение</h2><p>Всяка задача отключва едно парче. При 30 отговора картината се вижда изцяло.</p><div class="puzzle" id="puzzleBoard"></div></aside></header>
+<header><section class="hero"><div class="tag">Подготовка за класна работа · 8. клас</div><h1>Тестови задачи по математика:<br>Класна работа № 2</h1></section>
+<aside class="reveal"><h2>Разкриване на графично изображение</h2><p>При всеки правилен отговор се разкрива част от изображение.</p><div class="puzzle" id="puzzleBoard"></div></aside></header>
 <section class="stats"><div class="stat"><small>Въпрос</small><strong id="statQuestion">0/30</strong></div><div class="stat"><small>Точки</small><strong id="statScore">0</strong></div><div class="stat"><small>Верни</small><strong id="statCorrect">0</strong></div><div class="stat"><small>Ниво</small><strong id="statLevel">Старт</strong></div></section>
-<section class="game"><aside class="map"><h2>Карта на мисията</h2><div class="progress-wrap"><div class="progress" id="progress"></div></div><div class="dots" id="dots"></div><div class="legend"><div>🟠 текущ въпрос</div><div>🟢 верен отговор</div><div>🌹 грешен отговор</div><div>🔢 може да се избира въпрос по номер</div><div>🖼️ всяка задача открива част от изображението</div></div></aside><section id="screen"></section></section>
+<section class="game"><aside class="map"><h2>Карта на теста</h2><div class="progress-wrap"><div class="progress" id="progress"></div></div><div class="dots" id="dots"></div><div class="legend"><div>🟠 текущ въпрос</div><div>🟢 правилен отговор</div><div>🌹 грешен отговор</div><div>🔢 избор на въпрос</div></div></aside><section id="screen"></section></section>
 </main>
 <script>
 const TOTAL=30, PTS=100/TOTAL; let questions=[],current=0,score=0,correct=0,selected=null,answered=false,answers=[],started=false;
 const $=id=>document.getElementById(id), screen=$("screen"), dots=$("dots"), statQuestion=$("statQuestion"), statScore=$("statScore"), statCorrect=$("statCorrect"), statLevel=$("statLevel"), progress=$("progress"), puzzleBoard=$("puzzleBoard");
 const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a, choice=a=>a[Math.floor(Math.random()*a.length)], shuffle=a=>{let c=[...a];for(let i=c.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}return c};
-const fmt=n=>String(n).replace("-","−");
-function makeOptions(ok,ds){let u=[...new Set([ok,...ds.filter(x=>x!==ok)])].slice(0,4);while(u.length<4)u.push(fmt(rnd(-12,18)));let m=shuffle(u);return{options:m,answer:m.indexOf(ok)}}
-function poly(b,c,v="x"){return `${v}² ${b>=0?"+ "+b:"− "+Math.abs(b)}${v} ${c>=0?"+ "+c:"− "+Math.abs(c)}`}
 
-function qQuadraticRoots(){let r1=rnd(-8,8)||2,r2=rnd(-8,8)||-3;if(r2===r1)r2+=3;let b=-(r1+r2),c=r1*r2,ok=`x₁ = ${fmt(Math.min(r1,r2))}, x₂ = ${fmt(Math.max(r1,r2))}`;return{type:"Квадратно уравнение",difficulty:"средна",q:`Реши уравнението <span class='math'>${poly(b,c)} = 0</span>.`,...makeOptions(ok,[`x₁ = ${fmt(-r1)}, x₂ = ${fmt(-r2)}`,`x₁ = ${fmt(r1+1)}, x₂ = ${fmt(r2-1)}`,"няма реални корени"]),hint:"Потърси две числа със сбор −b и произведение c.",explain:`Корените са ${fmt(r1)} и ${fmt(r2)}.`,visual:"roots"}}
+// Извиква KaTeX за рендиране на LaTeX формулите в DOM-а
+function renderMath() {
+    if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false}
+            ],
+            throwOnError: false
+        });
+    }
+}
 
+function makeOptions(ok, ds){
+    let u = [];
+    for(let d of ds) {
+        if(d !== ok && !u.includes(d)) u.push(d);
+    }
+    let m = shuffle([ok, u[0], u[1], u[2]]);
+    return {options:m, answer:m.indexOf(ok)};
+}
+
+function poly(b,c,v="x"){return `${v}^2 ${b>=0?"+ "+b:"- "+Math.abs(b)}${v} ${c>=0?"+ "+c:"- "+Math.abs(c)}`}
+
+// 1. Уравнения с изнасяне на множител
+function qEqFactor() {
+    let A = rnd(2, 4), B = rnd(1, 5), x2 = rnd(1, 5), C = A * (x2 + B);
+    let ok = `$x_1 = ${B}; x_2 = ${x2}$`;
+    let d1 = `$x = ${x2}$`; 
+    let d2 = `$x_1 = ${-B}; x_2 = ${-x2}$`; 
+    let d3 = `$x_1 = ${B}; x_2 = ${-x2}$`; 
+    return {
+        type: "Уравнения", difficulty: "Средна", 
+        q: `Да се намерят корените на уравнението: <br>$$${A}(x - ${B})(x + ${B}) = ${C}(x - ${B})$$`,
+        ...makeOptions(ok, [d1, d2, d3]),
+        explain: `След прехвърляне и изнасяне на общия множител пред скоби се получава:<br> $(x - ${B})(${A}(x + ${B}) - ${C}) = 0 \\Rightarrow (x - ${B})(${A}x + ${A*B} - ${C}) = 0$.<br> Оттук следва, че корените са $x_1 = ${B}$ и $x_2 = ${x2}$.`,
+        visual: "roots"
+    }
+}
+
+// 2. Биквадратно уравнение
+function qBiquad(){
+    let y1=choice([1,4,9,16]), y2=choice([4,9,16,25].filter(v=>v!==y1));
+    let b=-(y1+y2), c=y1*y2;
+    let roots=[...new Set([Math.sqrt(y1),-Math.sqrt(y1),Math.sqrt(y2),-Math.sqrt(y2)])].sort((a,b)=>a-b);
+    let ok = `$x = ${roots.join("; ")}$`;
+    let d1 = `$x = \\sqrt{${y1}}; \\sqrt{${y2}}$`; 
+    let d2 = `$x = ${y1}; ${y2}$`; 
+    let d3 = `$x = \\pm ${y1}; \\pm ${y2}$`; 
+    let bStr = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
+    let cStr = c >= 0 ? `+ ${c}` : `- ${Math.abs(c)}`;
+    return{
+        type:"Биквадратни уравнения", difficulty:"Повишена",
+        q:`Да се намерят реалните корени на биквадратното уравнение: <br>$$x^4 ${bStr}x^2 ${cStr} = 0$$`,
+        ...makeOptions(ok, [d1, d2, d3]),
+        explain:`Чрез полагане на $x^2 = y \\ge 0$ се достига до квадратно уравнение с корени $y_1=${y1}$ и $y_2=${y2}$.<br> Корените за $x$ се установяват от $x^2 = y_1$ и $x^2 = y_2$, следователно $x = \\pm\\sqrt{${y1}}$ и $x = \\pm\\sqrt{${y2}}$.`,
+        visual:"biquadratic"
+    }
+}
+
+// 3. Уравнения с полагане
+function qSubst() {
+    let y1 = rnd(1, 4), y2 = rnd(-4, -1), sum = y1+y2, prod = y1*y2;
+    let b = rnd(-3, 3) || 1;
+    let signB = b>0 ? '+ '+b : '- '+Math.abs(b);
+    let signS = sum<0 ? '+ '+Math.abs(sum) : '- '+sum;
+    let signP = prod<0 ? '- '+Math.abs(prod) : '+ '+prod;
+    let ok = `$y_1 = ${y1}; y_2 = ${y2}$`;
+    let d1 = `$y_1 = ${-y1}; y_2 = ${-y2}$`; 
+    let d2 = `$y_1 = ${y1}; y_2 = ${-y2}$`; 
+    let d3 = `$y_1 = ${-sum}; y_2 = ${prod}$`; 
+    return {
+        type: "Уравнения с полагане", difficulty: "Повишена", 
+        q: `Дадено е уравнението: <br> $$(x^2 ${signB}x)^2 ${signS}(x^2 ${signB}x) ${signP} = 0$$ Чрез полагане на $y = x^2 ${signB}x$ да се намерят стойностите на $y$, удовлетворяващи полученото квадратно уравнение.`,
+        ...makeOptions(ok, [d1, d2, d3]),
+        explain: `След извършване на полагането се получава квадратното уравнение $y^2 ${signS}y ${signP} = 0$.<br> Съгласно формулите за корени на квадратно уравнение, неговите решения са $y_1 = ${y1}$ и $y_2 = ${y2}$.`,
+        visual: "factor"
+    }
+}
+
+// 4. Разлагане на тричлен с а != 1
+function qFactorHard() {
+    let a = rnd(2, 5), n = rnd(-3, 3) || 1, m = rnd(-5, 5) || 2; 
+    let b = -(a*n + m), c = m*n;
+    let signB = b>0 ? '+ '+b : (b<0 ? '- '+Math.abs(b) : ''), signC = c>0 ? '+ '+c : (c<0 ? '- '+Math.abs(c) : ''), bx = b===0 ? "" : `${signB}x`;
+    let ok = `$(${a}x ${m<0?'+ '+Math.abs(m):'- '+m})(x ${n<0?'+ '+Math.abs(n):'- '+n})$`;
+    let d1 = `$(${a}x ${m>0?'+ '+m:'- '+Math.abs(m)})(x ${n>0?'+ '+n:'- '+Math.abs(n)})$`; 
+    let d2 = `$(x ${m<0?'+ '+Math.abs(m):'- '+m})(${a}x ${n<0?'+ '+Math.abs(n):'- '+n})$`; 
+    let d3 = `$(${a}x ${m<0?'+ '+Math.abs(m):'- '+m})(x ${n>0?'+ '+n:'- '+Math.abs(n)})$`; 
+    return {
+        type: "Разлагане", difficulty: "Висока", 
+        q: `Да се разложи на множители квадратният тричлен: <br>$$${a}x^2 ${bx} ${signC}$$`,
+        ...makeOptions(ok, [d1, d2, d3]),
+        explain: `Корените на съответното квадратно уравнение са $x_1 = ${n}$ и $x_2 = \\frac{${m}}{${a}}$.<br> Съгласно формулата $ax^2 + bx + c = a(x - x_1)(x - x_2)$, разлагането е $${a}(x - ${n})\\left(x - \\frac{${m}}{${a}}\\right) = (x - ${n})(${a}x - ${m})$.`,
+        visual: "factor"
+    }
+}
+
+// 5. Виетови формули - Изрази
+function qVietaExpr() {
+    let r1 = rnd(-4, 4) || 1, r2 = rnd(-3, 5) || 2;
+    if(r1===r2) r2++;
+    let sum = r1+r2, prod = r1*r2, b = -sum, c = prod;
+    let q, ok, explain, ds;
+    
+    if(Math.random() < 0.5) {
+        let val = sum*sum - 2*prod;
+        ok = `$${val}$`;
+        ds = [`$${sum*sum}$`, `$${sum*sum + 2*prod}$`, `$${sum*sum - prod}$`];
+        q = `Ако $x_1$ и $x_2$ са реални корени на квадратното уравнение $$x^2 ${b>=0?'+ '+b:'- '+Math.abs(b)}x ${c>=0?'+ '+c:'- '+Math.abs(c)} = 0$$ да се пресметне стойността на израза $x_1^2 + x_2^2$.`;
+        explain = `От формулите на Виет следва, че $x_1+x_2 = ${sum}$ и $x_1 x_2 = ${prod}$.<br> Като се приложи тъждеството $x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1 x_2$, се получава $(${sum})^2 - 2(${prod}) = ${val}$.`;
+    } else {
+        let val = sum*sum - 2*prod - sum;
+        ok = `$${val}$`;
+        ds = [`$${sum*sum - 2*prod + sum}$`, `$${sum*sum - 2*prod}$`, `$${sum*sum - sum}$`];
+        q = `Ако $x_1$ и $x_2$ са реални корени на квадратното уравнение $$x^2 ${b>=0?'+ '+b:'- '+Math.abs(b)}x ${c>=0?'+ '+c:'- '+Math.abs(c)} = 0$$ да се пресметне стойността на израза $x_1(x_1 - 1) + x_2(x_2 - 1)$.`;
+        explain = `След преобразуване изразът приема вида $x_1^2 + x_2^2 - (x_1 + x_2)$.<br> От формулите на Виет се намират съответните стойности и се замества: $(${sum})^2 - 2(${prod}) - (${sum}) = ${val}$.`;
+    }
+    return {
+        type: "Формули на Виет", difficulty: "Висока", q: q,
+        ...makeOptions(ok, ds), explain: explain, visual: "vieta"
+    }
+}
+
+// 6. Търсене на коефициент/корен
+function qFindRootCoeff() {
+    let x1 = rnd(2, 6), x2 = rnd(-5, -1), p = -(x1+x2), q_val = x1*x2;
+    let ok, ds, qText, explain;
+    
+    if(Math.random() < 0.5) {
+        ok = `$x_2 = ${x2}$`;
+        ds = [`$x_2 = ${-x2}$`, `$x_2 = ${p}$`, `$x_2 = ${-p}$`]; 
+        qText = `Дадено е квадратното уравнение $$x^2 + px ${q_val>=0?'+ '+q_val:'- '+Math.abs(q_val)} = 0$$ Ако $x_1 = ${x1}$ е корен на уравнението, да се намери другият корен $x_2$.`;
+        explain = `Съгласно формулите на Виет, $x_1 \\cdot x_2 = ${q_val}$.<br> Следователно $${x1} \\cdot x_2 = ${q_val}$, откъдето се установява, че $x_2 = ${x2}$.`;
+    } else {
+        ok = `$p = ${p}$`;
+        ds = [`$p = ${-p}$`, `$p = ${x2}$`, `$p = ${-x2}$`]; 
+        qText = `Дадено е квадратното уравнение $$x^2 + px ${q_val>=0?'+ '+q_val:'- '+Math.abs(q_val)} = 0$$ Ако $x_1 = ${x1}$ е корен на уравнението, да се намери стойността на параметъра $p$.`;
+        explain = `От формулите на Виет се намира другият корен: $x_2 = \\frac{${q_val}}{${x1}} = ${x2}$.<br> Тогава $-p = x_1 + x_2 = ${x1} + (${x2}) = ${x1+x2}$, следователно $p = ${p}$.`;
+    }
+    return { type: "Параметри и Виет", difficulty: "Повишена", q: qText, ...makeOptions(ok, ds), explain: explain, visual: "vieta" }
+}
+
+// 7. Вътрешен ъгъл между пресичащи хорди
+function qInternalAngle() {
+    let arc1 = rnd(30, 80), arc2 = rnd(20, 60);
+    let ok = `$${(arc1+arc2)/2}^\\circ$`;
+    let ds = [`$${arc1+arc2}^\\circ$`, `$${Math.abs(arc1-arc2)/2}^\\circ$`, `$${180 - (arc1+arc2)/2}^\\circ$`]; 
+    return {
+        type: "Ъгли в окръжност", difficulty: "Висока", 
+        q: `В дадена окръжност хордите $AB$ и $CD$ се пресичат във вътрешна точка $M$. Ако мерките на съответните дъги са $\\widehat{AD} = ${arc1}^\\circ$ и $\\widehat{CB} = ${arc2}^\\circ$, да се намери мярката на $\\angle AMD$.`,
+        ...makeOptions(ok, ds),
+        explain: `Съгласно теоремата за ъгъл с връх вътре в окръжност, мярката му е равна на полусбора от прилежащите му дъги: $\\frac{${arc1}^\\circ + ${arc2}^\\circ}{2} = ${(arc1+arc2)/2}^\\circ$.`, visual: "chords" 
+    }
+}
+
+// 8. Външен ъгъл
+function qExternalAngle() {
+    let a1 = rnd(10, 16)*10, a2 = rnd(2, 8)*10;
+    if (a1 <= a2) a1 = a2 + 40;
+    let ok = `$${(a1-a2)/2}^\\circ$`;
+    let ds = [`$${(a1+a2)/2}^\\circ$`, `$${a1-a2}^\\circ$`, `$${180 - (a1-a2)/2}^\\circ$`]; 
+    return {
+        type: "Ъгли в окръжност", difficulty: "Повишена", 
+        q: `През точка $P$, външна за окръжност, са построени секащите $PA$ и $PB$. Ако принадлежащите им дъги имат мерки съответно $\\widehat{AB} = ${a1}^\\circ$ и $\\widehat{CD} = ${a2}^\\circ$ (като $C$ и $D$ лежат съответно на $PA$ и $PB$), да се намери $\\angle APB$.`,
+        ...makeOptions(ok, ds),
+        explain: `Съгласно теоремата за ъгъл с връх вън от окръжността, мярката му е равна на полуразликата от прилежащите му дъги: $\\frac{${a1}^\\circ - ${a2}^\\circ}{2} = ${(a1-a2)/2}^\\circ$.`, visual: "externalAngle"
+    }
+}
+
+// 9. Периферен ъгъл
+function qPeripheralAngle() {
+    let arc = rnd(4, 14)*10;
+    let ok = `$${arc/2}^\\circ$`;
+    let ds = [`$${arc}^\\circ$`, `$${180-arc/2}^\\circ$`, `$${90-arc/2}^\\circ$`]; 
+    return {
+        type: "Периферен ъгъл", difficulty: "Средна", 
+        q: `През края $T$ на хордата $TA$ в дадена окръжност е построена допирателна $p$. Ако мярката на дъгата $\\widehat{TA}$ е ${arc}^\\circ$, да се намери мярката на периферния ъгъл, заключен между хордата и допирателната.`,
+        ...makeOptions(ok, ds),
+        explain: `Съгласно теоремата, периферният ъгъл се измерва с половината от мярката на прилежащата му дъга: $\\frac{${arc}^\\circ}{2} = ${arc/2}^\\circ$.`, visual: "peripheralAngle"
+    }
+}
+
+// 10. Вписан ъгъл и диаметър (Теорема на Талес)
+function qThalesTheorem() {
+    let a = choice([25, 30, 35, 40, 50, 55, 60]);
+    let b = 90 - a;
+    let ok = `$${b}^\\circ$`;
+    let ds = [`$${a}^\\circ$`, `$${90+a}^\\circ$`, `$${180-a}^\\circ$`, `$90^\\circ$`];
+    return {
+        type: "Свойства на диаметъра", difficulty: "Средна", 
+        q: `В окръжност $k$ е построен диаметър $AB$. Точка $C$ лежи на окръжността така, че $\\angle BAC = ${a}^\\circ$. Да се намери мярката на $\\angle ABC$.`,
+        ...makeOptions(ok, ds),
+        explain: `Тъй като хордата $AB$ е диаметър, вписаният $\\angle ACB$ се опира на полуокръжност и следователно е прав ($\\angle ACB = 90^\\circ$). Сумата от ъглите в $\\triangle ABC$ е $180^\\circ$, откъдето $\\angle ABC = 90^\\circ - ${a}^\\circ = ${b}^\\circ$.`, visual: "thales"
+    }
+}
+
+// 11. Взаимно положение на права и окръжност
+function qLineCirclePos() {
+    let r = rnd(5, 12), diff = rnd(1, 4), type = rnd(1, 3);
+    let d, ans, explain_text;
+    if (type === 1) { d = r - diff; ans = "2 (пресичат се)"; explain_text = "по-малко от радиуса ($d < r$)"; }
+    else if (type === 2) { d = r; ans = "1 (допират се)"; explain_text = "равно на радиуса ($d = r$)"; }
+    else { d = r + diff; ans = "0 (нямат общи точки)"; explain_text = "по-голямо от радиуса ($d > r$)"; }
+    
+    let ds = ["2 (пресичат се)", "1 (допират се)", "0 (нямат общи точки)", "безброй много"].filter(x=>x!==ans);
+    return {
+        type: "Взаимно положение", difficulty: "Лесна", 
+        q: `Дадена е окръжност с радиус $r = ${r} \\text{ cm}$ и права $a$. Ако разстоянието от центъра на окръжността до правата е $d = ${d} \\text{ cm}$, да се установи взаимното положение на правата и окръжността (броят на общите им точки).`,
+        ...makeOptions(ans, ds),
+        explain: `Тъй като разстоянието $d = ${d}$ е ${explain_text}, правата и окръжността имат ${ans}.`, visual: "lineCircle"
+    }
+}
+
+// 12. Взаимно положение на две окръжности
+function qTwoCirclesPos() {
+    let r1 = rnd(6, 10), r2 = rnd(2, 5), type = rnd(1, 4);
+    let d, ans, explain_text;
+    if(type===1) { d = r1+r2+rnd(2,4); ans="външни (нямат общи точки)"; explain_text = `$d > r_1 + r_2$ (${d} > ${r1+r2})`; }
+    else if(type===2) { d = r1+r2; ans="външно допиращи се (1 точка)"; explain_text = `$d = r_1 + r_2$ (${d} = ${r1+r2})`; }
+    else if(type===3) { d = r1+r2-rnd(1, r2-1); ans="пресичащи се (2 точки)"; explain_text = `$r_1 - r_2 < d < r_1 + r_2$ (${r1-r2} < ${d} < ${r1+r2})`; }
+    else { d = r1-r2; ans="вътрешно допиращи се (1 точка)"; explain_text = `$d = r_1 - r_2$ (${d} = ${r1-r2})`; }
+    
+    let ds = ["външни (нямат общи точки)", "външно допиращи се (1 точка)", "пресичащи се (2 точки)", "вътрешно допиращи се (1 точка)"].filter(x=>x!==ans);
+    return {
+        type: "Взаимно положение", difficulty: "Средна", 
+        q: `Дадени са две окръжности с радиуси $r_1 = ${r1} \\text{ cm}$ и $r_2 = ${r2} \\text{ cm}$. Ако разстоянието между техните центрове е $d = ${d} \\text{ cm}$, да се определи взаимното положение на двете окръжности.`,
+        ...makeOptions(ans, ds),
+        explain: `Установява се чрез сравняване на разстоянието със сбора и разликата на радиусите: ${explain_text}. Следователно окръжностите са ${ans.split(" (")[0]}.`, visual: "twoCircles"
+    }
+}
+
+// 13. Дискриминанта
 function qDiscriminant() {
     let a = choice([1, 1, 2]), r1 = rnd(-5, 6), r2 = rnd(-5, 6);
-    let b = -a * (r1 + r2), c = a * r1 * r2, D = b * b - 4 * a * c, ok = `D = ${D}`;
-    let signB = b >= 0 ? "+ " + b : "− " + Math.abs(b);
-    let signC = c >= 0 ? "+ " + c : "− " + Math.abs(c);
+    let b = -a * (r1 + r2), c = a * r1 * r2, D = b * b - 4 * a * c, ok = `$D = ${D}$`;
+    let signB = b >= 0 ? "+ " + b : "- " + Math.abs(b), signC = c >= 0 ? "+ " + c : "- " + Math.abs(c);
+    let ds = [`$D = ${b*b + 4*a*c}$`, `$D = ${-b*b - 4*a*c}$`, `$D = ${b*b - a*c}$`]; 
     return {
-        type: "Дискриминанта",
-        difficulty: "средна",
-        q: `Намери дискриминантата на <span class='math'>${a === 1 ? "" : a}x² ${signB}x ${signC} = 0</span>.`,
-        ...makeOptions(ok, [`D = ${Math.abs(b * b - 4 * a * c + 10)}`, `D = ${D + 4}`, `D = ${Math.max(0, D - 8)}`]),
-        hint: "Използвай формулата D = b² − 4ac.",
-        explain: `D = (${fmt(b)})² − 4·${a}·${c} = ${D}.`,
-        visual: "discriminant"
+        type: "Квадратни уравнения", difficulty: "Средна",
+        q: `Да се пресметне дискриминантата на квадратното уравнение: <br>$$${a === 1 ? "" : a}x^2 ${signB}x ${signC} = 0$$`,
+        ...makeOptions(ok, ds),
+        explain: `Използва се формулата за дискриминанта: $D = b^2 - 4ac = (${b})^2 - 4 \\cdot ${a} \\cdot (${c}) = ${D}$.`, visual: "discriminant"
     }
 }
 
-function qVieta() {
-    let r1 = rnd(-7, 7) || 2, r2 = rnd(-7, 7) || -3;
-    if (r2 === r1) r2 += 4;
-    let b = -(r1 + r2), c = r1 * r2, prod = Math.random() < .5;
-    let ok = prod ? fmt(c) : fmt(r1 + r2);
-    let wrongOptions = prod ? [fmt(-c), fmt(r1 + r2), fmt(b)] : [fmt(-r1 - r2), fmt(c), fmt(-b)];
-    return {
-        type: "Виетови формули",
-        difficulty: "средна",
-        q: `${prod ? "Произведението" : "Сборът"} на корените на <span class='math'>${poly(b, c)} = 0</span> е:`,
-        ...makeOptions(ok, wrongOptions),
-        hint: "За x² + bx + c = 0: x₁ + x₂ = −b, x₁·x₂ = c.",
-        explain: `Сборът на корените е −b = ${fmt(r1 + r2)}, а произведението е c = ${fmt(c)}.`,
-        visual: "vieta"
-    }
-}
-
-function qFactor(){let p=rnd(-8,8)||3,q=rnd(-8,8)||-5;if(q===p)q-=5;let b=-(p+q),c=p*q,f=n=>n<0?`+ ${Math.abs(n)}`:`− ${n}`,ok=`(x ${f(p)})(x ${f(q)})`;return{type:"Разлагане на тричлен",difficulty:"повишена",q:`Разложи квадратния тричлен <span class='math'>${poly(b,c)}</span>.`,...makeOptions(ok,[`(x ${f(-p)})(x ${f(-q)})`,`(x ${f(p)})(x ${f(q+1)})`,"не се разлага"]),hint:"Търси две числа със сбор коефициента пред x и произведение свободния член.",explain:`Тричленът има корени ${fmt(p)} и ${fmt(q)}, затова разлагането е ${ok}.`,visual:"factor"}}
-
-function qBiquad(){let y1=choice([1,4,9,16,25]),y2=choice([4,9,16,25,36].filter(v=>v!==y1)),b=-(y1+y2),c=y1*y2,roots=[...new Set([Math.sqrt(y1),-Math.sqrt(y1),Math.sqrt(y2),-Math.sqrt(y2)])].sort((a,b)=>a-b),ok=`x = ${roots.map(fmt).join("; ")}`;return{type:"Биквадратно уравнение",difficulty:"повишена",q:`Реши биквадратното уравнение <span class='math'>x⁴ ${b>=0?"+ "+b:"− "+Math.abs(b)}x² ${c>=0?"+ "+c:"− "+Math.abs(c)} = 0</span>.`,...makeOptions(ok,[`x = ${fmt(Math.sqrt(y1))}; ${fmt(Math.sqrt(y2))}`,`x = ${fmt(y1)}; ${fmt(y2)}`,"няма реални корени"]),hint:"Положи y = x².",explain:`При y=x² получаваме y=${y1} или y=${y2}. Следователно ${ok}.`,visual:"biquadratic"}}
-
-function qRD(){let r=rnd(4,18),askD=Math.random()<.65,ok=askD?`${2*r} cm`:`${r} cm`;return{type:"Окръжност",difficulty:"лесна",q:askD?`Радиусът е <span class='math'>${r} cm</span>. Намери диаметъра.`:`Диаметърът е <span class='math'>${2*r} cm</span>. Намери радиуса.`,...makeOptions(ok,[`${r} cm`,`${r*r} cm`,`${2*r+2} cm`,`${Math.max(1,r-2)} cm`]),hint:"Използвай d = 2r.",explain:askD?`d=2r=2·${r}=${2*r} cm.`:`r=d/2=${r} cm.`,visual:askD?"diameter":"circle"}}
-
+// 14. Централен и вписан ъгъл
 function qAngles() {
-    let central = choice([60, 72, 80, 90, 100, 120, 140, 160]), per = central / 2, askPer = Math.random() < .5;
-    let ok = `${askPer ? per : central}°`;
+    let central = choice([60, 72, 80, 90, 100, 120, 140]), per = central / 2, askPer = Math.random() < .5;
+    let ok = `$${askPer ? per : central}^\\circ$`;
+    let ds = askPer ? [`$${central}^\\circ$`, `$${central*2}^\\circ$`, `$${180-per}^\\circ$`] : [`$${per}^\\circ$`, `$${per/2}^\\circ$`, `$${180-central}^\\circ$`]; 
     return {
-        type: "Мерки на ъгли",
-        difficulty: "повишена",
-        q: askPer ? `Централният ъгъл <span class='math'>∠AOB</span> е <span class='math'>${central}°</span>. Намери вписания <span class='math'>∠ACB</span> към същата дъга.` : `Вписаният ъгъл <span class='math'>∠ACB</span> е <span class='math'>${per}°</span>. Намери централния <span class='math'>∠AOB</span> към същата дъга.`,
-        ...makeOptions(ok, [`${askPer ? central : per}°`, `${(askPer ? per : central) + 20}°`, `${Math.max(10, (askPer ? per : central) - 10)}°`, `${Math.min(180, (askPer ? per : central) * 2)}°`]),
-        hint: "Централният ъгъл е два пъти по-голям от вписания към същата дъга.",
-        explain: askPer ? `Вписаният ъгъл е равен на половината от централния: ${central}° : 2 = ${per}°.` : `Централният ъгъл е два пъти по-голям от вписания: 2 · ${per}° = ${central}°.`,
-        visual: "angles"
+        type: "Вписани и централни ъгли", difficulty: "Средна",
+        q: askPer ? `В окръжност с център $O$ е даден централен ъгъл $\\angle AOB = ${central}^\\circ$. Да се намери мярката на съответния му вписан ъгъл $\\angle ACB$.` : `В окръжност с център $O$ е даден вписан ъгъл $\\angle ACB = ${per}^\\circ$. Да се намери мярката на съответния му централен ъгъл $\\angle AOB$.`,
+        ...makeOptions(ok, ds),
+        explain: askPer ? `Съгласно теоремата, вписаният ъгъл се измерва с половината от съответния му централен ъгъл: $\\frac{${central}^\\circ}{2} = ${per}^\\circ$.` : `Съгласно теоремата, централният ъгъл е два пъти по-голям от съответния му вписан ъгъл: $2 \\cdot ${per}^\\circ = ${central}^\\circ$.`, visual: "angles"
     }
 }
 
-function qThales(){let a=choice([25,30,35,40,50,55,60]),b=90-a,ok=`${b}°`;return{type:"Ъгли в окръжност",difficulty:"повишена",q:`AB е диаметър, C е на окръжността. Ако <span class='math'>∠CAB=${a}°</span>, намери <span class='math'>∠CBA</span>.`,...makeOptions(ok,[`${a}°`,`${90+a}°`,`${180-a}°`,"90°"]),hint:"∠ACB е прав.",explain:`∠ACB=90°, затова ∠CBA=180°−90°−${a}°=${b}°.`,visual:"thales"}}
-
-function qTang(){let ok="90°";return{type:"Допирателна",difficulty:"средна",q:`Окръжност с център O има допирателна в A. Колко е ъгълът между <span class='math'>OA</span> и допирателната?`,...makeOptions(ok,["45°","60°","120°","180°"]),hint:"Радиусът към точката на допира е перпендикулярен на допирателната.",explain:"Ъгълът е 90°.",visual:"tangentRadius"}}
-
-function qArc() {
-    let arc = choice([80, 100, 120, 140, 160]), ok = `${arc / 2}°`;
-    return {
-        type: "Вписан ъгъл",
-        difficulty: "повишена",
-        q: `Вписан ъгъл се опира на дъга с мярка <span class='math'>${arc}°</span>. Намери ъгъла.`,
-        ...makeOptions(ok, [`${arc}°`, `${180 - arc / 2}°`, `${arc / 2 + 10}°`, `${Math.max(10, arc / 2 - 15)}°`]),
-        hint: "Вписаният ъгъл е равен на половината от прилежащата му дъга.",
-        explain: `Ъгълът е равен на ${arc}° : 2 = ${arc / 2}°.`,
-        visual: "angles"
-    }
+function generate(){
+    let makers=[
+        qEqFactor, qEqFactor,            
+        qBiquad,                         
+        qSubst, qSubst,                  
+        qFactorHard, qFactorHard,        
+        qVietaExpr, qVietaExpr,          
+        qFindRootCoeff, qFindRootCoeff,  
+        qAngles, qAngles,                
+        qInternalAngle, qExternalAngle,  
+        qPeripheralAngle, qThalesTheorem,
+        qLineCirclePos, qTwoCirclesPos,  
+        qDiscriminant                    
+    ];
+    let list=[];
+    while(list.length<TOTAL) list.push(choice(makers)());
+    return shuffle(list);
 }
 
-function qComb(){let r1=choice([2,3,4,5]),r2=choice([6,7,8,9]),b=-(r1+r2),c=r1*r2,ok=`${2*r2} cm`;return{type:"Комбинирана задача",difficulty:"висока",q:`По-големият корен на <span class='math'>${poly(b,c)}=0</span> е радиус. Намери диаметъра.`,...makeOptions(ok,[`${r2} cm`,`${2*r1} cm`,`${r1+r2} cm`,`${r1*r2} cm`]),hint:"Намери корените, избери по-големия и използвай d=2r.",explain:`Корените са ${r1} и ${r2}; r=${r2}; d=${2*r2} cm.`,visual:"final"}}
-
-function generate(){let makers=[qQuadraticRoots,qQuadraticRoots,qDiscriminant,qVieta,qFactor,qFactor,qBiquad,qBiquad,qRD,qRD,qAngles,qAngles,qThales,qTang,qArc,qComb],list=[];while(list.length<TOTAL)list.push(choice(makers)());return shuffle(list)}
 function initDots(){dots.innerHTML="";for(let i=0;i<TOTAL;i++){let b=document.createElement("button");b.className="dot";b.textContent=i+1;b.onclick=()=>jump(i);dots.appendChild(b)}}
 function initPuzzle(){puzzleBoard.innerHTML="";for(let i=0;i<TOTAL;i++){let t=document.createElement("div"),col=i%6,row=Math.floor(i/6);t.className="tile";t.style.setProperty("--pos",`${col*20}% ${row*25}%`);puzzleBoard.appendChild(t)}}
 function reveal(i){let tiles=[...puzzleBoard.children];if(tiles[i])tiles[i].classList.add("revealed")}
 function nextUnanswered(){for(let i=current+1;i<TOTAL;i++)if(!answers[i])return i;for(let i=0;i<current;i++)if(!answers[i])return i;return-1}
 function jump(i){if(!started)return;current=i;render()}
-function update(){let answeredCount=answers.filter(Boolean).length;statQuestion.textContent=started?`${current+1}/${TOTAL}`:`0/${TOTAL}`;statScore.textContent=Math.round(score);statCorrect.textContent=correct;statLevel.textContent=score>=90?"Шампион":score>=70?"Майстор":score>=50?"Напреднал":started?"Изследовател":"Старт";progress.style.width=started?`${answeredCount/TOTAL*100}%`:"0%";[...dots.children].forEach((d,i)=>{d.className="dot";if(answers[i])d.classList.add(answers[i].ok?"correct":"wrong");if(started&&i===current)d.classList.add("active")})}
+function update(){let answeredCount=answers.filter(Boolean).length;statQuestion.textContent=started?`${current+1}/${TOTAL}`:`0/${TOTAL}`;statScore.textContent=Math.round(score);statCorrect.textContent=correct;statLevel.textContent=score>=90?"Отличен":score>=70?"Мн. добър":score>=50?"Добър":started?"В процес":"Старт";progress.style.width=started?`${answeredCount/TOTAL*100}%`:"0%";[...dots.children].forEach((d,i)=>{d.className="dot";if(answers[i])d.classList.add(answers[i].ok?"correct":"wrong");if(started&&i===current)d.classList.add("active")})}
 
-function visual(type){const v={circle:`<svg class="svg" viewBox="0 0 460 158"><circle class="pulse" cx="230" cy="79" r="54" fill="rgba(79,70,229,.12)" stroke="#4f46e5" stroke-width="5"/><circle cx="230" cy="79" r="5" fill="#1e293b"/><line x1="230" y1="79" x2="284" y2="79" stroke="#f97316" stroke-width="5"/><text x="252" y="70" font-size="20" font-weight="800" fill="#f97316">r</text></svg>`,diameter:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="79" r="54" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="5"/><line x1="176" y1="79" x2="284" y2="79" stroke="#f97316" stroke-width="6"/><text x="212" y="68" font-size="20" font-weight="800" fill="#f97316">d</text></svg>`,tangentRadius:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="75" r="50" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="5"/><line x1="160" y1="125" x2="300" y2="125" stroke="#f97316" stroke-width="6"/><line x1="230" y1="75" x2="230" y2="125" stroke="#22c55e" stroke-width="6"/><path d="M230 113 L242 113 L242 125" fill="none" stroke="#1e293b" stroke-width="3"/></svg>`,thales:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="82" r="54" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="5"/><line x1="176" y1="82" x2="284" y2="82" stroke="#f97316" stroke-width="5"/><line x1="176" y1="82" x2="231" y2="28" stroke="#22c55e" stroke-width="4"/><line x1="284" y1="82" x2="231" y2="28" stroke="#22c55e" stroke-width="4"/><text x="166" y="103" font-weight="800">A</text><text x="290" y="103" font-weight="800">B</text><text x="226" y="23" font-weight="800">C</text><text x="221" y="62" font-size="18" font-weight="900" fill="#ef4444">90°</text></svg>`,angles:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="79" r="56" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="5"/><circle cx="230" cy="79" r="5" fill="#1e293b"/><text x="218" y="73" font-size="17" font-weight="900">O</text><circle cx="181" cy="52" r="5" fill="#ef4444"/><circle cx="279" cy="52" r="5" fill="#ef4444"/><circle cx="230" cy="135" r="5" fill="#ef4444"/><text x="166" y="48" font-size="17" font-weight="900">A</text><text x="286" y="48" font-size="17" font-weight="900">B</text><text x="232" y="153" font-size="17" font-weight="900">C</text><line x1="230" y1="79" x2="181" y2="52" stroke="#f97316" stroke-width="5"/><line x1="230" y1="79" x2="279" y2="52" stroke="#f97316" stroke-width="5"/><line x1="230" y1="135" x2="181" y2="52" stroke="#22c55e" stroke-width="4"/><line x1="230" y1="135" x2="279" y2="52" stroke="#22c55e" stroke-width="4"/><text x="258" y="84" font-size="18" font-weight="900" fill="#f97316">∠AOB</text><text x="250" y="126" font-size="18" font-weight="900" fill="#16a34a">∠ACB</text></svg>`,roots:`<svg class="svg" viewBox="0 0 460 158"><path d="M50 124 Q230 -38 410 124" fill="none" stroke="#4f46e5" stroke-width="6"/><line x1="50" y1="124" x2="410" y2="124" stroke="#334155" stroke-width="3"/><circle class="bounce" cx="155" cy="124" r="8" fill="#f97316"/><circle class="bounce" cx="305" cy="124" r="8" fill="#f97316"/></svg>`,discriminant:`<svg class="svg" viewBox="0 0 460 158"><rect x="72" y="36" width="316" height="84" rx="22" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/><text x="230" y="88" font-size="30" font-weight="900" fill="#4f46e5" text-anchor="middle">Дискриминанта</text></svg>`,vieta:`<svg class="svg" viewBox="0 0 460 158"><rect x="60" y="34" width="340" height="88" rx="24" fill="rgba(249,115,22,.1)" stroke="#f97316" stroke-width="4"/><text x="230" y="86" font-size="30" font-weight="900" fill="#7c2d12" text-anchor="middle">Виетови формули</text></svg>`,factor:`<svg class="svg" viewBox="0 0 460 158"><rect x="46" y="43" width="368" height="72" rx="23" fill="rgba(34,197,94,.1)" stroke="#22c55e" stroke-width="4"/><text x="230" y="86" font-size="28" font-weight="900" fill="#166534" text-anchor="middle">Разлагане на тричлен</text></svg>`,biquadratic:`<svg class="svg" viewBox="0 0 460 158"><rect x="54" y="35" width="352" height="88" rx="24" fill="rgba(14,165,233,.1)" stroke="#06b6d4" stroke-width="4"/><text x="230" y="86" font-size="28" font-weight="900" fill="#075985" text-anchor="middle">Биквадратно уравнение</text></svg>`,final:`<svg class="svg" viewBox="0 0 460 158"><circle class="pulse" cx="310" cy="80" r="50" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="5"/><path d="M55 126 Q145 12 235 126" fill="none" stroke="#f97316" stroke-width="6"/><line x1="260" y1="80" x2="360" y2="80" stroke="#22c55e" stroke-width="6"/></svg>`};return v[type]||v.circle}
+// Красиви, напълно абстрактни анимирани графики за алгебра и реални чертежи за геометрия
+function visual(type){const v={
+    infinity: `<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gradInf" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#38bdf8" />
+            <stop offset="50%" stop-color="#818cf8" />
+            <stop offset="100%" stop-color="#e879f9" />
+          </linearGradient>
+        </defs>
+        <path d="M 150 90 C 150 30, 230 30, 230 90 C 230 150, 310 150, 310 90 C 310 30, 230 30, 230 90 C 230 150, 150 150, 150 90 Z" fill="none" stroke="url(#gradInf)" stroke-width="4" stroke-dasharray="1000" stroke-dashoffset="1000">
+          <animate attributeName="stroke-dashoffset" values="1000; 0" dur="4s" repeatCount="indefinite" />
+        </path>
+        <circle cx="230" cy="90" r="4" fill="#fff">
+            <animate attributeName="opacity" values="0.2; 1; 0.2" dur="2s" repeatCount="indefinite"/>
+        </circle>
+    </svg>`,
+    polygons: `<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(230, 90)">
+          <polygon points="0,-45 39,-22.5 39,22.5 0,45 -39,22.5 -39,-22.5" fill="none" stroke="#2dd4bf" stroke-width="2" opacity="0.6">
+            <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="15s" repeatCount="indefinite" />
+          </polygon>
+          <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" fill="none" stroke="#fbbf24" stroke-width="3">
+            <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="10s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.3; 1; 0.3" dur="3s" repeatCount="indefinite" />
+          </polygon>
+          <circle cx="0" cy="0" r="10" fill="#f43f5e">
+              <animateTransform attributeName="transform" type="scale" values="1; 1.5; 1" dur="2s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+    </svg>`,
+    wave: `<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gradWave" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#f472b6" />
+            <stop offset="100%" stop-color="#3b82f6" />
+          </linearGradient>
+        </defs>
+        <path d="M -50 90 Q 57 30, 115 90 T 230 90 T 345 90 T 460 90 T 510 90" fill="none" stroke="url(#gradWave)" stroke-width="4">
+          <animate attributeName="d" values="M -50 90 Q 57 30, 115 90 T 230 90 T 345 90 T 460 90 T 510 90; M -50 90 Q 57 150, 115 90 T 230 90 T 345 90 T 460 90 T 510 90; M -50 90 Q 57 30, 115 90 T 230 90 T 345 90 T 460 90 T 510 90" dur="4s" repeatCount="indefinite" />
+        </path>
+        <path d="M -50 90 Q 57 150, 115 90 T 230 90 T 345 90 T 460 90 T 510 90" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2">
+          <animate attributeName="d" values="M -50 90 Q 57 150, 115 90 T 230 90 T 345 90 T 460 90 T 510 90; M -50 90 Q 57 30, 115 90 T 230 90 T 345 90 T 460 90 T 510 90; M -50 90 Q 57 150, 115 90 T 230 90 T 345 90 T 460 90 T 510 90" dur="4s" repeatCount="indefinite" />
+        </path>
+    </svg>`,
+    orbits: `<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="230" cy="90" r="35" fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="10 6">
+          <animateTransform attributeName="transform" type="rotate" from="0 230 90" to="360 230 90" dur="6s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="230" cy="90" r="55" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="15 10">
+          <animateTransform attributeName="transform" type="rotate" from="360 230 90" to="0 230 90" dur="10s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="230" cy="90" r="75" fill="none" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="20 15">
+          <animateTransform attributeName="transform" type="rotate" from="0 230 90" to="360 230 90" dur="14s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="230" cy="90" r="15" fill="#fcd34d">
+            <animate attributeName="r" values="12; 18; 12" dur="3s" repeatCount="indefinite"/>
+        </circle>
+    </svg>`,
+    hexagons: `<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(230, 90)">
+           <path d="M 0 -40 L 34.6 -20 L 34.6 20 L 0 40 L -34.6 20 L -34.6 -20 Z" fill="none" stroke="#f472b6" stroke-width="3" opacity="0.8">
+             <animateTransform attributeName="transform" type="scale" values="0.8; 1.8; 0.8" dur="4s" repeatCount="indefinite" />
+             <animate attributeName="opacity" values="0.8; 0; 0.8" dur="4s" repeatCount="indefinite" />
+           </path>
+           <path d="M 0 -40 L 34.6 -20 L 34.6 20 L 0 40 L -34.6 20 L -34.6 -20 Z" fill="none" stroke="#60a5fa" stroke-width="3">
+             <animateTransform attributeName="transform" type="scale" values="0.4; 1.2; 0.4" dur="4s" repeatCount="indefinite" />
+           </path>
+           <path d="M 0 -40 L 34.6 -20 L 34.6 20 L 0 40 L -34.6 20 L -34.6 -20 Z" fill="#c084fc" opacity="0.2">
+             <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite" />
+           </path>
+        </g>
+    </svg>`,
+    angles:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="79" r="56" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="5"/><circle cx="230" cy="79" r="5" fill="#fff"/><text x="218" y="73" font-size="17" font-weight="900" fill="#fff">O</text><circle cx="181" cy="52" r="5" fill="#ef4444"/><circle cx="279" cy="52" r="5" fill="#ef4444"/><circle cx="230" cy="135" r="5" fill="#ef4444"/><text x="166" y="48" font-size="17" font-weight="900" fill="#fff">A</text><text x="286" y="48" font-size="17" font-weight="900" fill="#fff">B</text><text x="232" y="153" font-size="17" font-weight="900" fill="#fff">C</text><line x1="230" y1="79" x2="181" y2="52" stroke="#f97316" stroke-width="5"/><line x1="230" y1="79" x2="279" y2="52" stroke="#f97316" stroke-width="5"/><line x1="230" y1="135" x2="181" y2="52" stroke="#22c55e" stroke-width="4"/><line x1="230" y1="135" x2="279" y2="52" stroke="#22c55e" stroke-width="4"/></svg>`,
+    chords:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="79" r="56" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="5"/><line x1="180" y1="52" x2="280" y2="106" stroke="#f97316" stroke-width="4"/><line x1="180" y1="106" x2="280" y2="52" stroke="#22c55e" stroke-width="4"/><circle cx="230" cy="79" r="4" fill="#fff"/><text x="165" y="48" font-size="16" font-weight="900" fill="#fff">A</text><text x="285" y="122" font-size="16" font-weight="900" fill="#fff">B</text><text x="165" y="122" font-size="16" font-weight="900" fill="#fff">C</text><text x="285" y="48" font-size="16" font-weight="900" fill="#fff">D</text><text x="215" y="98" font-size="16" font-weight="900" fill="#fff">M</text></svg>`,
+    externalAngle:`<svg class="svg" viewBox="0 0 460 158"><circle cx="250" cy="79" r="50" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/><circle cx="250" cy="79" r="4" fill="#fff"/><line x1="100" y1="79" x2="290" y2="40" stroke="#f97316" stroke-width="3"/><line x1="100" y1="79" x2="290" y2="118" stroke="#22c55e" stroke-width="3"/><circle cx="100" cy="79" r="5" fill="#ef4444"/><text x="80" y="84" font-size="16" font-weight="900" fill="#fff">P</text><text x="300" y="38" font-size="16" font-weight="900" fill="#fff">A</text><text x="300" y="128" font-size="16" font-weight="900" fill="#fff">B</text><text x="195" y="55" font-size="16" font-weight="900" fill="#fff">C</text><text x="195" y="115" font-size="16" font-weight="900" fill="#fff">D</text></svg>`,
+    peripheralAngle:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="70" r="50" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/><line x1="120" y1="120" x2="340" y2="120" stroke="#f97316" stroke-width="4"/><line x1="230" y1="120" x2="270" y2="40" stroke="#22c55e" stroke-width="4"/><circle cx="230" cy="120" r="5" fill="#ef4444"/><circle cx="230" cy="70" r="4" fill="#fff"/><text x="225" y="140" font-size="16" font-weight="900" fill="#fff">T</text><text x="275" y="35" font-size="16" font-weight="900" fill="#fff">A</text><text x="130" y="140" font-size="16" font-weight="900" fill="#fff">p</text></svg>`,
+    thales:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="82" r="54" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="5"/><line x1="176" y1="82" x2="284" y2="82" stroke="#f97316" stroke-width="5"/><line x1="176" y1="82" x2="231" y2="28" stroke="#22c55e" stroke-width="4"/><line x1="284" y1="82" x2="231" y2="28" stroke="#22c55e" stroke-width="4"/><circle cx="230" cy="82" r="4" fill="#fff"/><text x="160" y="95" font-size="16" font-weight="900" fill="#fff">A</text><text x="290" y="95" font-size="16" font-weight="900" fill="#fff">B</text><text x="226" y="20" font-size="16" font-weight="900" fill="#fff">C</text><text x="225" y="98" font-size="16" font-weight="900" fill="#fff">O</text></svg>`,
+    lineCircle:`<svg class="svg" viewBox="0 0 460 158"><circle cx="190" cy="79" r="50" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/><line x1="270" y1="10" x2="270" y2="148" stroke="#f97316" stroke-width="4"/><line x1="190" y1="79" x2="270" y2="79" stroke="#94a3b8" stroke-width="3" stroke-dasharray="5 5"/><circle cx="190" cy="79" r="4" fill="#fff"/><text x="175" y="85" font-size="16" font-weight="900" fill="#fff">O</text><text x="280" y="25" font-size="16" font-weight="900" fill="#fff">a</text><text x="225" y="70" font-size="16" font-weight="900" fill="#fff">d</text></svg>`,
+    twoCircles:`<svg class="svg" viewBox="0 0 460 158"><circle cx="180" cy="79" r="50" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/><circle cx="290" cy="79" r="30" fill="rgba(34,197,94,.1)" stroke="#22c55e" stroke-width="4"/><line x1="180" y1="79" x2="290" y2="79" stroke="#f97316" stroke-width="3" stroke-dasharray="4 4"/><circle cx="180" cy="79" r="4" fill="#fff"/><circle cx="290" cy="79" r="4" fill="#fff"/><text x="165" y="70" font-size="16" font-weight="900" fill="#fff">O_1</text><text x="295" y="70" font-size="16" font-weight="900" fill="#fff">O_2</text><text x="230" y="70" font-size="16" font-weight="900" fill="#fff">d</text></svg>`
+};
 
-function showStart(){started=false;update();screen.innerHTML=`<div class="card"><h2>Добре дошли в математическата арена! 🧩</h2><p style="font-size:18px;line-height:1.6;color:#475569;margin:0">Този вариант е генератор: при всяко стартиране се създават 30 нови задачи.</p><div class="start-grid"><div class="info"><h3>📘 Алгебра</h3><ul><li>квадратни уравнения;</li><li>дискриминанта и Виетови формули;</li><li>разлагане на квадратен тричлен;</li><li>биквадратни уравнения.</li></ul></div><div class="info orange"><h3>⭕ Геометрия</h3><ul><li>радиус и диаметър;</li><li>допирателна и радиус;</li><li>вписан и централен ъгъл;</li><li>ъгъл, който се опира на диаметър.</li></ul></div><div class="info green"><h3>🖼️ Пъзел-изображение</h3><p>След всеки отговор се открива едно парче.</p></div><div class="info"><h3>🏆 Оценка</h3><p>90–100 т. — шампион<br>70–89 т. — много добро ниво<br>50–69 т. — има основа<br>под 50 т. — нужна е тренировка</p></div></div><div class="actions"><button class="btn primary" onclick="startGame()">🚀 Генерирай нова мисия</button><button class="btn ghost" onclick="previewFullPuzzle()">👀 Покажи цялото изображение</button></div></div>`}
-function previewFullPuzzle(){[...puzzleBoard.children].forEach(t=>t.classList.add("revealed"))}
+const mapping = {
+    "roots": v.infinity,
+    "biquadratic": v.wave,
+    "factor": v.hexagons,
+    "vieta": v.polygons,
+    "discriminant": v.polygons,
+    // Свързване на геометричните задачи с истински чертежи
+    "chords": v.chords,
+    "externalAngle": v.externalAngle,
+    "peripheralAngle": v.peripheralAngle,
+    "thales": v.thales,
+    "lineCircle": v.lineCircle,
+    "twoCircles": v.twoCircles,
+    "angles": v.angles
+};
+return mapping[type] || v.infinity;}
+
+function showStart(){started=false;update();screen.innerHTML=`<div class="card animate-enter"><h2>Тестови задачи за подготовка</h2><p style="font-size:18px;line-height:1.6;color:#475569;margin:0">Представените задачи обхващат учебния материал по алгебра и геометрия за 8. клас, предвиден за класна работа № 2.</p><div class="start-grid"><div class="info"><h3>📘 Уравнения и разлагане</h3><ul><li>Уравнения, свеждащи се до квадратни</li><li>Биквадратни уравнения и полагане</li><li>Разлагане на квадратен тричлен</li><li>Формули на Виет</li><li>Параметрични задачи</li></ul></div><div class="info orange"><h3>⭕ Геометрия на окръжността</h3><ul><li>Централни, вписани и периферни ъгли</li><li>Вътрешни и външни ъгли за окръжността</li><li>Вписан ъгъл и диаметър (Теорема на Талес)</li><li>Взаимни положения на окръжности и прави</li></ul></div><div class="info green"><h3>🖼️ Разкриване на изображение</h3><p>При всеки правилно посочен отговор се разкрива част от графичното изображение на екрана.</p></div><div class="info"><h3>🏆 Оценяване</h3><p>90–100 т. — Отличен (6)<br>70–89 т. — Много добър (5)<br>50–69 т. — Добър (4)<br>под 50 т. — Слаб/Среден</p></div></div><div class="actions"><button class="btn primary" onclick="startGame()" style="font-size:18px;padding:16px 32px;border-radius:999px;width:100%">🚀 Начало на теста</button></div></div>`}
+
 function startGame(){questions=generate();started=true;current=0;score=0;correct=0;selected=null;answered=false;answers=[];initPuzzle();render();update()}
-function render(){let item=questions[current],saved=answers[current];selected=saved?saved.selected:null;answered=!!saved;let ops=item.options.map((op,i)=>{let cls="option";if(!saved&&selected===i)cls+=" selected";if(saved&&i===item.answer)cls+=" correct";if(saved&&i===saved.selected&&!saved.ok)cls+=" wrong";return`<button class="${cls}" onclick="selectOption(${i})" ${saved?"disabled":""}>${String.fromCharCode(1040+i)}) ${op}</button>`}).join("");let count=answers.filter(Boolean).length;let action=saved?(count===TOTAL?`<button class="btn orange-btn" onclick="finishGame()">Финал ➜</button>`:`<button class="btn orange-btn" onclick="goNext()">Следващ неотговорен въпрос ➜</button>`):`<button class="btn primary" id="checkBtn" onclick="checkAnswer()" disabled>Провери отговора</button><button class="btn ghost" onclick="showHint()">💡 Подсказка</button>`;let feed=saved?`<div class="feedback show ${saved.ok?"good":"bad"}">${saved.ok?"✅ Браво!":"🌹 Не е вярно."} ${item.explain}</div>`:`<div class="feedback" id="feedback"></div>`;screen.innerHTML=`<div class="card"><div class="qtop"><span class="pill">Въпрос ${current+1} от ${TOTAL}</span><span class="pill cat">${item.type}</span><span class="pill diff">${item.difficulty}</span></div><div class="visual">${visual(item.visual)}</div><div class="qtext">${item.q}</div><div class="options">${ops}</div><div class="actions">${action}</div>${feed}</div>`;update()}
+
+function render(){
+    let item=questions[current], saved=answers[current];
+    selected=saved?saved.selected:null; answered=!!saved;
+    let ops=item.options.map((op,i)=>{
+        let cls="option";
+        if(!saved&&selected===i)cls+=" selected";
+        if(saved&&i===item.answer)cls+=" correct";
+        if(saved&&i===saved.selected&&!saved.ok)cls+=" wrong";
+        let animStyle = saved ? `opacity:1; animation:none;` : `animation-delay: ${i * 0.15}s;`;
+        return `<button class="${cls}" style="${animStyle}" onclick="selectOption(${i})" ${saved?"disabled":""}>${String.fromCharCode(1040+i)}) ${op}</button>`;
+    }).join("");
+    
+    let count=answers.filter(Boolean).length;
+    let action=saved?(count===TOTAL?`<button class="btn orange-btn animate-enter" onclick="finishGame()">Резултати от теста ➜</button>`:`<button class="btn orange-btn animate-enter" onclick="goNext()">Следващ въпрос ➜</button>`):`<button class="btn primary" id="checkBtn" onclick="checkAnswer()" disabled>Избор на отговор</button>`;
+    let feed=saved?`<div class="feedback show ${saved.ok?"good":"bad"}"><b>${saved.ok?"✓ Правилен отговор.":"✗ Грешен отговор."}</b><br>${item.explain}</div>`:`<div class="feedback" id="feedback"></div>`;
+    
+    let solverAnim = !saved ? `
+        <div class="solver-character">
+            <div class="math-symbol s1">\\sqrt{}</div>
+            <div class="math-symbol s2">x^2</div>
+            <div class="math-symbol s3">\\div</div>
+            <div class="emoji-student">🧑‍🏫</div>
+        </div>
+    ` : '';
+
+    screen.innerHTML=`<div class="card animate-enter">
+        ${solverAnim}
+        <div class="q-header">
+            <div class="q-meta">
+                <span class="pill diff">Сложност: ${item.difficulty}</span>
+                <span class="pill">Въпрос ${current+1} / ${TOTAL}</span>
+            </div>
+        </div>
+        <div class="visual">${visual(item.visual)}</div>
+        <div class="qtext">${item.q}</div>
+        <div class="options">${ops}</div>
+        <div class="actions">${action}</div>
+        ${feed}
+    </div>`;
+    
+    update();
+    renderMath(); 
+}
+
 function goNext(){let n=nextUnanswered();if(n===-1)finishGame();else{current=n;render()}}
 function selectOption(i){if(answered)return;selected=i;document.querySelectorAll(".option").forEach((b,j)=>b.classList.toggle("selected",j===i));$("checkBtn").disabled=false}
-function showHint(){let f=$("feedback");f.className="feedback show hint";f.innerHTML="💡 "+questions[current].hint}
-function checkAnswer(){if(selected===null||answered)return;answered=true;let item=questions[current],ok=selected===item.answer;document.querySelectorAll(".option").forEach((b,i)=>{b.disabled=true;if(i===item.answer)b.classList.add("correct");if(i===selected&&!ok)b.classList.add("wrong")});reveal(current);if(ok){score+=PTS;correct++;confetti(18)}answers[current]={ok,selected,explain:item.explain};let f=$("feedback");f.className="feedback show "+(ok?"good":"bad");f.innerHTML=(ok?"✅ Браво! ":"🌹 Не е вярно. ")+item.explain;document.querySelector(".actions").innerHTML=answers.filter(Boolean).length===TOTAL?`<button class="btn orange-btn" onclick="finishGame()">Финал ➜</button>`:`<button class="btn orange-btn" onclick="goNext()">Следващ неотговорен въпрос ➜</button>`;update()}
-function finishGame(){progress.style.width="100%";confetti(80);let s=Math.round(score),msg=s>=90?"Изключително представяне! Готов/а си за класната работа.":s>=70?"Много добро ниво. Преговори задачите, в които си сгрешил/а.":s>=50?"Имаш основа, но е добре да потренираш още.":"Нужен е сериозен преговор.";let review=answers.map((a,i)=>`<div class="row ${a.ok?"ok":"no"}"><strong>${i+1}. ${a.ok?"Вярно":"Грешно"}:</strong> ${a.explain}</div>`).join("");screen.innerHTML=`<div class="card"><h2>Финал на мисията 🏁</h2><div class="result">${s}/100</div><p style="font-size:20px;line-height:1.55;color:#475569">${msg}</p><div class="info green"><h3>Резултат</h3><p>Верни отговори: <strong>${correct}</strong> от <strong>${TOTAL}</strong></p></div><h3>Кратък преглед</h3><div class="review">${review}</div><div class="actions"><button class="btn primary" onclick="startGame()">🔁 Генерирай нова игра</button><button class="btn ghost" onclick="showStart()">Начален екран</button></div></div>`;update()}
+
+function checkAnswer(){
+    if(selected===null||answered)return;
+    answered=true;
+    let item=questions[current],ok=selected===item.answer;
+    document.querySelectorAll(".option").forEach((b,i)=>{b.disabled=true;if(i===item.answer)b.classList.add("correct");if(i===selected&&!ok)b.classList.add("wrong")});
+    reveal(current);
+    if(ok){
+        score+=PTS;correct++;confetti(18);document.querySelector(".card").classList.add("pop-correct");
+    }else{
+        document.querySelector(".card").classList.add("shake");
+    }
+    answers[current]={ok,selected,explain:item.explain};
+    let f=$("feedback");f.className="feedback show "+(ok?"good":"bad");f.innerHTML=(ok?"<b>✓ Правилен отговор.</b><br> ":"<b>✗ Грешен отговор.</b><br> ")+item.explain;
+    document.querySelector(".actions").innerHTML=answers.filter(Boolean).length===TOTAL?`<button class="btn orange-btn animate-enter" onclick="finishGame()">Резултати от теста ➜</button>`:`<button class="btn orange-btn animate-enter" onclick="goNext()">Следващ въпрос ➜</button>`;
+    let character = document.querySelector(".solver-character"); if(character) character.style.display="none";
+    update();
+    renderMath();
+}
+
+function finishGame(){
+    progress.style.width="100%";confetti(80);
+    let s=Math.round(score),msg=s>=90?"Отличен резултат! Показахте задълбочени знания.":s>=70?"Много добро усвояване на материала. Препоръчва се преглед на допуснатите грешки.":s>=50?"Задоволителни знания. Необходими са допълнителни упражнения върху основните правила и формули.":"Незадоволителен резултат. Наложителен е целенасочен преговор на теоретичния материал.";
+    let review=answers.map((a,i)=>`<div class="row ${a.ok?"ok":"no"}"><strong>${i+1}. ${a.ok?"Правилен":"Грешен"}:</strong> ${a.explain}</div>`).join("");
+    screen.innerHTML=`<div class="card animate-enter"><h2>Резултати от теста</h2><div class="result">${s}/100</div><p style="font-size:20px;line-height:1.55;color:#475569">${msg}</p><div class="info green"><h3>Резултат</h3><p>Правилно решени задачи: <strong>${correct}</strong> от общо <strong>${TOTAL}</strong></p></div><h3>Анализ на решенията</h3><div class="review">${review}</div><div class="actions"><button class="btn primary" onclick="startGame()">🔁 Нов вариант на теста</button><button class="btn ghost" onclick="showStart()">Начален екран</button></div></div>`;
+    update();
+    renderMath();
+}
+
 function confetti(n){let colors=["#4f46e5","#f97316","#22c55e","#06b6d4","#ec4899","#facc15"];for(let i=0;i<n;i++){let p=document.createElement("div");p.className="confetti";p.style.left=Math.random()*100+"vw";p.style.background=choice(colors);p.style.animationDelay=Math.random()*.4+"s";document.body.appendChild(p);setTimeout(()=>p.remove(),2800)}}
 initDots();initPuzzle();showStart();
 </script>
