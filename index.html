@@ -638,7 +638,7 @@ function qTangentSegments() {
     if (ds.includes(ok)) ds[2] = `$${alpha/2}^\\circ$`;
     return {
         type: "Свойства на допирателните", difficulty: "Средна",
-        q: `През външна за окръжността точка $P$ са построени допирателни $PA$ и $PB$ ($A$ и $B$ са точките на допиране). Ако $\\angle APB = ${alpha}^\\circ$, да се намери мярката на $\\angle PAB$.`,
+        q: `През външна за окръжността точка $P$ са построени допирателни $PA$ and $PB$ ($A$ и $B$ са точките на допиране). Ако $\\angle APB = ${alpha}^\\circ$, да се намери мярката на $\\angle PAB$.`,
         ...makeOptions(ok, ds),
         explain: `Допирателните от външна точка са равни ($PA = PB$), следователно $\\triangle PAB$ е равнобедрен.<br> Оттук $\\angle PAB = \\frac{180^\\circ - ${alpha}^\\circ}{2} = ${(180-alpha)/2}^\\circ$.`,
         visual: "externalAngle"
@@ -710,7 +710,7 @@ function qLineCirclePos() {
     let ds = ["2 (пресичат се)", "1 (допират се)", "0 (нямат общи точки)", "безброй много"].filter(x=>x!==ans);
     return {
         type: "Взаимно положение", difficulty: "Лесна", 
-        q: `Дадена е окръжност с радиус $r = ${r} \\text{ cm}$ и права $a$. Ако разстоянието от центъра на окръжността до правата е $d = ${d} \\text{ cm}$, да се установи взаимното положение на правата и окръжността (броят на общите им точки).`,
+        q: `Дадена е окръжност с радиус $r = ${r} \\text{ cm}$ и права $a$. Ако разстоянието от центъра на окръжността до правата е $d = ${d} \\text{ cm}$, да се устави взаимното положение на правата и окръжността (броят на общите им точки).`,
         ...makeOptions(ans, ds),
         explain: `Тъй като разстоянието $d = ${d}$ е ${explain_text}, правата и окръжността имат ${ans}.`, visual: "lineCircle"
     }
@@ -734,24 +734,6 @@ function qTwoCirclesPos() {
     }
 }
 
-function generate(){
-    let makers=[
-        qEqFactor, qEqFactor2, qBiquad, qBiquadRootsCount, qSubst,
-        qFactorHard, qVietaExpr, qVietaFractions, qFindRootCoeff, qRootsSigns,
-        qFormEquation, qDiscriminant, qAngles, qArcRatio, qTangentSegments,
-        qInternalAngle, qExternalAngle, qPeripheralAngle, qThalesTheorem,
-        qLineCirclePos, qTwoCirclesPos
-    ];
-    
-    let list=[];
-    let pool = shuffle([...makers]);
-    for(let m of pool) list.push(m());
-    
-    pool = shuffle([...makers]);
-    for(let i=0; i<TOTAL - makers.length; i++) list.push(pool[i]());
-    
-    return shuffle(list);
-}
 
 function initDots(){dots.innerHTML="";for(let i=0;i<TOTAL;i++){let b=document.createElement("button");b.className="dot";b.textContent=i+1;b.onclick=()=>jump(i);dots.appendChild(b)}}
 function initPuzzle(){puzzleBoard.innerHTML="";for(let i=0;i<TOTAL;i++){let t=document.createElement("div"),col=i%6,row=Math.floor(i/6);t.className="tile";t.style.setProperty("--pos",`${col*20}% ${row*25}%`);puzzleBoard.appendChild(t)}}
@@ -964,7 +946,7 @@ function niceFactor(a,b){
 
 function qPDF_EqProduct(){
     const variants=[
-        {q:`3(x-2)(x+2)=5(x-2)`, roots:[2, fracTex(11,3)], ds:[`$x=2$`,`$x=-2; x=\\frac{11}{3}$`,`$x=2; x=-\\frac{11}{3}$`]},
+        {q:`3(x-2)(x+2)=17(x-2)`, roots:[2, fracTex(11,3)], ds:[`$x=2$`,`$x=-2; x=\\frac{11}{3}$`,`$x=2; x=-\\frac{11}{3}$`]}, // Коригирано на 17 за точен отговор
         {q:`(2x-1)^2-3(x-2)(x+2)=18`, roots:[5,-1], ds:[`$x=5$`,`$x=-5; x=1$`,`$x=1; x=-5$`]},
         {q:`4(x-1)(x+2)=5(x+2)`, roots:[-2, fracTex(9,4)], ds:[`$x=-2$`,`$x=2; x=\\frac{9}{4}$`,`$x=-2; x=-\\frac{9}{4}$`]},
         {q:`(x+3)^2-2(x-1)(x+1)=10x-1`, roots:[-6,2], ds:[`$x=-6$`,`$x=6; x=-2$`,`$x=-3; x=2$`]}
@@ -1007,15 +989,15 @@ function qPDF_DiscriminantSign(){
     const variants=[{a:2,b:-5,c:1,D:17,roots:'два различни реални корена'},{a:3,b:-5,c:1,D:13,roots:'два различни реални корена'},{a:-2,b:8,c:3,D:88,roots:'два различни реални корена'},{a:4,b:-8,c:-1,D:80,roots:'два различни реални корена'}];
     let v=choice(variants); let poly=`${v.a}x^2 ${termX(v.b)} ${pm(v.c)}=0`;
     let ok=`$D=${v.D}$, ${v.roots}`;
-    return {type:'Дискриминанта',difficulty:'Средна',q:`За уравнението $$${poly}$$ да се определи дискриминантата и броят на реалните корени.`,...makeOptions(ok,[`$D=${v.D}$, няма реални корени`,`$D=${Math.abs(v.b*v.b+4*v.a*v.c)}$, два реални корена`,`$D=0$, един двоен корен`]),explain:`Използва се $D=b^2-4ac$. Тук $D=${v.D}>0$, затова уравнението има два различни реални корена.`,visual:'discriminant'};
+    return {type:'Дискриминанта',difficulty:'Средна',q:`За уравнението $$${poly}$$ да се определи дискриминантата и броят на реалните корени.`,...makeOptions(ok,[`$D=${v.D}$, няма реални корени`,`$D=${Math.abs(v.b*v.b+4*v.a*v.c)}$, два реални корена`,`$D=0$, един двоен корен`]),explain:`Използва се $D=b^2-4ac$. Тък $D=${v.D}>0$, затова уравнението има два различни реални корена.`,visual:'discriminant'};
 }
 
 function qPDF_VietaExpression(){
     const variants=[
-        {eq:'2x^2-5x+1=0',sum:'\\frac{5}{2}',prod:'\\frac{1}{2}',expr:'x_1(x_1-1)+x_2(x_2-1)',ans:'\\frac{75}{4}'},
-        {eq:'3x^2-5x+1=0',sum:'\\frac{5}{3}',prod:'\\frac{1}{3}',expr:'x_1(x_2-1)+x_2(x_1-1)',ans:'\\frac{7}{3}'},
+        {eq:'2x^2-5x+1=0',sum:'\\frac{5}{2}',prod:'\\frac{1}{2}',expr:'x_1(x_1-1)+x_2(x_2-1)',ans:'\\frac{11}{4}'}, // Коригирано на 11/4
+        {eq:'3x^2-5x+1=0',sum:'\\frac{5}{3}',prod:'\\frac{1}{3}',expr:'x_1(x_2+1)+x_2(x_1+1)',ans:'\\frac{7}{3}'}, // Коригиран изразът за да отговаря на 7/3
         {eq:'-2x^2+8x+3=0',sum:'4',prod:'-\\frac{3}{2}',expr:'x_1(x_1+3)+x_2(x_2+3)',ans:'31'},
-        {eq:'4x^2-8x-1=0',sum:'2',prod:'-\\frac{1}{4}',expr:'x_1(x_2+2)+x_2(x_1+2)',ans:'\\frac{9}{2}'}
+        {eq:'4x^2-8x-1=0',sum:'2',prod:'-\\frac{1}{4}',expr:'x_1(x_2+2)+x_2(x_1+2)',ans:'\\frac{7}{2}'} // Коригирано на 7/2
     ];
     let v=choice(variants);
     return {type:'Формули на Виет',difficulty:'Висока',q:`Ако $x_1$ и $x_2$ са корените на уравнението $$${v.eq}$$ пресметнете стойността на израза $$P=${v.expr}.$$`,...makeOptions(`$${v.ans}$`,[`$${v.sum}$`,`$${v.prod}$`,`$${String(v.ans).includes('frac')?'7':Number(v.ans||0)+2}$`]),explain:`Използват се формулите на Виет: $x_1+x_2=${v.sum}$ и $x_1x_2=${v.prod}$. Изразът се преобразува чрез сумата и произведението на корените.`,visual:'vieta'};
@@ -1032,15 +1014,16 @@ function qPDF_Parameter(){
     return {type:'Параметри и Виет',difficulty:'Повишена',q:`Дадено е уравнението $$${v.eq}.$$ Ако ${v.given}, намерете ${v.ask}.`,...makeOptions(v.ans,v.ds),explain:`Прилага се произведението и сумата на корените по формулите на Виет. Първо се намира неизвестният корен, след това търсеният параметър.`,visual:'vieta'};
 }
 
+// Изцяло пренаписан с коректни геометрични задачи за хорди и Питагорова теорема
 function qPDF_ChordDistance(){
     const variants=[
-        {name:'AB',given:'AC=2 cm',ans:'AB=4 cm',ds:['AB=2 cm','AB=6 cm','AB=8 cm'],visual:'lineCircle'},
-        {name:'MQ',given:'MP=3 cm',ans:'MQ=6 cm',ds:['MQ=3 cm','MQ=9 cm','MQ=12 cm'],visual:'lineCircle'},
-        {name:'KT',given:'KS=8 cm',ans:'d=4 cm',ds:['d=2 cm','d=8 cm','d=16 cm'],visual:'lineCircle'},
-        {name:'EF',given:'EG=3 cm',ans:'d=1,5 cm',ds:['d=3 cm','d=6 cm','d=2 cm'],visual:'lineCircle'}
+        {q:'В окръжност с радиус $R = 10\\text{ cm}$ е прекарана хорда с дължина $16\\text{ cm}$. Намерете разстоянието $d$ от центъра на окръжността до хордата.', ans:'$d = 6\\text{ cm}$', ds:['$d = 8\\text{ cm}$','$d = 4\\text{ cm}$','$d = 5\\text{ cm}$']},
+        {q:'Хорда с дължина $24\\text{ cm}$ се намира на разстояние $5\\text{ cm}$ от центъра на окръжността. Намерете радиуса $R$ на окръжността.', ans:'$R = 13\\text{ cm}$', ds:['$R = 12\\text{ cm}$','$R = 14\\text{ cm}$','$R = 17\\text{ cm}$']},
+        {q:'В окръжност с радиус $R = 17\\text{ cm}$ разстоянието от центъра до хорда $AB$ е $8\\text{ cm}$. Намерете дължината на хордата $AB$.', ans:'$AB = 30\\text{ cm}$', ds:['$AB = 15\\text{ cm}$','$AB = 25\\text{ cm}$','$AB = 34\\text{ cm}$']},
+        {q:'В окръжност хорда с дължина $10\\text{ cm}$ е на разстояние $12\\text{ cm}$ от центъра. Намерете диаметъра $D$ на окръжността.', ans:'$D = 26\\text{ cm}$', ds:['$D = 13\\text{ cm}$','$D = 24\\text{ cm}$','$D = 20\\text{ cm}$']}
     ];
     let v=choice(variants);
-    return {type:'Окръжност и хорди',difficulty:'Средна',q:`В окръжност са построени две взаимно перпендикулярни хорди, като едната минава през центъра. Ако ${v.given}, намерете търсената дължина/разстояние за хордата ${v.name}.`,...makeOptions(v.ans,v.ds),explain:`Използва се свойството, че перпендикулярът от центъра към хорда я разполовява. В задачата се работи с половина на хорда или с разстояние от центъра до хорда.`,visual:v.visual};
+    return {type:'Окръжност и хорди',difficulty:'Средна',q:`${v.q}`,...makeOptions(v.ans,v.ds),explain:`Радиусът на окръжността, разстоянието от центъра до хордата и половината от хордата образуват правоъгълен триъгълник. По Питагоровата теорема: $R^2 = d^2 + (b/2)^2$.`,visual:'lineCircle'};
 }
 
 function qPDF_IntersectingChordsAngles(){
@@ -1054,15 +1037,16 @@ function qPDF_IntersectingChordsAngles(){
     return {type:'Ъгли в окръжност',difficulty:'Висока',q:`В окръжност хордите $AC$ и $BD$ се пресичат в точка $Q$, а правите $AB$ и $CD$ се пресичат в точка $M$. Ако ${v.given}, намерете ${v.ask}.`,...makeOptions(v.ans,v.ds),explain:`Използват се теоремите за вписан ъгъл, за ъгъл с връх вътре в окръжност и за ъгъл с връх вън от окръжност.`,visual:'chords'};
 }
 
+// Коригирани ъглите от AMQ на MAQ и пресичането на MB и допирателната t
 function qPDF_TangentSecantRatio(){
     const variants=[
-        {ang:70,ratio:'2:3',ans:'$\\angle MBA=44^\\circ;\\ \\angle MOB=132^\\circ;\\ \\angle AMQ=44^\\circ;\\ \\angle BQM=22^\\circ$',ds:['$40^\\circ;120^\\circ;40^\\circ;20^\\circ$','$44^\\circ;132^\\circ;22^\\circ;44^\\circ$','$70^\\circ;110^\\circ;44^\\circ;22^\\circ$']},
-        {ang:50,ratio:'1:4',ans:'$\\angle MBA=26^\\circ;\\ \\angle MOB=152^\\circ;\\ \\angle AMQ=26^\\circ;\\ \\angle BQM=78^\\circ$',ds:['$25^\\circ;150^\\circ;25^\\circ;75^\\circ$','$26^\\circ;152^\\circ;78^\\circ;26^\\circ$','$50^\\circ;130^\\circ;26^\\circ;78^\\circ$']},
-        {ang:80,ratio:'3:5',ans:'$\\angle MBA=37^\\circ30′;\\ \\angle MOB=125^\\circ;\\ \\angle AMQ=37^\\circ30′;\\ \\angle BQM=25^\\circ$',ds:['$40^\\circ;120^\\circ;40^\\circ;20^\\circ$','$37^\\circ30′;125^\\circ;25^\\circ;37^\\circ30′$','$80^\\circ;100^\\circ;37^\\circ30′;25^\\circ$']},
-        {ang:60,ratio:'1:3',ans:'$\\angle MBA=30^\\circ;\\ \\angle MOB=180^\\circ;\\ \\angle AMQ=30^\\circ;\\ \\angle BQM=60^\\circ$',ds:['$30^\\circ;120^\\circ;30^\\circ;60^\\circ$','$60^\\circ;180^\\circ;30^\\circ;30^\\circ$','$30^\\circ;180^\\circ;60^\\circ;30^\\circ$']}
+        {ang:70,ratio:'2:3',ans:'$\\angle MBA=44^\\circ;\\ \\angle MOB=132^\\circ;\\ \\angle MAQ=44^\\circ;\\ \\angle BQM=22^\\circ$',ds:['$40^\\circ;120^\\circ;40^\\circ;20^\\circ$','$44^\\circ;132^\\circ;22^\\circ;44^\\circ$','$70^\\circ;110^\\circ;44^\\circ;22^\\circ$']},
+        {ang:50,ratio:'1:4',ans:'$\\angle MBA=26^\\circ;\\ \\angle MOB=152^\\circ;\\ \\angle MAQ=26^\\circ;\\ \\angle BQM=78^\\circ$',ds:['$25^\\circ;150^\\circ;25^\\circ;75^\\circ$','$26^\\circ;152^\\circ;78^\\circ;26^\\circ$','$50^\\circ;130^\\circ;26^\\circ;78^\\circ$']},
+        {ang:80,ratio:'3:5',ans:'$\\angle MBA=37^\\circ30′;\\ \\angle MOB=125^\\circ;\\ \\angle MAQ=37^\\circ30′;\\ \\angle BQM=25^\\circ$',ds:['$40^\\circ;120^\\circ;40^\\circ;20^\\circ$','$37^\\circ30′;125^\\circ;25^\\circ;37^\\circ30′$','$80^\\circ;100^\\circ;37^\\circ30′;25^\\circ$']},
+        {ang:60,ratio:'1:3',ans:'$\\angle MBA=30^\\circ;\\ \\angle MOB=180^\\circ;\\ \\angle MAQ=30^\\circ;\\ \\angle BQM=60^\\circ$',ds:['$30^\\circ;120^\\circ;30^\\circ;60^\\circ$','$60^\\circ;180^\\circ;30^\\circ;30^\\circ$','$30^\\circ;180^\\circ;60^\\circ;30^\\circ$']}
     ];
     let v=choice(variants);
-    return {type:'Допирателна и секуща',difficulty:'Висока',q:`Точките $A$ и $B$ лежат на окръжност с център $O$. Правата $t$ е допирателна в $A$, а правите $AB$ и $t$ се пресичат в $Q$. Дадено е $\\angle AMB=${v.ang}^\\circ$, а мерките на дъгите $MA$ и $MB$ се отнасят както ${v.ratio}. Определете съответните ъгли.`,...makeOptions(v.ans,v.ds),explain:`Комбинират се вписан ъгъл, централен ъгъл, ъгъл между допирателна и хорда и отношение на дъги.`,visual:'externalAngle'};
+    return {type:'Допирателна и секуща',difficulty:'Висока',q:`Точките $A$, $B$ и $M$ лежат на окръжност с център $O$. Правата $t$ е допирателна в $A$, а правата $MB$ и допирателната $t$ се пресичат в точка $Q$. Дадено е $\\angle AMB=${v.ang}^\\circ$, а мерките на дъгите $MA$ и $MB$ се отнасят както ${v.ratio}. Определете съответните ъгли.`,...makeOptions(v.ans,v.ds),explain:`Комбинират се вписан ъгъл (за определяне на дъгата $AB$), централен ъгъл ($MOB$), ъгъл между допирателна и хорда ($MAQ$) и ъгъл между допирателна и секуща ($BQM = (\\widehat{MB} - \widehat{MA})/2$).`,visual:'externalAngle'};
 }
 
 function generate(){
