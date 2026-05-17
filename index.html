@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Тестови задачи: Класна работа 2</title>
+<title>Тестови задачи: Класна работа 2 (8. клас)</title>
 
 <!-- MathJax скриптове за перфектна математическа символика -->
 <script>
@@ -26,7 +26,50 @@ body{margin:0;min-height:100vh;font-family:"Segoe UI",Tahoma,sans-serif;color:va
 .app{width:min(1240px,calc(100% - 32px));margin:auto;padding:28px 0 44px}
 header{display:grid;grid-template-columns:minmax(270px,.68fr) minmax(620px,1.55fr);gap:28px;margin-bottom:18px;align-items:stretch}
 .hero,.reveal,.map,.card{border-radius:var(--radius);box-shadow:var(--shadow)}
-.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white;padding:24px 26px;overflow:hidden;position:relative;display:flex;flex-direction:column;justify-content:center;min-height:250px}
+.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white;padding:24px 26px;overflow:hidden;position:relative;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:18px;min-height:260px}
+.hero-text{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.hero-mascot{flex:0 0 200px;width:200px;height:200px;z-index:1;animation:mascotFloat 4.5s ease-in-out infinite}
+.hero-mascot svg{width:100%;height:100%;display:block}
+.subtitle{font-size:clamp(17px,1.8vw,21px);font-weight:700;margin:0 0 12px;color:rgba(255,255,255,.92);letter-spacing:.01em}
+.credit{font-size:14px;margin:0;color:rgba(255,255,255,.78)}
+
+/* === Анимации на човечето === */
+@keyframes mascotFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-4px)}
+}
+@keyframes headNod{
+    0%,100%{transform:rotate(0deg)}
+    25%{transform:rotate(-3deg)}
+    75%{transform:rotate(3deg)}
+}
+.head{animation:headNod 4s ease-in-out infinite; transform-box:fill-box}
+@keyframes thinkingArm{
+    0%,100%{transform:translateY(0) rotate(0deg)}
+    50%{transform:translateY(-1.5px) rotate(-0.8deg)}
+}
+.thinking-arm{animation:thinkingArm 3.5s ease-in-out infinite; transform-box:fill-box}
+@keyframes bubblePulse{
+    0%,100%{transform:scale(1) translateY(0); opacity:.95}
+    50%{transform:scale(1.08) translateY(-3px); opacity:1}
+}
+.thought-bubble{animation:bubblePulse 3s ease-in-out infinite; transform-origin:148px 48px; transform-box:fill-box}
+.bubble-symbol{transition:opacity .2s ease}
+@keyframes eyesBlink{
+    0%,92%,100%{transform:scaleY(1)}
+    94%,98%{transform:scaleY(.15)}
+}
+.eyes{animation:eyesBlink 5s ease-in-out infinite; transform-origin:100px 84px; transform-box:fill-box}
+@keyframes bodyBob{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-1.5px)}
+}
+.body-bob{animation:bodyBob 2.8s ease-in-out infinite; transform-box:fill-box}
+
+@media(max-width:760px){
+    .hero{flex-direction:column;text-align:center}
+    .hero-mascot{flex:0 0 160px;width:160px;height:160px}
+}
 .hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;border:18px solid rgba(255,255,255,.14);right:-60px;top:-45px}
 .tag{display:inline-flex;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);font-weight:800;margin-bottom:16px}
 h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spacing:-.02em}
@@ -35,18 +78,20 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .reveal{padding:24px;display:grid;gap:12px;align-content:start}
 .reveal h2,.map h2{margin:0;font-size:22px}.reveal p{margin:0;color:var(--muted);font-size:15px;line-height:1.4}
 
-/* Стил за пъзела (gap e 0, за да не се реже изображението) */
-.puzzle{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,1fr);gap:0;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:#cbd5e1;border:4px solid rgba(79,70,229,.15)}
-.tile{position:relative;background:linear-gradient(135deg,#312e81,#7c3aed);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);}
+.puzzle{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,1fr);gap:0;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:linear-gradient(135deg,#312e81,#7c3aed);border:4px solid rgba(79,70,229,.15);position:relative;}
+.puzzle:before{content:"🔓 Решете задачите, за да отключите изображението";position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.55);font-weight:800;text-align:center;padding:20px;font-size:14px;z-index:0;}
+.tile{position:relative;background:linear-gradient(135deg,#312e81,#7c3aed);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);z-index:1;}
 .tile:before{content:"?";position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:24px;font-weight:1000}
 .tile.revealed{
-    background-image:url("puzzle-image.png"); /* Изображението трябва да е в същата папка като HTML файла */
-    background-size:600% 500%;
-    background-position:var(--pos);
-    background-repeat:no-repeat;
+    background:linear-gradient(135deg,#fef3c7,#fde68a);
     animation:pop .6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     z-index:2;
     box-shadow:none;
+    display:grid;
+    place-items:center;
+    font-size:24px;
+    font-weight:900;
+    color:#7c2d12;
 }
 .tile.revealed:before{display:none}
 @keyframes pop{
@@ -58,7 +103,7 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
 .stat{background:rgba(255,255,255,.82);border-radius:20px;padding:14px 16px;box-shadow:0 12px 26px rgba(15,23,42,.08)}
 .stat small{display:block;color:var(--muted);font-weight:800;margin-bottom:5px}.stat strong{font-size:24px}
-.game{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start}
+.game{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px;align-items:start}
 .map{padding:18px;position:sticky;top:18px}
 .progress-wrap{height:16px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:10px 0 14px}.progress{height:100%;width:0;background:linear-gradient(90deg,#4f46e5,#f97316);border-radius:999px;transition:.35s}
 .dots{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.dot{border:0;border-radius:12px;aspect-ratio:1;font-weight:900;background:#e2e8f0;color:#475569;cursor:pointer;box-shadow:inset 0 -3px 0 rgba(15,23,42,.08)}.dot:hover{outline:2px solid rgba(79,70,229,.35)}.dot.active{background:#f97316;color:white;transform:scale(1.08)}.dot.correct{background:#22c55e;color:white}.dot.wrong{background:#fb7185;color:white}
@@ -70,33 +115,109 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .q-meta{display:flex;gap:8px;flex-wrap:wrap;z-index:2;}
 .pill{display:inline-flex;padding:8px 12px;border-radius:999px;background:#eef2ff;color:#4338ca;font-weight:900;font-size:14px;}
 .diff{background:#ccfbf1;color:#0f766e}
-.qtext{font-size:clamp(19px,2vw,22px);line-height:1.6;margin:16px 0 20px;font-weight:700}
-.options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.qtext{font-size:clamp(18px,1.8vw,21px);line-height:1.6;margin:16px 0 20px;font-weight:700;overflow-wrap:break-word;word-break:break-word;}
+.qtext mjx-container { max-width: 100% !important; }
+.card{overflow-x:hidden;}
+.options{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin:18px 0}
 
-/* Тематична икона (Ключ, Врата, Книга) */
-.escape-status {
-    position: absolute;
-    top: -24px;
-    right: 24px;
-    width: 72px;
-    height: 72px;
-    background: #fff;
-    border-radius: 50%;
-    box-shadow: 0 8px 20px rgba(15,23,42,0.15);
-    display: grid;
-    place-items: center;
-    border: 3px solid #e2e8f0;
-    z-index: 10;
-    transition: all 0.3s;
+.escape-scene{
+    min-height:200px;
+    border-radius:26px;
+    margin:14px 0 16px;
+    background:linear-gradient(135deg,#111827,#1e1b4b 58%,#0f172a);
+    border:2px solid rgba(255,255,255,.12);
+    box-shadow:inset 0 18px 50px rgba(0,0,0,.48),0 14px 30px rgba(15,23,42,.12);
+    position:relative;
+    overflow:hidden;
 }
-.escape-status.unanswered { border-color: #cbd5e1; animation: floatIcon 3s infinite ease-in-out; }
-.escape-status.correct { border-color: #22c55e; background: #f0fdf4; transform: scale(1.05); }
-.escape-status.wrong { border-color: #ef4444; background: #fef2f2; }
-.escape-status svg { width: 44px; height: 44px; }
-@keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.escape-scene svg{width:100%;height:160px;display:block}
+
+/* === Книга-послание === */
+.msg-book{
+    position:absolute;
+    left:50%;
+    bottom:14px;
+    transform:translate(-50%, 20px);
+    display:flex;
+    align-items:stretch;
+    gap:0;
+    background:transparent;
+    perspective:900px;
+    opacity:0;
+    pointer-events:none;
+    z-index:5;
+    animation:bookEnter .8s cubic-bezier(0.25, 1.2, 0.4, 1) .2s forwards;
+}
+.msg-book.bad{ animation: bookEnterBad .55s ease-out .15s forwards; }
+.msg-book .book-cover{
+    width:14px;
+    background:linear-gradient(180deg,#7c2d12,#451a03);
+    border-radius:4px 0 0 4px;
+    box-shadow:inset -4px 0 8px rgba(0,0,0,.45), 2px 4px 10px rgba(0,0,0,.35);
+}
+.msg-book .book-page{
+    background:linear-gradient(180deg,#fef3c7,#fde68a);
+    color:#1f2937;
+    padding:10px 16px 11px;
+    border-radius:0 6px 6px 0;
+    min-width:280px;
+    max-width:380px;
+    font-weight:700;
+    font-size:14px;
+    line-height:1.4;
+    box-shadow:inset 0 0 12px rgba(180,83,9,.18), 3px 5px 14px rgba(0,0,0,.3);
+    transform-origin:left center;
+    transform:rotateY(-72deg);
+    animation:pageOpen .65s cubic-bezier(0.34, 1.3, 0.5, 1) .55s forwards;
+    position:relative;
+}
+.msg-book.bad .book-cover{
+    background:linear-gradient(180deg,#1f2937,#0f172a);
+    box-shadow:inset -4px 0 8px rgba(0,0,0,.6), 2px 4px 10px rgba(0,0,0,.4);
+}
+.msg-book.bad .book-page{
+    background:linear-gradient(180deg,#fee2e2,#fecaca);
+    color:#7f1d1d;
+    box-shadow:inset 0 0 12px rgba(127,29,29,.18), 3px 5px 14px rgba(0,0,0,.3);
+    animation:pageOpen .45s ease-out .25s forwards;
+}
+.msg-book .book-icon{
+    display:inline-block;
+    margin-right:6px;
+    font-size:16px;
+}
+@keyframes bookEnter{
+    0%{opacity:0; transform:translate(-50%, 80px) scale(.6) rotate(-6deg);}
+    60%{opacity:1; transform:translate(-50%, -8px) scale(1.06) rotate(2deg);}
+    100%{opacity:1; transform:translate(-50%, 0) scale(1) rotate(0);}
+}
+@keyframes bookEnterBad{
+    0%{opacity:0; transform:translate(-50%, 24px) scale(.85);}
+    40%{opacity:1; transform:translate(-50%, -3px) scale(1.03);}
+    60%{transform:translate(-54%, 0) scale(1) rotate(-1.5deg);}
+    80%{transform:translate(-46%, 0) scale(1) rotate(1.5deg);}
+    100%{opacity:1; transform:translate(-50%, 0) scale(1) rotate(0);}
+}
+@keyframes pageOpen{
+    0%{transform:rotateY(-72deg);}
+    100%{transform:rotateY(0);}
+}
+
+.visual.geometry-drawing{
+    min-height:170px;
+    margin:12px 0 18px;
+    border-radius:24px;
+    background:linear-gradient(135deg,#0f172a,#111827);
+    position:relative;
+    overflow:hidden;
+}
+.svg{width:100%;height:100%;position:absolute;inset:0;}
+
+.feedback{min-height:58px;padding:14px 16px;border-radius:18px;margin-top:14px;font-weight:500;display:none;line-height:1.6;font-size:18px;}.feedback.show{display:block}.good{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}.bad{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
 
 @keyframes slideInUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
-.option{border:2px solid transparent;text-align:left;background:rgba(255,255,255,.94);border-radius:18px;padding:15px 16px;font-size:18px;cursor:pointer;min-height:62px;box-shadow:0 9px 20px rgba(15,23,42,.08);opacity:0;animation:slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;}
+.option{border:2px solid transparent;text-align:left;background:rgba(255,255,255,.94);border-radius:18px;padding:15px 16px;font-size:17px;cursor:pointer;min-height:62px;box-shadow:0 9px 20px rgba(15,23,42,.08);opacity:0;animation:slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;min-width:0;overflow-wrap:break-word;word-break:break-word;}
+.option mjx-container { max-width: 100% !important; overflow-x: auto; overflow-y: hidden; }
 .option:hover{transform:translateY(-2px)}
 .option:nth-child(1) { border-left: 5px solid #3b82f6; background: linear-gradient(to right, #eff6ff 0%, #ffffff 20%); }
 .option:nth-child(2) { border-left: 5px solid #ec4899; background: linear-gradient(to right, #fdf2f8 0%, #ffffff 20%); }
@@ -106,67 +227,6 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .option.correct{border-color:#16a34a;background:#dcfce7}
 .option.wrong{border-color:#dc2626;background:#fee2e2}
 
-/* Визуална абстрактна кутия */
-.visual{
-    min-height: 180px;
-    border-radius: 24px;
-    margin: 16px 0;
-    background: #0f172a; 
-    border: 2px solid #1e293b;
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-    position: relative;
-    box-shadow: inset 0 10px 30px rgba(0,0,0,0.5);
-}
-
-/* Escape Room сцена: ключ, ключалка, врата, светлина и книга */
-.escape-scene{
-    min-height:190px;
-    border-radius:26px;
-    margin:14px 0 16px;
-    background:
-        radial-gradient(circle at 50% 20%, rgba(255,255,255,.16), transparent 34%),
-        linear-gradient(135deg,#111827,#1e1b4b 58%,#0f172a);
-    border:2px solid rgba(255,255,255,.12);
-    box-shadow:inset 0 18px 50px rgba(0,0,0,.48),0 14px 30px rgba(15,23,42,.12);
-    position:relative;
-    overflow:hidden;
-}
-.escape-scene svg{width:100%;height:190px;display:block}
-.escape-scene:before{
-    content:"";
-    position:absolute;
-    inset:-35%;
-    background:conic-gradient(from 180deg, transparent, rgba(255,255,255,.08), transparent, rgba(251,191,36,.10), transparent);
-    animation:roomMist 8s linear infinite;
-}
-@keyframes roomMist{to{transform:rotate(360deg)}}
-.key-swing{transform-origin:118px 74px;animation:keySwing 2.3s ease-in-out infinite}
-@keyframes keySwing{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(9deg)}}
-.lock-pulse{animation:lockPulse 1.8s ease-in-out infinite;transform-origin:310px 95px}
-@keyframes lockPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
-.door-leaf{transform-origin:214px 42px;animation:doorOpen 1.35s ease-out forwards}
-@keyframes doorOpen{0%{transform:skewY(0deg) scaleX(1)}100%{transform:skewY(-3deg) scaleX(.58)}}
-.light-ray{opacity:0;animation:lightReveal 1.25s .25s ease-out forwards}
-@keyframes lightReveal{to{opacity:1}}
-.spark{animation:sparkle 1.25s ease-in-out infinite;transform-origin:center}
-.spark:nth-child(2){animation-delay:.25s}.spark:nth-child(3){animation-delay:.5s}
-@keyframes sparkle{0%,100%{opacity:.25;transform:scale(.85)}50%{opacity:1;transform:scale(1.14)}}
-.locked-shake{animation:lockedShake .55s ease-in-out 2;transform-origin:215px 100px}
-@keyframes lockedShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-.book-open{transform-origin:330px 128px;animation:bookOpen 1.1s ease-out forwards}
-@keyframes bookOpen{0%{transform:scaleX(.22);opacity:.55}100%{transform:scaleX(1);opacity:1}}
-
-.svg{width:100%;height:100%;position:absolute;inset:0;}
-.visual.geometry-drawing{
-    min-height:170px;
-    margin:12px 0 18px;
-    background:linear-gradient(135deg,#0f172a,#111827);
-}
-
-
-.feedback{min-height:58px;padding:14px 16px;border-radius:18px;margin-top:14px;font-weight:500;display:none;line-height:1.6;font-size:18px;}.feedback.show{display:block}.good{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}.bad{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
 .confetti{position:fixed;width:10px;height:16px;top:-20px;border-radius:3px;animation:fall 2.4s linear forwards;z-index:9}@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
 @keyframes slideUpFade { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 .animate-enter { animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -174,704 +234,2109 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .shake { animation: shake 0.4s ease-in-out; }
 @keyframes scalePop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
 .pop-correct { animation: scalePop 0.4s ease-out; }
+
+/* === Анимация на отваряща се врата === */
+@keyframes doorOpen {
+    0%   { transform: rotateY(0deg) translateZ(0); }
+    /* Вратата само се открехва — около 35°, не се откача от пантите */
+    100% { transform: rotateY(-35deg) translateZ(4px); }
+}
+@keyframes lightReveal {
+    0%   { opacity: 0; transform: scale(.5); }
+    100% { opacity: .95; transform: scale(1); }
+}
+@keyframes glowPulse {
+    0%, 100% { opacity: .6; transform: scale(1); }
+    50%      { opacity: 1;  transform: scale(1.06); }
+}
+.door-leaf {
+    transform-origin: 184px 86px;   /* лявата страна на вратата = панти */
+    transform-box: fill-box;
+    animation: doorOpen 1.2s cubic-bezier(0.25, 1.1, 0.4, 1) forwards;
+}
+.door-light {
+    transform-origin: 214px 85px;
+    transform-box: fill-box;
+    opacity: 0;
+    /* светлината се появява СЛЕД като вратата е почти отворена */
+    animation: lightReveal 0.7s ease-out 1.0s forwards;
+}
+.door-glow {
+    transform-origin: 260px 85px;
+    transform-box: fill-box;
+    opacity: 0;
+    /* сиянието започва малко след светлинния сноп */
+    animation: glowPulse 2.2s ease-in-out 1.2s infinite;
+}
+@keyframes lockShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px) rotate(-1.5deg); }
+    40%, 80% { transform: translateX(4px) rotate(1.5deg); }
+}
+.locked-door {
+    transform-origin: 213px 87px;
+    transform-box: fill-box;
+    animation: lockShake 0.5s ease-in-out;
+}
+@keyframes keyFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-4px); }
+}
+.floating-key {
+    transform-box: fill-box;
+    animation: keyFloat 2.5s ease-in-out infinite;
+}
+
+/* === 3D бутон за начало на теста === */
+.btn-3d {
+    border: 0;
+    border-radius: 18px;
+    padding: 18px 28px;
+    font-size: 19px;
+    font-weight: 900;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    background: linear-gradient(180deg, #6366f1 0%, #4f46e5 50%, #4338ca 100%);
+    box-shadow:
+        0 1px 0 rgba(255,255,255,.4) inset,
+        0 -4px 0 rgba(67,56,202,.6) inset,
+        0 6px 0 #312e81,
+        0 10px 22px rgba(67,56,202,.5),
+        0 18px 38px rgba(15,23,42,.25);
+    transform: translateY(0);
+    transition: transform .12s ease, box-shadow .12s ease;
+    letter-spacing: .3px;
+    text-shadow: 0 -1px 0 rgba(0,0,0,.18);
+}
+.btn-3d:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 1px 0 rgba(255,255,255,.4) inset,
+        0 -4px 0 rgba(67,56,202,.6) inset,
+        0 8px 0 #312e81,
+        0 14px 28px rgba(67,56,202,.55),
+        0 22px 44px rgba(15,23,42,.3);
+}
+.btn-3d:active {
+    transform: translateY(4px);
+    box-shadow:
+        0 1px 0 rgba(255,255,255,.4) inset,
+        0 -2px 0 rgba(67,56,202,.6) inset,
+        0 2px 0 #312e81,
+        0 5px 14px rgba(67,56,202,.4);
+}
+.btn-3d.orange {
+    background: linear-gradient(180deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
+    box-shadow:
+        0 1px 0 rgba(255,255,255,.4) inset,
+        0 -4px 0 rgba(194,65,12,.6) inset,
+        0 6px 0 #9a3412,
+        0 10px 22px rgba(234,88,12,.5),
+        0 18px 38px rgba(15,23,42,.25);
+}
+.btn-3d.orange:hover {
+    box-shadow:
+        0 1px 0 rgba(255,255,255,.4) inset,
+        0 -4px 0 rgba(194,65,12,.6) inset,
+        0 8px 0 #9a3412,
+        0 14px 28px rgba(234,88,12,.55),
+        0 22px 44px rgba(15,23,42,.3);
+}
+.btn-3d.orange:active {
+    box-shadow:
+        0 1px 0 rgba(255,255,255,.4) inset,
+        0 -2px 0 rgba(194,65,12,.6) inset,
+        0 2px 0 #9a3412,
+        0 5px 14px rgba(234,88,12,.4);
+}
+@keyframes btnPulse {
+    0%, 100% { box-shadow:
+        0 1px 0 rgba(255,255,255,.4) inset,
+        0 -4px 0 rgba(67,56,202,.6) inset,
+        0 6px 0 #312e81,
+        0 10px 22px rgba(67,56,202,.5),
+        0 18px 38px rgba(15,23,42,.25),
+        0 0 0 0 rgba(99,102,241,.7); }
+    50%      { box-shadow:
+        0 1px 0 rgba(255,255,255,.4) inset,
+        0 -4px 0 rgba(67,56,202,.6) inset,
+        0 6px 0 #312e81,
+        0 10px 22px rgba(67,56,202,.5),
+        0 18px 38px rgba(15,23,42,.25),
+        0 0 0 18px rgba(99,102,241,0); }
+}
+.btn-3d.pulse { animation: btnPulse 2s ease-out infinite; }
+
+/* === Разтваряща се информация === */
+.info-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: rgba(79,70,229,.06);
+    border: 1px solid rgba(79,70,229,.18);
+    border-radius: 16px;
+    padding: 14px 18px;
+    color: #4338ca;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background .2s;
+}
+.info-toggle:hover { background: rgba(79,70,229,.12); }
+.info-toggle .chev {
+    display: inline-block;
+    transition: transform .3s ease;
+    font-size: 14px;
+}
+.info-toggle.open .chev { transform: rotate(180deg); }
+.info-content {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height .45s ease, opacity .25s ease .05s, margin .3s;
+    margin-top: 0;
+}
+.info-content.open {
+    max-height: 1200px;
+    opacity: 1;
+    margin-top: 14px;
+}
+
+/* === Поле за име на ученик (стартов екран) === */
+.student-name-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:18px 0 14px;
+    padding:14px 18px;
+    background:rgba(99,102,241,.08);
+    border:1px solid rgba(99,102,241,.22);
+    border-radius:16px;
+    flex-wrap:wrap;
+}
+.student-name-row label{
+    font-weight:800;
+    color:#4338ca;
+    flex:0 0 auto;
+}
+.student-name-row input{
+    flex:1;
+    min-width:200px;
+    height:42px;
+    border:1px solid rgba(99,102,241,.3);
+    border-radius:12px;
+    padding:0 14px;
+    font-size:16px;
+    font-weight:700;
+    color:#1e293b;
+    background:#fff;
+    outline:none;
+    box-shadow:0 2px 8px rgba(15,23,42,.05);
+    transition:border-color .15s, box-shadow .15s;
+}
+.student-name-row input:focus{
+    border-color:#6366f1;
+    box-shadow:0 0 0 4px rgba(99,102,241,.18);
+}
+
+/* === Етикет с името до пъзела === */
+.student-name-label{
+    display:none;
+    align-items:center;
+    gap:8px;
+    margin:6px 0 12px;
+    padding:8px 14px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:12px;
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+}
+.student-name-label.show{ display:inline-flex; }
+.student-name-label .label-icon{ font-size:16px; }
+.student-name-label .label-text{ opacity:.7; font-weight:600; }
+.student-name-label .label-value{
+    color:#fde68a;
+    font-weight:900;
+    letter-spacing:.2px;
+    max-width:200px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+
+.qcount-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 0 14px;
+    padding: 14px 18px;
+    background: rgba(34,197,94,.08);
+    border: 1px solid rgba(34,197,94,.22);
+    border-radius: 16px;
+    flex-wrap: wrap;
+}
+.qcount-row label { font-weight: 800; color: #166534; flex: 1; min-width: 200px; }
+.qcount-stepper {
+    display: inline-flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(15,23,42,.1);
+    border: 1px solid rgba(34,197,94,.3);
+}
+.qcount-stepper button {
+    border: 0;
+    background: #f1f5f9;
+    color: #166534;
+    width: 38px;
+    height: 38px;
+    font-size: 22px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: background .15s;
+}
+.qcount-stepper button:hover { background: #dcfce7; }
+.qcount-stepper button:disabled { opacity: .35; cursor: not-allowed; background: #f1f5f9; }
+.qcount-stepper input {
+    width: 56px;
+    height: 38px;
+    border: 0;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 900;
+    color: #166534;
+    background: white;
+    outline: none;
+}
+.qcount-stepper input::-webkit-outer-spin-button,
+.qcount-stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.qcount-stepper input[type=number] { -moz-appearance: textfield; }
 .result{font-size:clamp(56px,8vw,96px);line-height:1;font-weight:1000;background:linear-gradient(135deg,#4f46e5,#f97316);-webkit-background-clip:text;color:transparent;margin:18px 0 8px}.review{margin-top:18px;display:grid;gap:9px;max-height:330px;overflow:auto}.row{padding:11px 13px;border-radius:15px;background:rgba(241,245,249,.88);border-left:6px solid #94a3b8;font-size:16px;line-height:1.6;}.row.ok{border-left-color:#16a34a}.row.no{border-left-color:#dc2626}
+@media(max-width:1100px){.options{grid-template-columns:1fr}}
 @media(max-width:950px){header,.game,.start-grid{grid-template-columns:1fr}.map{position:static}.stats{grid-template-columns:repeat(2,1fr)}.options{grid-template-columns:1fr}}@media(max-width:520px){.app{width:min(100% - 20px,1240px);padding-top:14px}.hero,.card{padding:20px;border-radius:22px}.stats{grid-template-columns:1fr}.dots{grid-template-columns:repeat(6,1fr)}}
 </style>
 </head>
 <body>
 <main class="app">
-<header><section class="hero"><div class="tag">Подготовка за класна работа · 8. клас</div><h1>Тестови задачи по математика:<br>Класна работа № 2</h1><p style="font-size:15px; margin-top:-5px; color:rgba(255,255,255,0.85);"><em>Ресурсът е създаден от Gemini AI по идея на Валя Витковска.</em></p></section>
-<aside class="reveal"><h2>Разкриване на графично изображение</h2><p>При всеки правилен отговор се разкрива част от изображение.</p><div class="puzzle" id="puzzleBoard"></div></aside></header>
-<section class="stats"><div class="stat"><small>Въпрос</small><strong id="statQuestion">0/30</strong></div><div class="stat"><small>Точки</small><strong id="statScore">0</strong></div><div class="stat"><small>Верни</small><strong id="statCorrect">0</strong></div><div class="stat"><small>Ниво</small><strong id="statLevel">Старт</strong></div></section>
-<section class="game"><aside class="map"><h2>Карта на теста</h2><div class="progress-wrap"><div class="progress" id="progress"></div></div><div class="dots" id="dots"></div><div class="legend"><div>🟠 текущ въпрос</div><div>🟢 правилен отговор</div><div>🌹 грешен отговор</div><div>🔢 избор на въпрос</div></div></aside><section id="screen"></section></section>
+<header>
+  <section class="hero">
+    <div class="hero-text">
+      <div class="tag">Подготовка за класна работа · 8. клас</div>
+      <h1>Подготовка за класна работа №2</h1>
+      <h2 class="subtitle">Интерактивен пъзел</h2>
+      <p class="credit"><em>Идея и педагогически решения: Валя Витковска, създаден с ИИ.</em></p>
+    </div>
+    <div class="hero-mascot" aria-hidden="true">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="deskTop" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#f59e0b"/>
+          </linearGradient>
+          <linearGradient id="shirt" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#2563eb"/>
+          </linearGradient>
+          <radialGradient id="bubble" cx="50%" cy="40%" r="60%">
+            <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbeafe"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Мисловно мехурче с математически символ -->
+        <g class="thought-bubble">
+          <circle cx="148" cy="48" r="22" fill="url(#bubble)" stroke="#cbd5e1" stroke-width="1.5"/>
+          <circle cx="128" cy="68" r="5" fill="url(#bubble)" stroke="#cbd5e1" stroke-width="1.2"/>
+          <circle cx="120" cy="78" r="3" fill="url(#bubble)" stroke="#cbd5e1" stroke-width="1"/>
+          <text id="bubbleSymbol" class="bubble-symbol" x="148" y="55" text-anchor="middle" fill="#1e3a8a" font-size="20" font-weight="900" font-family="serif">x²</text>
+        </g>
+
+        <!-- Бюро -->
+        <rect x="20" y="150" width="160" height="14" rx="3" fill="url(#deskTop)" stroke="#b45309" stroke-width="1.5"/>
+        <rect x="28" y="164" width="6" height="28" fill="#b45309"/>
+        <rect x="166" y="164" width="6" height="28" fill="#b45309"/>
+
+        <!-- Лист с уравнение -->
+        <g class="paper">
+          <rect x="60" y="138" width="62" height="18" rx="1.5" fill="#fff" stroke="#94a3b8" stroke-width="1"/>
+          <line x1="64" y1="144" x2="118" y2="144" stroke="#cbd5e1" stroke-width="1"/>
+          <line x1="64" y1="148" x2="110" y2="148" stroke="#cbd5e1" stroke-width="1"/>
+          <line x1="64" y1="152" x2="100" y2="152" stroke="#cbd5e1" stroke-width="1"/>
+        </g>
+
+        <!-- Тяло (риза) -->
+        <g class="body-bob">
+          <path d="M 60 142 Q 60 110 100 108 Q 140 110 140 142 Z" fill="url(#shirt)" stroke="#1e40af" stroke-width="1.5"/>
+          <!-- Лява ръка (статична, на бюрото) -->
+          <path d="M 65 130 Q 55 138 60 146 L 72 144 Z" fill="url(#shirt)" stroke="#1e40af" stroke-width="1.2"/>
+          <circle cx="60" cy="146" r="5" fill="#fbbf24" stroke="#92400e" stroke-width="1"/>
+
+          <!-- Дясна ръка в "мислеща" поза — повдигната до брадичката -->
+          <g class="thinking-arm" style="transform-origin: 135px 120px">
+            <!-- Горна част на ръката (рамо до лакът) -->
+            <path d="M 135 120 Q 138 105 124 96" fill="none" stroke="#1e40af" stroke-width="9" stroke-linecap="round"/>
+            <path d="M 135 120 Q 138 105 124 96" fill="none" stroke="#3b82f6" stroke-width="7" stroke-linecap="round"/>
+            <!-- Долна част (лакът до длан под брадичката) -->
+            <path d="M 124 96 Q 116 92 108 95" fill="none" stroke="#1e40af" stroke-width="9" stroke-linecap="round"/>
+            <path d="M 124 96 Q 116 92 108 95" fill="none" stroke="#3b82f6" stroke-width="7" stroke-linecap="round"/>
+            <!-- Длан под брадичката -->
+            <circle cx="108" cy="95" r="5.5" fill="#fbbf24" stroke="#92400e" stroke-width="1"/>
+            <!-- Палец (нагоре) -->
+            <path d="M 106 92 Q 104 86 107 84" fill="none" stroke="#fbbf24" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M 106 92 Q 104 86 107 84" fill="none" stroke="#92400e" stroke-width="1" stroke-linecap="round" fill-opacity="0"/>
+          </g>
+
+          <!-- Глава (анимирано кима) -->
+          <g class="head" style="transform-origin: 100px 95px">
+            <circle cx="100" cy="84" r="22" fill="#fcd34d" stroke="#92400e" stroke-width="1.5"/>
+            <!-- Коса -->
+            <path d="M 80 78 Q 82 62 100 60 Q 118 62 120 78 Q 116 70 100 70 Q 84 70 80 78 Z" fill="#7c2d12"/>
+            <!-- Очи -->
+            <g class="eyes">
+              <circle cx="92" cy="84" r="2.4" fill="#1f2937"/>
+              <circle cx="108" cy="84" r="2.4" fill="#1f2937"/>
+              <circle cx="92.7" cy="83.3" r=".8" fill="#fff"/>
+              <circle cx="108.7" cy="83.3" r=".8" fill="#fff"/>
+            </g>
+            <!-- Очила -->
+            <circle cx="92" cy="84" r="5" fill="none" stroke="#1f2937" stroke-width="1.5"/>
+            <circle cx="108" cy="84" r="5" fill="none" stroke="#1f2937" stroke-width="1.5"/>
+            <line x1="97" y1="84" x2="103" y2="84" stroke="#1f2937" stroke-width="1.5"/>
+            <!-- Усмивка -->
+            <path d="M 93 94 Q 100 99 107 94" fill="none" stroke="#7c2d12" stroke-width="1.6" stroke-linecap="round"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </section>
+  <aside class="reveal">
+    <h2>Разкриване на изображение</h2>
+    <p>При всеки правилен отговор се разкрива квадрат от мозайката с точките, които сте спечелили.</p>
+    <div class="student-name-label" id="studentNameLabel">
+      <span class="label-icon">👤</span>
+      <span class="label-text">Име:</span>
+      <span class="label-value" id="studentNameValue">—</span>
+    </div>
+    <div class="puzzle" id="puzzleBoard"></div>
+    <button id="startBtn" class="btn-3d pulse" onclick="startGame()" style="margin-top:16px;width:100%">
+      🚀 Начало на теста
+    </button>
+  </aside>
+</header>
+<section class="stats">
+  <div class="stat"><small>Въпрос</small><strong id="statQuestion">0/20</strong></div>
+  <div class="stat"><small>Точки</small><strong id="statScore">0</strong></div>
+  <div class="stat"><small>Верни</small><strong id="statCorrect">0</strong></div>
+  <div class="stat"><small>Ниво</small><strong id="statLevel">Старт</strong></div>
+</section>
+<section class="game">
+  <aside class="map">
+    <h2>Карта на теста</h2>
+    <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+    <div class="dots" id="dots"></div>
+    <div class="legend">
+      <div>🟠 текущ въпрос</div>
+      <div>🟢 правилен отговор</div>
+      <div>🌹 грешен отговор</div>
+      <div>🔢 избор на въпрос</div>
+    </div>
+  </aside>
+  <section id="screen"></section>
+</section>
 </main>
+
 <script>
-const TOTAL=30, PTS=100/TOTAL; let questions=[],current=0,score=0,correct=0,selected=null,answered=false,answers=[],started=false;
-const $=id=>document.getElementById(id), screen=$("screen"), dots=$("dots"), statQuestion=$("statQuestion"), statScore=$("statScore"), statCorrect=$("statCorrect"), statLevel=$("statLevel"), progress=$("progress"), puzzleBoard=$("puzzleBoard");
-const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a, choice=a=>a[Math.floor(Math.random()*a.length)], shuffle=a=>{let c=[...a];for(let i=c.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}return c};
+let TOTAL = 30;          // Брой задачи на тест (може да се променя в стартовия екран: 6..30)
+let PTS = 100/TOTAL;
+let studentName = "";   // Име на ученика (показва се до пъзела и в крайния резултат)
+let questions=[], current=0, score=0, correct=0, selected=null, answered=false, answers=[], started=false;
 
-// Векторни икони за темата (Ключ/Ключалка, Отворена врата, Книга/Заключена врата)
-const svgUnanswered = `<svg viewBox="0 0 100 100">
-    <g transform="translate(18, -5) rotate(15)">
-        <path d="M25 65 L55 35 L65 35 L65 25 L75 25 L75 15 L85 15 L85 25 L75 35 L55 35 L25 65 Z" fill="#fbbf24" stroke="#b45309" stroke-width="2"/>
-        <circle cx="15" cy="75" r="12" fill="none" stroke="#fbbf24" stroke-width="4"/>
-    </g>
-    <g transform="translate(-8, 12)">
-        <rect x="50" y="45" width="40" height="35" rx="5" fill="#cbd5e1" stroke="#475569" stroke-width="3"/>
-        <path d="M60 45 V30 A10 10 0 0 1 80 30 V45" fill="none" stroke="#475569" stroke-width="4"/>
-        <circle cx="70" cy="58" r="4" fill="#475569"/>
-        <path d="M70 58 L70 68" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
-    </g>
-</svg>`;
+const $=id=>document.getElementById(id);
+const screen=$("screen"), dots=$("dots"), puzzleBoard=$("puzzleBoard");
+const statQuestion=$("statQuestion"), statScore=$("statScore"), statCorrect=$("statCorrect"), statLevel=$("statLevel"), progress=$("progress");
 
-const svgCorrect = `<svg viewBox="0 0 100 100">
-    <polygon points="50,85 95,75 95,15 50,25" fill="#fef08a" opacity="0.7"/>
-    <path d="M30 85 L30 15 L70 15 L70 85" fill="none" stroke="#475569" stroke-width="4"/>
-    <polygon points="30,15 55,25 55,75 30,85" fill="#22c55e" stroke="#166534" stroke-width="2"/>
-    <circle cx="48" cy="50" r="2" fill="#fff"/>
-    <path d="M80 40 L83 30 L86 40 L96 43 L86 46 L83 56 L80 46 L70 43 Z" fill="#fbbf24"/>
-    <path d="M65 25 L67 18 L69 25 L76 27 L69 29 L67 36 L65 29 L58 27 Z" fill="#fbbf24" transform="scale(0.6) translate(40, -10)"/>
-</svg>`;
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const choice=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{let c=[...a];for(let i=c.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}return c};
 
-const svgWrong = `<svg viewBox="0 0 100 100">
-    <path d="M15 85 L15 15 L55 15 L55 85" fill="none" stroke="#475569" stroke-width="4"/>
-    <rect x="17" y="17" width="36" height="68" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
-    <circle cx="45" cy="50" r="2" fill="#fff"/>
-    <rect x="25" y="45" width="20" height="15" rx="2" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
-    <path d="M29 45 V38 A6 6 0 0 1 41 38 V45" fill="none" stroke="#334155" stroke-width="3"/>
-    <g transform="translate(45, 45)">
-        <path d="M10 35 L45 35 L50 15 L15 15 Z" fill="#3b82f6" stroke="#1e3a8a" stroke-width="2"/>
-        <path d="M10 35 L15 15 L20 15 L15 35 Z" fill="#fff" stroke="#1e3a8a" stroke-width="1"/>
-        <path d="M15 35 L50 35" stroke="#fff" stroke-width="2"/>
-        <line x1="22" y1="20" x2="42" y2="20" stroke="#bfdbfe" stroke-width="2"/>
-        <line x1="20" y1="25" x2="40" y2="25" stroke="#bfdbfe" stroke-width="2"/>
-        <line x1="18" y1="30" x2="38" y2="30" stroke="#bfdbfe" stroke-width="2"/>
-    </g>
-</svg>`;
+/* ============================================================
+   Помощни функции за форматиране на математически изрази
+   ============================================================ */
+function pm(n){
+    if(n>=0) return `+ ${n}`;
+    return `- ${Math.abs(n)}`;
+}
+// Член ax с правилен знак, без + отпред
+function leadX(a){
+    if(a===1) return 'x';
+    if(a===-1) return '-x';
+    return `${a}x`;
+}
+// Член ax^2 с правилен знак, без + отпред
+function leadX2(a){
+    if(a===1) return 'x^2';
+    if(a===-1) return '-x^2';
+    return `${a}x^2`;
+}
+// Член + ax (със знак) — пропуска ако a=0
+function termX(a){
+    if(a===0) return '';
+    if(a===1) return '+ x';
+    if(a===-1) return '- x';
+    return a>0 ? `+ ${a}x` : `- ${Math.abs(a)}x`;
+}
+function termX2(a){
+    if(a===0) return '';
+    if(a===1) return '+ x^2';
+    if(a===-1) return '- x^2';
+    return a>0 ? `+ ${a}x^2` : `- ${Math.abs(a)}x^2`;
+}
+// Свободен член с знак — пропуска ако =0
+function termC(c){
+    if(c===0) return '';
+    return c>0 ? `+ ${c}` : `- ${Math.abs(c)}`;
+}
+// НСД
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1}
+// Опростена дроб като LaTeX
+function fracTex(num,den){
+    if(den<0){num=-num;den=-den}
+    const g=gcd(num,den);
+    num=num/g; den=den/g;
+    if(den===1) return `${num}`;
+    if(num===0) return '0';
+    return num<0 ? `-\\frac{${Math.abs(num)}}{${den}}` : `\\frac{${num}}{${den}}`;
+}
+// Сравнение на дроби (числено)
+function fracEq(num,den,val){
+    return Math.abs(num/den - val) < 1e-9;
+}
 
+/* ============================================================
+   Гарантирано връща 4 уникални опции (вярна + 3 разсейки)
+   ============================================================ */
+function makeOptions(ok, ds){
+    let unique = [ok];
+    for(let d of ds){
+        if(!unique.includes(d) && unique.length<4) unique.push(d);
+    }
+    // ако още няма 4 — допълни с леки варианти
+    let attempts = 0;
+    while(unique.length<4 && attempts<10){
+        let alt = ok.replace(/-?\d+/g, m => {
+            const n = parseInt(m);
+            return String(n + rnd(-2,2));
+        });
+        if(!unique.includes(alt)) unique.push(alt);
+        attempts++;
+    }
+    while(unique.length<4) unique.push(`Друг отговор (${unique.length})`);
+    let mixed = shuffle(unique);
+    return {options:mixed, answer:mixed.indexOf(ok)};
+}
+
+/* ============================================================
+   Послания при правилен и грешен отговор
+   ============================================================ */
+const MSG_CORRECT = [
+    "Браво! Точно така.",
+    "Отлично! Продължавайте в същия дух.",
+    "Чудесна работа!",
+    "Перфектно решение!",
+    "Браво! Това беше точно правилният път.",
+    "Великолепно! Вървите към успеха.",
+    "Прекрасно! Знаете темата.",
+    "Точно! Едно ключе по-малко до отключването.",
+    "Отлично разсъждение!",
+    "Браво! Спокойно и сигурно.",
+    "Чудесно! Виждам, че сте подготвени.",
+    "Точно! Продължавайте в същия ритъм.",
+    "Браво — задачата е решена правилно.",
+    "Отлично! Още една плочка от мозайката.",
+    "Така е! Един правилен ход."
+];
+const MSG_WRONG = [
+    "Не се обезсърчавайте — погледнете обяснението.",
+    "Близо сте. Прегледайте грешката и продължете напред.",
+    "Грешките са част от ученето. Опитайте отново при следващата.",
+    "Спокойно — погледнете решението и продължавайте.",
+    "Не съвсем. Анализирайте обяснението долу.",
+    "Малка грешка — следващия път ще успеете.",
+    "Не е страшно. Запомнете тази задача за повторение.",
+    "Прочетете обяснението — там е ключът към следващата.",
+    "Сгрешихте, но сте на правилния път. Прегледайте обяснението.",
+    "Дишайте дълбоко и продължете напред.",
+    "Не точно. Прегледайте подробното решение.",
+    "Грешка, но не критична — да видим какво да поправим.",
+    "Близо беше! Анализирайте и продължавайте.",
+    "Не унивайте — този тип задача ще се появи отново.",
+    "Един урок, един напредък. Към следващата!"
+];
+function pickMessage(ok){
+    const arr = ok ? MSG_CORRECT : MSG_WRONG;
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+function messageBook(ok){
+    const text = pickMessage(ok);
+    return messageBookFromText(ok, text);
+}
+function messageBookFromText(ok, text){
+    const icon = ok ? "✨" : "📖";
+    return `<div class="msg-book ${ok?'good':'bad'}">
+        <div class="book-cover"></div>
+        <div class="book-page"><span class="book-icon">${icon}</span>${text}</div>
+    </div>`;
+}
+
+/* ============================================================
+   Escape-сцена: ключ/врата/книга (декоративна)
+   ============================================================ */
 function escapeScene(state){
-    if(state === "correct"){
-        return `<svg viewBox="0 0 460 190" preserveAspectRatio="xMidYMid meet" aria-label="Отваряща се врата със светлина">
+    if(state==="correct"){
+        return `<svg viewBox="0 0 460 160" preserveAspectRatio="xMidYMid meet">
             <defs>
                 <linearGradient id="doorWood" x1="0" y1="0" x2="1" y2="1">
                     <stop offset="0" stop-color="#92400e"/><stop offset="1" stop-color="#451a03"/>
                 </linearGradient>
-                <radialGradient id="knowledgeLight" cx="50%" cy="48%" r="55%">
-                    <stop offset="0" stop-color="#fff7ad"/><stop offset=".48" stop-color="#facc15" stop-opacity=".72"/><stop offset="1" stop-color="#facc15" stop-opacity="0"/>
+                <radialGradient id="kLight" cx="50%" cy="48%" r="55%">
+                    <stop offset="0" stop-color="#fff7ad"/>
+                    <stop offset=".48" stop-color="#facc15" stop-opacity=".72"/>
+                    <stop offset="1" stop-color="#facc15" stop-opacity="0"/>
+                </radialGradient>
+                <radialGradient id="kLight2" cx="50%" cy="50%" r="50%">
+                    <stop offset="0" stop-color="#fff7ad" stop-opacity="1"/>
+                    <stop offset="1" stop-color="#facc15" stop-opacity="0"/>
                 </radialGradient>
             </defs>
-            <rect width="460" height="190" fill="rgba(15,23,42,.15)"/>
-            <polygon class="light-ray" points="214,45 420,10 455,178 214,150" fill="url(#knowledgeLight)"/>
-            <rect x="176" y="35" width="94" height="125" rx="6" fill="#1f2937" stroke="#cbd5e1" stroke-width="5"/>
+            <rect width="460" height="160" fill="rgba(15,23,42,.15)"/>
+            <!-- Светлинен ефект (тесен сноп, защото вратата е само открехната) -->
+            <polygon points="214,55 360,25 380,135 214,115" fill="url(#kLight)" class="door-light"/>
+            <!-- Сияние около процепа на отворената врата -->
+            <ellipse cx="248" cy="85" rx="55" ry="50" fill="url(#kLight2)" class="door-glow"/>
+            <!-- Каса на вратата -->
+            <rect x="176" y="30" width="94" height="115" rx="6" fill="#1f2937" stroke="#cbd5e1" stroke-width="4"/>
+            <!-- Тъмно вътрешност (вижда се през отворената врата) -->
+            <rect x="180" y="34" width="86" height="107" rx="3" fill="#0f172a"/>
+            <!-- Самата врата (отваря се чрез rotateY) -->
             <g class="door-leaf">
-                <path d="M184 43 L262 36 L262 156 L184 149 Z" fill="url(#doorWood)" stroke="#fed7aa" stroke-width="3"/>
-                <line x1="198" y1="62" x2="249" y2="58" stroke="#b45309" stroke-width="3" opacity=".7"/>
-                <line x1="198" y1="93" x2="249" y2="92" stroke="#b45309" stroke-width="3" opacity=".7"/>
-                <line x1="198" y1="124" x2="249" y2="127" stroke="#b45309" stroke-width="3" opacity=".7"/>
-                <circle cx="246" cy="96" r="4" fill="#fde68a"/>
+                <path d="M184 38 L262 31 L262 140 L184 133 Z" fill="url(#doorWood)" stroke="#fed7aa" stroke-width="2"/>
+                <circle cx="246" cy="88" r="4" fill="#fde68a"/>
+                <!-- Декоративни рамки -->
+                <rect x="195" y="50" width="55" height="35" rx="2" fill="none" stroke="#fed7aa" stroke-width="1" opacity="0.5"/>
+                <rect x="195" y="92" width="55" height="35" rx="2" fill="none" stroke="#fed7aa" stroke-width="1" opacity="0.5"/>
             </g>
-            <g fill="#fde68a">
-                <path class="spark" d="M318 45 L323 34 L328 45 L340 50 L328 55 L323 66 L318 55 L306 50 Z"/>
-                <path class="spark" d="M371 83 L375 75 L379 83 L388 87 L379 91 L375 99 L371 91 L362 87 Z"/>
-                <path class="spark" d="M310 130 L314 122 L318 130 L327 134 L318 138 L314 146 L310 138 L301 134 Z"/>
-            </g>
-            <text x="230" y="178" text-anchor="middle" fill="#fef3c7" font-size="15" font-weight="800">Отключено знание</text>
+            <text x="230" y="155" text-anchor="middle" fill="#fef3c7" font-size="14" font-weight="800">Отключено знание</text>
         </svg>`;
     }
-    if(state === "wrong"){
-        return `<svg viewBox="0 0 460 190" preserveAspectRatio="xMidYMid meet" aria-label="Заключена врата и отворена книга">
-            <defs>
-                <linearGradient id="closedDoor" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#7f1d1d"/><stop offset="1" stop-color="#450a0a"/>
-                </linearGradient>
-            </defs>
-            <rect width="460" height="190" fill="rgba(15,23,42,.12)"/>
-            <g class="locked-shake">
-                <rect x="153" y="35" width="120" height="130" rx="7" fill="#111827" stroke="#94a3b8" stroke-width="5"/>
-                <rect x="167" y="48" width="92" height="104" rx="6" fill="url(#closedDoor)" stroke="#fecaca" stroke-width="2"/>
-                <circle cx="246" cy="100" r="4" fill="#fee2e2"/>
-                <rect x="195" y="88" width="38" height="30" rx="5" fill="#cbd5e1" stroke="#334155" stroke-width="3"/>
-                <path d="M204 88 V76 A10 10 0 0 1 224 76 V88" fill="none" stroke="#cbd5e1" stroke-width="6" stroke-linecap="round"/>
+    if(state==="wrong"){
+        return `<svg viewBox="0 0 460 160" preserveAspectRatio="xMidYMid meet">
+            <rect width="460" height="160" fill="rgba(15,23,42,.12)"/>
+            <g class="locked-door">
+                <rect x="153" y="30" width="120" height="115" rx="7" fill="#111827" stroke="#94a3b8" stroke-width="4"/>
+                <rect x="167" y="42" width="92" height="92" rx="6" fill="#7f1d1d" stroke="#fecaca" stroke-width="2"/>
+                <circle cx="246" cy="88" r="4" fill="#fee2e2"/>
+                <rect x="195" y="78" width="38" height="28" rx="5" fill="#cbd5e1" stroke="#334155" stroke-width="3"/>
+                <path d="M204 78 V67 A10 10 0 0 1 224 67 V78" fill="none" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round"/>
             </g>
-            <g class="book-open">
-                <path d="M285 132 C310 116,333 116,358 132 L358 160 C332 147,311 147,285 160 Z" fill="#dbeafe" stroke="#60a5fa" stroke-width="3"/>
-                <path d="M358 132 C383 116,406 116,431 132 L431 160 C405 147,384 147,358 160 Z" fill="#eff6ff" stroke="#60a5fa" stroke-width="3"/>
-                <line x1="358" y1="132" x2="358" y2="160" stroke="#1d4ed8" stroke-width="3"/>
-                <line x1="303" y1="137" x2="343" y2="130" stroke="#93c5fd" stroke-width="3"/>
-                <line x1="303" y1="147" x2="343" y2="142" stroke="#93c5fd" stroke-width="3"/>
-                <line x1="374" y1="130" x2="414" y2="137" stroke="#93c5fd" stroke-width="3"/>
-                <line x1="374" y1="142" x2="414" y2="147" stroke="#93c5fd" stroke-width="3"/>
-            </g>
-            <text x="230" y="178" text-anchor="middle" fill="#fecaca" font-size="15" font-weight="800">Преговорът отваря следващата врата</text>
+            <text x="230" y="155" text-anchor="middle" fill="#fecaca" font-size="14" font-weight="800">Преговорът отваря следващата врата</text>
         </svg>`;
     }
-    return `<svg viewBox="0 0 460 190" preserveAspectRatio="xMidYMid meet" aria-label="Поклащащ се ключ и ключалка">
+    return `<svg viewBox="0 0 460 160" preserveAspectRatio="xMidYMid meet">
         <defs>
             <linearGradient id="goldKey" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#fde68a"/><stop offset=".45" stop-color="#f59e0b"/><stop offset="1" stop-color="#92400e"/>
+                <stop offset="0" stop-color="#fde68a"/>
+                <stop offset=".45" stop-color="#f59e0b"/>
+                <stop offset="1" stop-color="#92400e"/>
             </linearGradient>
         </defs>
-        <rect width="460" height="190" fill="rgba(15,23,42,.10)"/>
-        <g class="key-swing">
-            <circle cx="112" cy="79" r="23" fill="none" stroke="url(#goldKey)" stroke-width="9"/>
-            <path d="M132 79 L243 79" stroke="url(#goldKey)" stroke-width="12" stroke-linecap="round"/>
-            <path d="M213 79 L213 102 L228 102 L228 90 L243 90 L243 79" fill="none" stroke="#f59e0b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="112" cy="79" r="7" fill="#111827"/>
+        <rect width="460" height="160" fill="rgba(15,23,42,.10)"/>
+        <g class="floating-key">
+            <circle cx="112" cy="70" r="22" fill="none" stroke="url(#goldKey)" stroke-width="8"/>
+            <path d="M132 70 L243 70" stroke="url(#goldKey)" stroke-width="11" stroke-linecap="round"/>
+            <path d="M213 70 L213 92 L228 92 L228 80 L243 80 L243 70" fill="none" stroke="#f59e0b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="112" cy="70" r="6" fill="#111827"/>
         </g>
-        <g class="lock-pulse">
-            <rect x="292" y="79" width="84" height="66" rx="10" fill="#cbd5e1" stroke="#475569" stroke-width="5"/>
-            <path d="M309 79 V58 A25 25 0 0 1 359 58 V79" fill="none" stroke="#94a3b8" stroke-width="10" stroke-linecap="round"/>
-            <circle cx="334" cy="106" r="7" fill="#334155"/>
-            <path d="M334 111 L334 129" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+        <g>
+            <rect x="292" y="70" width="84" height="60" rx="10" fill="#cbd5e1" stroke="#475569" stroke-width="4"/>
+            <path d="M309 70 V49 A25 25 0 0 1 359 49 V70" fill="none" stroke="#94a3b8" stroke-width="9" stroke-linecap="round"/>
+            <circle cx="334" cy="95" r="6" fill="#334155"/>
         </g>
-        <path d="M255 79 C270 61,285 61,300 79" fill="none" stroke="#fde68a" stroke-width="3" stroke-dasharray="8 8">
-            <animate attributeName="stroke-dashoffset" values="40;0" dur="1.5s" repeatCount="indefinite"/>
-        </path>
-        <text x="230" y="178" text-anchor="middle" fill="#e0e7ff" font-size="15" font-weight="800">Изберете правилния ключ</text>
+        <text x="230" y="155" text-anchor="middle" fill="#e0e7ff" font-size="14" font-weight="800">Изберете правилния ключ</text>
     </svg>`;
 }
 
-function setEscapeState(state){
-    const status = document.querySelector(".escape-status");
-    if(status){
-        status.className = "escape-status " + (state === "question" ? "unanswered" : state);
-        status.innerHTML = state === "correct" ? svgCorrect : state === "wrong" ? svgWrong : svgUnanswered;
-    }
-    const scene = document.getElementById("escapeScene");
-    if(scene){
-        scene.className = "escape-scene " + state;
-        scene.innerHTML = escapeScene(state);
+/* ============================================================
+   Векторни геометрични чертежи (без емоджита)
+   ============================================================ */
+const VISUALS = {
+    chordsPerpThroughPoint:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
+        <!-- Окръжност: O=(230,85), R=55. K=(197,41) на окръжността. -->
+        <!-- KP вертикална хорда: P=(197,129); KQ хоризонтална хорда: Q=(263,41) -->
+        <circle cx="230" cy="85" r="55" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
+        <!-- KP (оранжева хорда) -->
+        <line x1="197" y1="41" x2="197" y2="129" stroke="#f97316" stroke-width="3.5"/>
+        <!-- KQ (зелена хорда) -->
+        <line x1="197" y1="41" x2="263" y2="41" stroke="#22c55e" stroke-width="3.5"/>
+        <!-- Прав ъгъл при K (за да се вижда, че хордите са перпендикулярни) -->
+        <rect x="197" y="41" width="10" height="10" fill="none" stroke="#fff" stroke-width="1.5"/>
+        <!-- Точки -->
+        <circle cx="230" cy="85"  r="3" fill="#fff"/>
+        <circle cx="197" cy="41"  r="4" fill="#ef4444"/>
+        <circle cx="197" cy="129" r="3.5" fill="#fff"/>
+        <circle cx="263" cy="41"  r="3.5" fill="#fff"/>
+        <!-- Етикети -->
+        <text x="237" y="89"  font-size="14" font-weight="900" fill="#fff">O</text>
+        <text x="183" y="36"  font-size="15" font-weight="900" fill="#fff">K</text>
+        <text x="183" y="144" font-size="15" font-weight="900" fill="#fff">P</text>
+        <text x="270" y="36"  font-size="15" font-weight="900" fill="#fff">Q</text>
+    </svg>`,
+    chordsIntersect:`<svg class="svg" viewBox="0 0 460 200" preserveAspectRatio="xMidYMid meet">
+        <!-- Окръжност: център O=(230,100), радиус R=65. M=(415,100) извън. -->
+        <circle cx="230" cy="100" r="65" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
+        <!-- Хорда AC (оранжева): от A=(218,36) до C=(290,124) -->
+        <line x1="218" y1="36"  x2="290" y2="124" stroke="#f97316" stroke-width="3"/>
+        <!-- Хорда BD (зелена): от B=(277,55) до D=(183,145) -->
+        <line x1="277" y1="55"  x2="183" y2="145" stroke="#22c55e" stroke-width="3"/>
+        <!-- Права AB продължена до M (виолетова): A=(218,36) през B=(277,55) до M=(415,100) -->
+        <line x1="218" y1="36"  x2="434" y2="106" stroke="#a855f7" stroke-width="2.5"/>
+        <!-- Права CD продължена до M (виолетова): D=(183,145) през C=(290,124) до M=(415,100) -->
+        <line x1="183" y1="145" x2="435" y2="96" stroke="#a855f7" stroke-width="2.5"/>
+        <!-- Център O -->
+        <circle cx="230" cy="100" r="3" fill="#fff"/>
+        <!-- Точки на окръжността -->
+        <circle cx="218" cy="36"  r="3.5" fill="#fff"/>
+        <circle cx="277" cy="55"  r="3.5" fill="#fff"/>
+        <circle cx="290" cy="124" r="3.5" fill="#fff"/>
+        <circle cx="183" cy="145" r="3.5" fill="#fff"/>
+        <!-- Q (вътре) и M (извън) -->
+        <circle cx="253" cy="78"  r="4" fill="#fcd34d"/>
+        <circle cx="415" cy="100" r="4" fill="#ef4444"/>
+        <!-- Етикети -->
+        <text x="200" y="32"  font-size="14" font-weight="900" fill="#fff">A</text>
+        <text x="284" y="48"  font-size="14" font-weight="900" fill="#fff">B</text>
+        <text x="294" y="139" font-size="14" font-weight="900" fill="#fff">C</text>
+        <text x="166" y="153" font-size="14" font-weight="900" fill="#fff">D</text>
+        <text x="237" y="105" font-size="13" font-weight="900" fill="#fff">O</text>
+        <text x="256" y="73"  font-size="13" font-weight="900" fill="#fcd34d">Q</text>
+        <text x="423" y="105" font-size="14" font-weight="900" fill="#fff">M</text>
+    </svg>`,
+    tangentSecant:`<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid meet">
+        <!-- Окръжност: център O=(250,85), радиус R=52. Q=(70,85), OQ=180. -->
+        <circle cx="250" cy="85" r="52" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
+        <!-- Допирателна t през Q и M, удължена в двете посоки -->
+        <line x1="40" y1="94" x2="316" y2="11" stroke="#f97316" stroke-width="3"/>
+        <!-- Секуща през Q, пресича в A и B, удължена след B -->
+        <line x1="40" y1="79" x2="335" y2="142" stroke="#22c55e" stroke-width="3"/>
+        <!-- Хорди MA и MB (във виолетово, за да се отличават от двете прави) -->
+        <line x1="235" y1="35" x2="207" y2="114" stroke="#a855f7" stroke-width="2.5"/>
+        <line x1="235" y1="35" x2="278" y2="129" stroke="#a855f7" stroke-width="2.5"/>
+        <!-- Точки -->
+        <circle cx="250" cy="85" r="3.5" fill="#fff"/>
+        <circle cx="70"  cy="85" r="5" fill="#ef4444"/>
+        <circle cx="235" cy="35" r="4" fill="#fb923c"/>
+        <circle cx="207" cy="114" r="3.5" fill="#22c55e"/>
+        <circle cx="278" cy="129" r="3.5" fill="#22c55e"/>
+        <!-- Етикети -->
+        <text x="56"  y="80"  font-size="15" font-weight="900" fill="#fff">Q</text>
+        <text x="257" y="82"  font-size="14" font-weight="900" fill="#fff">O</text>
+        <text x="225" y="28"  font-size="15" font-weight="900" fill="#fff">M</text>
+        <text x="190" y="118" font-size="14" font-weight="900" fill="#fff">A</text>
+        <text x="285" y="135" font-size="14" font-weight="900" fill="#fff">B</text>
+        <text x="328" y="20"  font-size="11" font-weight="700" fill="#f97316">t</text>
+    </svg>`,
+    inscribedAngle:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
+        <circle cx="230" cy="90" r="58" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
+        <line x1="230" y1="90" x2="180" y2="119" stroke="#22c55e" stroke-width="3"/>
+        <line x1="230" y1="90" x2="280" y2="119" stroke="#22c55e" stroke-width="3"/>
+        <line x1="230" y1="32" x2="180" y2="119" stroke="#f97316" stroke-width="3"/>
+        <line x1="230" y1="32" x2="280" y2="119" stroke="#f97316" stroke-width="3"/>
+        <circle cx="230" cy="90"  r="3.5" fill="#fff"/>
+        <circle cx="180" cy="119" r="3.5" fill="#fff"/>
+        <circle cx="280" cy="119" r="3.5" fill="#fff"/>
+        <circle cx="230" cy="32"  r="3.5" fill="#fff"/>
+        <text x="237" y="86"  font-size="14" font-weight="900" fill="#fff">O</text>
+        <text x="162" y="124" font-size="15" font-weight="900" fill="#fff">A</text>
+        <text x="287" y="124" font-size="15" font-weight="900" fill="#fff">B</text>
+        <text x="225" y="26"  font-size="15" font-weight="900" fill="#fff">M</text>
+    </svg>`,
+    discriminant:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
+        <path d="M 50 150 Q 150 -10 230 150 Q 310 -10 410 150" fill="none" stroke="#38bdf8" stroke-width="3"/>
+        <line x1="20" y1="120" x2="440" y2="120" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="20" y="160" fill="#cbd5e1" font-size="13" font-weight="800">D = b² - 4ac</text>
+    </svg>`,
+    factor:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
+        <g transform="translate(230,85)">
+            <polygon points="0,-45 39,-22.5 39,22.5 0,45 -39,22.5 -39,-22.5" fill="none" stroke="#2dd4bf" stroke-width="2" opacity="0.6"/>
+            <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" fill="none" stroke="#fbbf24" stroke-width="3"/>
+            <circle r="9" fill="#f43f5e"/>
+        </g>
+    </svg>`,
+    biquadratic:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
+        <path d="M 30 130 Q 100 -20 230 100 Q 360 220 430 30" fill="none" stroke="#f472b6" stroke-width="3"/>
+        <line x1="0" y1="85" x2="460" y2="85" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 4"/>
+        <text x="20" y="160" fill="#cbd5e1" font-size="13" font-weight="800">y = x², след това x = ±√y</text>
+    </svg>`,
+    /* Взаимно положение на права и окръжност */
+    /* Взаимно положение на права и окръжност — неутрална илюстрация */
+    lineCircle:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
+        <circle cx="230" cy="85" r="56" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
+        <line x1="40" y1="85" x2="420" y2="85" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3" opacity="0.4"/>
+        <line x1="230" y1="85" x2="230" y2="85" stroke="#fff"/>
+        <circle cx="230" cy="85" r="3" fill="#fff"/>
+        <text x="220" y="78" font-size="13" font-weight="900" fill="#fff">O</text>
+        <text x="60" y="40" fill="#cbd5e1" font-size="13" font-weight="700">окръжност k(O; R) и права ℓ</text>
+    </svg>`,
+    /* Взаимно положение на 2 окръжности — неутрална илюстрация */
+    twoCircles:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
+        <circle cx="170" cy="85" r="50" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
+        <circle cx="290" cy="85" r="36" fill="rgba(168,85,247,.12)" stroke="#a855f7" stroke-width="4"/>
+        <circle cx="170" cy="85" r="3" fill="#fff"/>
+        <circle cx="290" cy="85" r="3" fill="#fff"/>
+        <text x="158" y="78" font-size="13" font-weight="900" fill="#fff">O₁</text>
+        <text x="278" y="78" font-size="13" font-weight="900" fill="#fff">O₂</text>
+        <line x1="170" y1="85" x2="290" y2="85" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.55"/>
+    </svg>`,
+    /* Централен и вписан ъгъл върху същата дъга */
+    centralInscribed:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
+        <!-- O=(230,90), R=58 -->
+        <circle cx="230" cy="90" r="58" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
+        <!-- Радиуси OA и OB (централен ъгъл AOB) -->
+        <line x1="230" y1="90" x2="180" y2="119" stroke="#22c55e" stroke-width="3"/>
+        <line x1="230" y1="90" x2="280" y2="119" stroke="#22c55e" stroke-width="3"/>
+        <!-- Лъчи MA и MB (вписан ъгъл AMB) -->
+        <line x1="230" y1="32" x2="180" y2="119" stroke="#f97316" stroke-width="3"/>
+        <line x1="230" y1="32" x2="280" y2="119" stroke="#f97316" stroke-width="3"/>
+        <!-- Хорда AB за яснота -->
+        <line x1="180" y1="119" x2="280" y2="119" stroke="#fff" stroke-width="1.5" opacity="0.4"/>
+        <!-- Точки -->
+        <circle cx="230" cy="90"  r="3.5" fill="#fff"/>
+        <circle cx="180" cy="119" r="3.5" fill="#fff"/>
+        <circle cx="280" cy="119" r="3.5" fill="#fff"/>
+        <circle cx="230" cy="32"  r="3.5" fill="#fff"/>
+        <!-- Етикети -->
+        <text x="237" y="86"  font-size="14" font-weight="900" fill="#fff">O</text>
+        <text x="162" y="124" font-size="15" font-weight="900" fill="#fff">A</text>
+        <text x="287" y="124" font-size="15" font-weight="900" fill="#fff">B</text>
+        <text x="225" y="26"  font-size="15" font-weight="900" fill="#fff">M</text>
+    </svg>`,
+    /* Вписан ъгъл върху диаметър */
+    diameterAngle:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
+        <circle cx="230" cy="95" r="62" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
+        <line x1="168" y1="95" x2="292" y2="95" stroke="#f97316" stroke-width="4"/>
+        <line x1="168" y1="95" x2="266" y2="35" stroke="#22c55e" stroke-width="3.5"/>
+        <line x1="292" y1="95" x2="266" y2="35" stroke="#22c55e" stroke-width="3.5"/>
+        <circle cx="230" cy="95" r="3.5" fill="#fff"/>
+        <circle cx="168" cy="95" r="3.5" fill="#fff"/>
+        <circle cx="292" cy="95" r="3.5" fill="#fff"/>
+        <circle cx="266" cy="35" r="3.5" fill="#fff"/>
+        <text x="237" y="100" font-size="14" font-weight="900" fill="#fff">O</text>
+        <text x="152" y="100" font-size="15" font-weight="900" fill="#fff">A</text>
+        <text x="298" y="100" font-size="15" font-weight="900" fill="#fff">B</text>
+        <text x="270" y="30"  font-size="15" font-weight="900" fill="#fff">C</text>
+    </svg>`,
+    /* Разстояние от център до хорда */
+    chordDistance:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
+        <circle cx="230" cy="95" r="62" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
+        <line x1="170" y1="55" x2="290" y2="55" stroke="#f97316" stroke-width="4"/>
+        <line x1="230" y1="95" x2="230" y2="55" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="5 3"/>
+        <circle cx="230" cy="95" r="3.5" fill="#fff"/>
+        <circle cx="170" cy="55" r="3.5" fill="#fff"/>
+        <circle cx="290" cy="55" r="3.5" fill="#fff"/>
+        <text x="220" y="115" font-size="14" font-weight="900" fill="#fff">O</text>
+        <text x="155" y="50"  font-size="15" font-weight="900" fill="#fff">A</text>
+        <text x="297" y="50"  font-size="15" font-weight="900" fill="#fff">B</text>
+    </svg>`,
+    /* Просто квадратно уравнение — неутрална илюстрация */
+    simpleQuad:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
+        <path d="M 60 130 Q 230 -20 400 130" fill="none" stroke="#a78bfa" stroke-width="3"/>
+        <line x1="40" y1="130" x2="420" y2="130" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <line x1="230" y1="20" x2="230" y2="160" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3" opacity="0.4"/>
+    </svg>`
+};
+
+/* ============================================================
+   Извикване на MathJax след всяка промяна на DOM
+   ============================================================ */
+function updateMath(){
+    if(window.MathJax && window.MathJax.typesetPromise){
+        MathJax.typesetPromise([document.getElementById("screen")]).catch(err=>console.log(err));
+    }else{
+        setTimeout(updateMath,100);
     }
 }
 
+/* ============================================================
+   ГЕНЕРАТОРИ НА ЗАДАЧИ
+   Принцип:
+   — Всеки генератор създава една задача от съответен тип.
+   — При всяко извикване параметрите се рандомизират, така че
+     повторение на типа дава различни числа.
+   ============================================================ */
 
-
-// Извиква MathJax за рендиране на LaTeX формулите в DOM-а
-function updateMath() {
-    if (window.MathJax && window.MathJax.typesetPromise) {
-        MathJax.typesetPromise([document.getElementById("screen")]).catch((err) => console.log(err));
-    } else {
-        setTimeout(updateMath, 100);
-    }
+/* ----- 1.а)  Уравнения, свеждащи се до квадратни ----- */
+function qReducibleToQuadratic(){
+    // Шаблон: A(x-r)(x+r) = B(x-r), след съкращаване x-r=0 ИЛИ Ax+Ar=B => x = (B-Ar)/A
+    // Параметрите се избират така, че да има хубави цели/прости рационални корени
+    const A = rnd(2,4);
+    const r = rnd(2,5);
+    const x2num = rnd(-2,2) || 1;          // числител на втория корен
+    // C трябва да удовлетворява: A*(x2+r) = C, x2 = x2num/A => A*(x2num/A + r) = C => x2num + A*r
+    const C = x2num + A*r;
+    
+    // Корени: r и x2num/A
+    const x2 = fracTex(x2num, A);
+    const ok = `$x_1=${r};\\ x_2=${x2}$`;
+    const d1 = `$x=${r}$`;
+    const d2 = `$x_1=${r};\\ x_2=${fracTex(-x2num,A)}$`;
+    const d3 = `$x_1=${-r};\\ x_2=${x2}$`;
+    
+    return {
+        type:'Квадратно уравнение', difficulty:'Повишена',
+        q:`Да се намерят корените на уравнението:<br>$$${A}(x-${r})(x+${r}) = ${C}(x-${r})$$`,
+        ...makeOptions(ok,[d1,d2,d3]),
+        explain:`След прехвърляне на всичко в едната страна се изнася общият множител $(x-${r})$: <br>$(x-${r})\\big(${A}(x+${r})-${C}\\big)=0$, т.е. $(x-${r})(${A}x+${A*r-C})=0$. <br>Оттук $x_1=${r}$ и $x_2=${x2}$.`,
+        visual:'factor'
+    };
 }
 
-// Гарантирано връща 4 уникални опции (вярна + 3 типични грешки)
-function makeOptions(ok, ds){
-    let u = [];
-    for(let d of ds) {
-        if(d !== ok && !u.includes(d)) u.push(d);
-    }
-    let fallbacks = [
-        ok.replace(/\d+/g, m => Number(m)+1),
-        ok.replace(/\d+/g, m => Number(m)+2),
-        ok.replace(/\d+/g, m => Math.max(0, Number(m)-1)),
-        ok.replace(/\d+/g, m => Number(m)*2)
+/* ----- 1.а) втори тип: (2x-B)² - 3(x-D)(x+D) = E ----- */
+function qReducibleType2(){
+    // Математическа основа:
+    // (2x - B)² - 3(x - D)(x + D) = E
+    // 4x² - 4Bx + B² - 3x² + 3D² = E
+    // x² - 4Bx + (B² + 3D² - E) = 0
+    // По формулите на Виет: r1 + r2 = 4B,  r1·r2 = B² + 3D² - E
+    // Избираме цели корени r1, r2 със сбор делим на 4.
+    //
+    // Списък с предварително проверени комбинации
+    // (всяка дава хубаво уравнение с дадените цели корени):
+    const variants = [
+        {r1:5,  r2:-1, B:1,  D:2, E:18},  // (2x-1)² - 3(x-2)(x+2) = 18
+        {r1:6,  r2:-2, B:1,  D:2, E:25},  // (2x-1)² - 3(x-2)(x+2) = 25
+        {r1:3,  r2:1,  B:1,  D:2, E:10},  // (2x-1)² - 3(x-2)(x+2) = 10
+        {r1:5,  r2:3,  B:2,  D:2, E:1},   // (2x-2)² - 3(x-2)(x+2) = 1
+        {r1:-5, r2:1,  B:-1, D:2, E:18},  // (2x+1)² - 3(x-2)(x+2) = 18
+        {r1:-6, r2:2,  B:-1, D:2, E:25},  // (2x+1)² - 3(x-2)(x+2) = 25
+        {r1:-3, r2:-1, B:-1, D:2, E:10},  // (2x+1)² - 3(x-2)(x+2) = 10
+        {r1:6,  r2:2,  B:2,  D:3, E:19},  // (2x-2)² - 3(x-3)(x+3) = 19
+        {r1:-6, r2:-2, B:-2, D:3, E:19},  // (2x+2)² - 3(x-3)(x+3) = 19
+        {r1:7,  r2:-3, B:1,  D:3, E:49},  // (2x-1)² - 3(x-3)(x+3) = 49
     ];
-    for(let fb of fallbacks) {
-        if(u.length >= 3) break;
-        if(fb !== ok && !u.includes(fb)) u.push(fb);
-    }
-    let m = shuffle([ok, u[0], u[1], u[2]]);
-    return {options:m, answer:m.indexOf(ok)};
-}
-
-// 1. Уравнения с изнасяне на множител
-function qEqFactor() {
-    let A = rnd(2, 4), B = rnd(1, 5), x2 = rnd(1, 5), C = A * (x2 + B);
-    let ok = `$x_1 = ${B}; x_2 = ${x2}$`;
-    let d1 = `$x = ${x2}$`; 
-    let d2 = `$x_1 = ${-B}; x_2 = ${-x2}$`; 
-    let d3 = `$x_1 = ${B}; x_2 = ${-x2}$`; 
+    const v = choice(variants);
+    const r1 = v.r1, r2 = v.r2, B = v.B, D = v.D, E = v.E;
+    
+    // Форматиране: (2x - B) или (2x + |B|)
+    const insideStr = B >= 0 ? `2x - ${B}` : `2x + ${Math.abs(B)}`;
+    
+    // Корени за отговор (по-малкият първи)
+    const [rA, rB] = r1 < r2 ? [r1, r2] : [r2, r1];
+    const okText = `$x_1 = ${rA};\\ x_2 = ${rB}$`;
+    const ds = [
+        `$x_1 = ${-rA};\\ x_2 = ${-rB}$`,
+        `$x_1 = ${rA};\\ x_2 = ${-rB}$`,
+        `Няма реални корени`
+    ];
+    
     return {
-        type: "Уравнения", difficulty: "Средна", 
-        q: `Да се намерят корените на уравнението: <br>$$${A}(x - ${B})(x + ${B}) = ${C}(x - ${B})$$`,
-        ...makeOptions(ok, [d1, d2, d3]),
-        explain: `След прехвърляне и изнасяне на общия множител пред скоби се получава:<br> $(x - ${B})(${A}(x + ${B}) - ${C}) = 0 \\Rightarrow (x - ${B})(${A}x + ${A*B} - ${C}) = 0$.<br> Оттук следва, че корените са $x_1 = ${B}$ и $x_2 = ${x2}$.`,
-        visual: "roots"
-    }
+        type:'Квадратно уравнение', difficulty:'Повишена',
+        q:`Да се намерят корените на уравнението:<br>$$(${insideStr})^2 - 3(x-${D})(x+${D}) = ${E}$$`,
+        ...makeOptions(okText, ds),
+        explain:`Разкриват се скобите: $(${insideStr})^2 = 4x^2 ${B>=0?'- '+(4*B):'+ '+Math.abs(4*B)}x + ${B*B}$ и $3(x-${D})(x+${D}) = 3x^2 - ${3*D*D}$.<br>След опростяване уравнението се свежда до квадратно: $x^2 ${(-4*B)>=0?'+ '+(-4*B):'- '+Math.abs(-4*B)}x + ${B*B + 3*D*D - E} = 0$ с корени $x_1 = ${rA}$ и $x_2 = ${rB}$.`,
+        visual:'factor'
+    };
 }
 
-// 2. Уравнения с изнасяне на множител (търси се сумата на корените)
-function qEqFactor2() {
-    let A = rnd(2, 4), B = rnd(1, 5), x2 = rnd(1, 5), C = A * (x2 + B);
-    let ok = `$${B + x2}$`;
-    let d1 = `$${B}$`; 
-    let d2 = `$${x2}$`; 
-    let d3 = `$${-B - x2}$`; 
-    return {
-        type: "Уравнения", difficulty: "Средна", 
-        q: `Да се намери сумата от корените на уравнението: <br>$$${A}(x - ${B})(x + ${B}) = ${C}(x - ${B})$$`,
-        ...makeOptions(ok, [d1, d2, d3]),
-        explain: `Корените се намират чрез изнасяне на множител: $x_1 = ${B}$ и $x_2 = ${x2}$.<br> Тяхната сума е $${B} + ${x2} = ${B + x2}$.`,
-        visual: "roots"
-    }
-}
-
-// 3. Биквадратно уравнение
-function qBiquad(){
-    let y1=choice([1,4,9,16]), y2=choice([4,9,16,25].filter(v=>v!==y1));
-    let b=-(y1+y2), c=y1*y2;
-    let roots=[...new Set([Math.sqrt(y1),-Math.sqrt(y1),Math.sqrt(y2),-Math.sqrt(y2)])].sort((a,b)=>a-b);
-    let ok = `$x \\in \\{${roots.join("; ")}\\}$`;
-    let d1 = `$x \\in \\{\\sqrt{${y1}}; \\sqrt{${y2}}\\}$`; 
-    let d2 = `$x \\in \\{${y1}; ${y2}\\}$`; 
-    let d3 = `$x \\in \\{\\pm ${y1}; \\pm ${y2}\\}$`; 
-    let bStr = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
-    let cStr = c >= 0 ? `+ ${c}` : `- ${Math.abs(c)}`;
-    return{
-        type:"Биквадратни уравнения", difficulty:"Повишена",
-        q:`Да се намерят реалните корени на биквадратното уравнение: <br>$$x^4 ${bStr}x^2 ${cStr} = 0$$`,
-        ...makeOptions(ok, [d1, d2, d3]),
-        explain:`Чрез полагане на $x^2 = y \\ge 0$ се достига до квадратно уравнение с корени $y_1=${y1}$ и $y_2=${y2}$.<br> Корените за $x$ се установяват от $x^2 = y_1$ и $x^2 = y_2$, следователно $x = \\pm\\sqrt{${y1}}$ и $x = \\pm\\sqrt{${y2}}$.`,
-        visual:"biquadratic"
-    }
-}
-
-// 4. Брой корени на биквадратно уравнение
-function qBiquadRootsCount() {
-    let type = rnd(1, 3);
+/* ----- 1.б)  Биквадратни уравнения ----- */
+function qBiquadratic(){
+    // Избираме две положителни стойности y1, y2 за x²
+    // или една положителна и една отрицателна
+    const variant = rnd(1,2);
     let y1, y2;
-    if(type===1) { y1 = rnd(1, 5); y2 = rnd(6, 10); }
-    else if(type===2) { y1 = rnd(1, 5); y2 = -rnd(1, 5); }
-    else { y1 = -rnd(1, 5); y2 = -rnd(6, 10); }
-    let b = -(y1+y2), c = y1*y2;
-    let bStr = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
-    let cStr = c >= 0 ? `+ ${c}` : `- ${Math.abs(c)}`;
-    let ok = type===1 ? "Четири" : (type===2 ? "Два" : "Нула");
-    let ds = ["Нула", "Един", "Два", "Четири"].filter(x=>x!==ok);
-    return {
-        type: "Биквадратни уравнения", difficulty: "Средна",
-        q: `Да се определи броят на реалните корени на биквадратното уравнение: <br>$$x^4 ${bStr}x^2 ${cStr} = 0$$`,
-        ...makeOptions(ok, ds),
-        explain: `След полагане $x^2 = y$ се получават корени $y_1=${y1}$ и $y_2=${y2}$.<br> Тъй като $x^2 \\ge 0$, уравнението има ${ok.toLowerCase()} реални корена.`,
-        visual: "biquadratic"
-    }
-}
-
-// 5. Уравнения с полагане
-function qSubst() {
-    let y1 = rnd(1, 4), y2 = rnd(-4, -1), sum = y1+y2, prod = y1*y2;
-    let b = rnd(-3, 3) || 1;
-    let signB = b>0 ? '+ '+b : '- '+Math.abs(b);
-    let signS = sum<0 ? '+ '+Math.abs(sum) : '- '+sum;
-    let signP = prod<0 ? '- '+Math.abs(prod) : '+ '+prod;
-    let ok = `$y_1 = ${y1}; y_2 = ${y2}$`;
-    let d1 = `$y_1 = ${-y1}; y_2 = ${-y2}$`; 
-    let d2 = `$y_1 = ${y1}; y_2 = ${-y2}$`; 
-    let d3 = `$y_1 = ${-sum}; y_2 = ${prod}$`; 
-    return {
-        type: "Уравнения с полагане", difficulty: "Повишена", 
-        q: `Дадено е уравнението: <br> $$(x^2 ${signB}x)^2 ${signS}(x^2 ${signB}x) ${signP} = 0$$ Чрез полагане на $y = x^2 ${signB}x$ да се намерят стойностите на $y$, удовлетворяващи полученото квадратно уравнение.`,
-        ...makeOptions(ok, [d1, d2, d3]),
-        explain: `След извършване на полагането се получава квадратното уравнение $y^2 ${signS}y ${signP} = 0$.<br> Съгласно формулите за корени на квадратно уравнение, неговите решения са $y_1 = ${y1}$ и $y_2 = ${y2}$.`,
-        visual: "factor"
-    }
-}
-
-// 6. Разлагане на тричлен с а != 1
-function qFactorHard() {
-    let a = rnd(2, 5), n = rnd(-3, 3) || 1, m = rnd(-5, 5) || 2; 
-    let b = -(a*n + m), c = m*n;
-    let signB = b>0 ? '+ '+b : (b<0 ? '- '+Math.abs(b) : ''), signC = c>0 ? '+ '+c : (c<0 ? '- '+Math.abs(c) : ''), bx = b===0 ? "" : `${signB}x`;
-    let ok = `$(${a}x ${m<0?'+ '+Math.abs(m):'- '+m})(x ${n<0?'+ '+Math.abs(n):'- '+n})$`;
-    let d1 = `$(${a}x ${m>0?'+ '+m:'- '+Math.abs(m)})(x ${n>0?'+ '+n:'- '+Math.abs(n)})$`; 
-    let d2 = `$(x ${m<0?'+ '+Math.abs(m):'- '+m})(${a}x ${n<0?'+ '+Math.abs(n):'- '+n})$`; 
-    let d3 = `$(${a}x ${m<0?'+ '+Math.abs(m):'- '+m})(x ${n>0?'+ '+n:'- '+Math.abs(n)})$`; 
-    return {
-        type: "Разлагане", difficulty: "Висока", 
-        q: `Да се разложи на множители квадратният тричлен: <br>$$${a}x^2 ${bx} ${signC}$$`,
-        ...makeOptions(ok, [d1, d2, d3]),
-        explain: `Корените на съответното квадратно уравнение са $x_1 = ${n}$ и $x_2 = \\frac{${m}}{${a}}$.<br> Съгласно формулата $ax^2 + bx + c = a(x - x_1)(x - x_2)$, разлагането е $${a}(x - ${n})\\left(x - \\frac{${m}}{${a}}\\right) = (x - ${n})(${a}x - ${m})$.`,
-        visual: "factor"
-    }
-}
-
-// 7. Виетови формули - Изрази
-function qVietaExpr() {
-    let r1 = rnd(-4, 4) || 1, r2 = rnd(-3, 5) || 2;
-    if(r1===r2) r2++;
-    let sum = r1+r2, prod = r1*r2, b = -sum, c = prod;
-    let q, ok, explain, ds;
-    
-    if(Math.random() < 0.5) {
-        let val = sum*sum - 2*prod;
-        ok = `$${val}$`;
-        ds = [`$${sum*sum}$`, `$${sum*sum + 2*prod}$`, `$${sum*sum - prod}$`];
-        q = `Ако $x_1$ и $x_2$ са реални корени на квадратното уравнение $$x^2 ${b>=0?'+ '+b:'- '+Math.abs(b)}x ${c>=0?'+ '+c:'- '+Math.abs(c)} = 0$$ да се пресметне стойността на израза $x_1^2 + x_2^2$.`;
-        explain = `От формулите на Виет следва, че $x_1+x_2 = ${sum}$ и $x_1 x_2 = ${prod}$.<br> Като се приложи тъждеството $x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1 x_2$, се получава $(${sum})^2 - 2(${prod}) = ${val}$.`;
+    if(variant===1){
+        // двата корена за y са положителни => 4 реални корена за x
+        const candidates = [1,4,9,16,25];
+        y1 = choice(candidates);
+        y2 = choice(candidates.filter(v=>v!==y1));
     } else {
-        let val = sum*sum - 2*prod - sum;
-        ok = `$${val}$`;
-        ds = [`$${sum*sum - 2*prod + sum}$`, `$${sum*sum - 2*prod}$`, `$${sum*sum - sum}$`];
-        q = `Ако $x_1$ и $x_2$ са реални корени на квадратното уравнение $$x^2 ${b>=0?'+ '+b:'- '+Math.abs(b)}x ${c>=0?'+ '+c:'- '+Math.abs(c)} = 0$$ да се пресметне стойността на израза $x_1(x_1 - 1) + x_2(x_2 - 1)$.`;
-        explain = `След преобразуване изразът приема вида $x_1^2 + x_2^2 - (x_1 + x_2)$.<br> От формулите на Виет се намират съответните стойности и се замества: $(${sum})^2 - 2(${prod}) - (${sum}) = ${val}$.`;
+        // един положителен, един отрицателен => 2 реални корена
+        y1 = choice([1,4,9,16]);
+        y2 = -rnd(1,10);
     }
-    return {
-        type: "Формули на Виет", difficulty: "Висока", q: q,
-        ...makeOptions(ok, ds), explain: explain, visual: "vieta"
-    }
-}
-
-// 8. Виетови формули - Дроби
-function qVietaFractions() {
-    let pairs = [[2,3], [3,4], [3,5], [4,5], [5,6], [5,7]];
-    let pair = choice(pairs);
-    let x1 = pair[0], x2 = pair[1];
-    let b = -(x1+x2), c = x1*x2;
-    let ok = `$\\frac{${-b}}{${c}}$`;
-    let ds = [`$\\frac{${b}}{${c}}$`, `$\\frac{${c}}{${-b}}$`, `$-\\frac{${c}}{${-b}}$`];
-    return {
-        type: "Формули на Виет", difficulty: "Висока",
-        q: `За корените $x_1$ и $x_2$ на уравнението $$x^2 ${b>=0?'+ '+b:'- '+Math.abs(b)}x + ${c} = 0$$ да се пресметне стойността на израза $\\frac{1}{x_1} + \\frac{1}{x_2}$.`,
-        ...makeOptions(ok, ds),
-        explain: `След привеждане под общ знаменател: $\\frac{1}{x_1} + \\frac{1}{x_2} = \\frac{x_1+x_2}{x_1 x_2}$.<br> От формулите на Виет се замества $\\frac{-b}{c} = \\frac{${-b}}{${c}}$.`,
-        visual: "vieta"
-    }
-}
-
-// 9. Търсене на коефициент/корен (Винаги търсим параметър)
-function qFindRootCoeff() {
-    let x1 = rnd(2, 6), x2 = rnd(-5, -1), p = -(x1+x2), q_val = x1*x2;
-    let ok, ds, qText, explain;
+    // Уравнение: x⁴ - (y1+y2)x² + y1*y2 = 0
+    const b = -(y1+y2);
+    const c = y1*y2;
     
-    if (Math.random() < 0.5) {
-        ok = `$p = ${p}$`;
-        ds = [`$p = ${-p}$`, `$p = ${x2}$`, `$p = ${-x2}$`]; 
-        qText = `Дадено е квадратното уравнение $$x^2 + px ${q_val>=0?'+ '+q_val:'- '+Math.abs(q_val)} = 0$$ Ако $x_1 = ${x1}$ е корен на уравнението, да се намери стойността на параметъра $p$.`;
-        explain = `От формулите на Виет намираме другия корен: $x_2 = \\frac{${q_val}}{${x1}} = ${x2}$.<br> Тогава $-p = x_1 + x_2 = ${x1} + (${x2}) = ${x1+x2}$, следователно $p = ${p}$.`;
+    let roots;
+    if(variant===1){
+        const r1 = Math.sqrt(Math.min(y1,y2));
+        const r2 = Math.sqrt(Math.max(y1,y2));
+        roots = [`-${r2}`, `-${r1}`, `${r1}`, `${r2}`];
     } else {
-        ok = `$q = ${q_val}$`;
-        ds = [`$q = ${-q_val}$`, `$q = ${x2}$`, `$q = ${p}$`]; 
-        qText = `Дадено е квадратното уравнение $$x^2 ${p>=0?'+ '+p:'- '+Math.abs(p)}x + q = 0$$ Ако $x_1 = ${x1}$ е корен на уравнението, да се намери стойността на параметъра $q$.`;
-        explain = `От формулите на Виет намираме другия корен: $x_1 + x_2 = ${-p} \\Rightarrow ${x1} + x_2 = ${-p} \\Rightarrow x_2 = ${x2}$.<br> Тогава $q = x_1 \\cdot x_2 = ${x1} \\cdot (${x2}) = ${q_val}$.`;
+        const r = Math.sqrt(Math.max(y1,y2));
+        roots = [`-${r}`, `${r}`];
     }
-
-    return { type: "Параметри и Виет", difficulty: "Повишена", q: qText, ...makeOptions(ok, ds), explain: explain, visual: "vieta" }
-}
-
-// 10. Знаци на корените
-function qRootsSigns() {
-    let type = rnd(1, 3);
-    let b, c, D;
-    do {
-        if(type===1) { b = -rnd(3,8); c = rnd(1,2); } 
-        else if(type===2) { b = rnd(3,8); c = rnd(1,2); } 
-        else { b = rnd(-5,5); c = -rnd(1,5); }
-        D = b*b - 4*c;
-    } while(D <= 0);
-
-    let ok = type === 1 ? "Два положителни" : (type === 2 ? "Два отрицателни" : "Един положителен и един отрицателен");
-    let ds = ["Няма реални корени", "Два положителни", "Два отрицателни", "Един положителен и един отрицателен"].filter(x=>x!==ok);
-    let bStr = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
-    let cStr = c >= 0 ? `+ ${c}` : `- ${Math.abs(c)}`;
     
-    let expl = type === 1 ? `Дискриминантата $D > 0$. От $x_1 x_2 = ${c} > 0$ и $x_1 + x_2 = ${-b} > 0$ следва, че корените са положителни.` :
-               type === 2 ? `Дискриминантата $D > 0$. От $x_1 x_2 = ${c} > 0$ и $x_1 + x_2 = ${-b} < 0$ следва, че корените са отрицателни.` :
-               `Тъй като $x_1 x_2 = ${c} < 0$, корените са с различни знаци.`;
-
+    const ok = `$x\\in\\{${roots.join(';\\ ')}\\}$`;
+    const ds = [
+        `$x\\in\\{${roots.filter(r=>!r.startsWith('-')).join(';\\ ')}\\}$`,
+        `$x\\in\\{${y1};\\ ${y2}\\}$`,
+        `Уравнението няма реални корени`
+    ];
+    
+    const bPart = b===0 ? '' : ` ${b>0?'+':'-'} ${Math.abs(b)}x^2`;
+    const cPart = c===0 ? '' : ` ${c>0?'+':'-'} ${Math.abs(c)}`;
+    
     return {
-        type: "Знаци на корените", difficulty: "Средна",
-        q: `Без да се решава уравнението, да се определят знаците на реалните му корени (ако съществуват): <br>$$x^2 ${bStr}x ${cStr} = 0$$`,
+        type:'Квадратно уравнение', difficulty:'Средна',
+        q:`Да се намерят корените на уравнението:<br>$$x^4${bPart}${cPart} = 0$$`,
         ...makeOptions(ok, ds),
-        explain: expl,
-        visual: "vieta"
-    }
+        explain:`Полагаме $y=x^2,\\ y\\ge 0$. Получава се $y^2 ${b>=0?'+ '+b:'- '+Math.abs(b)}y ${c>=0?'+ '+c:'- '+Math.abs(c)}=0$ с корени $y_1=${y1},\\ y_2=${y2}$. ${variant===1?`И двата корена са положителни, затова $x^2=${y1}$ и $x^2=${y2}$ дават общо четири реални корена.`:`Само $y_1=${Math.max(y1,y2)}$ е допустим (другият е отрицателен), затова $x^2=${Math.max(y1,y2)}$ дава два реални корена.`}`,
+        visual:'biquadratic'
+    };
 }
 
-// 11. Съставяне на уравнение
-function qFormEquation() {
-    let x1 = rnd(1, 5), x2 = -rnd(1, 5);
-    let b = -(x1+x2), c = x1*x2;
-    let ok = `$x^2 ${b>=0?'+ '+b:'- '+Math.abs(b)}x ${c>=0?'+ '+c:'- '+Math.abs(c)} = 0$`;
-    let ds;
-    if (b === 0) {
-        ds = [`$x^2 - ${x1}x ${c>=0?'+ '+c:'- '+Math.abs(c)} = 0$`, `$x^2 + ${x1}x ${c>=0?'+ '+c:'- '+Math.abs(c)} = 0$`, `$x^2 - ${x1*x1} = 0$`];
+/* ----- 1.в)  Уравнения с полагане (намиране на y) ----- */
+function qSubstitution(){
+    const exprs = [
+        {expr:'x^2-2x', name:'x^2-2x'},
+        {expr:'x^2+4x', name:'x^2+4x'},
+        {expr:'2x^2-5x', name:'2x^2-5x'},
+        {expr:'3x^2-x', name:'3x^2-x'},
+        {expr:'x^2+3x', name:'x^2+3x'},
+        {expr:'x^2-x', name:'x^2-x'}
+    ];
+    const v = choice(exprs);
+    // Корени за y: y1 и y2
+    const y1 = rnd(2,9);
+    const y2 = -rnd(1,4);
+    const sumY = y1+y2;
+    const prodY = y1*y2;
+    
+    // Описваме корените като множества за x — y1=полагането, y2=полагането
+    // Така ученикът сам трябва да реши кое от двете дава корен и кое не
+    const ok = `Корените за $${v.expr}$ са $${y1}$ и $${y2}$`;
+    const ds = [
+        `Корените за $${v.expr}$ са $${-y1}$ и $${-y2}$`,
+        `Корените за $${v.expr}$ са $${y1}$ и $${-y2}$`,
+        `Корените за $${v.expr}$ са $${sumY}$ и $${prodY}$`
+    ];
+    
+    const eqExpr = `(${v.expr})^2 ${pm(-sumY)}(${v.expr}) ${pm(prodY)} = 0`;
+    
+    return {
+        type:'Квадратно уравнение', difficulty:'Повишена',
+        q:`Да се намерят стойностите на израза $${v.expr}$, които удовлетворяват уравнението:<br>$$${eqExpr}$$`,
+        ...makeOptions(ok, ds),
+        explain:`Полагаме $y=${v.expr}$. Тогава уравнението става $y^2 ${pm(-sumY)}y ${pm(prodY)} = 0$. По формулите на Виет или директно решение се намират корените $y_1=${y1}$ и $y_2=${y2}$, т.е. изразът $${v.expr}$ приема стойности ${y1} и ${y2}.`,
+        visual:'factor'
+    };
+}
+
+/* ----- 2.  Разлагане на тричлен с водещ коефициент ----- */
+function qFactorTrinomial(){
+    // Избираме два целочислени корена и формираме (ax-p)(x-q)
+    const a = rnd(2,5);
+    const p = rnd(-3,3) || 1;        // числител в първи корен (x = p/a)
+    const q = rnd(-4,4) || 2;        // втори корен
+    // (ax-p)(x-q) = ax² - aqx - px + pq = ax² - (aq+p)x + pq
+    const sign = Math.random()<0.3 ? -1 : 1;
+    const A = sign*a;
+    const B = sign*(-1)*(a*q + p);
+    const C = sign*(p*q);
+    
+    const polyParts = [
+        `${A===1?'':(A===-1?'-':A)}x^2`,
+        termX(B),
+        termC(C)
+    ].filter(Boolean);
+    
+    let okFactor;
+    if(sign===1){
+        okFactor = `(${a}x ${pm(-p).replace('+ ','+').replace('- ','-')})(x ${pm(-q).replace('+ ','+').replace('- ','-')})`;
     } else {
-        let wb1 = -b, wc1 = c;
-        let d1 = `$x^2 ${wb1>=0?'+ '+wb1:'- '+Math.abs(wb1)}x ${wc1>=0?'+ '+wc1:'- '+Math.abs(wc1)} = 0$`;
-        let wb2 = b, wc2 = -c;
-        let d2 = `$x^2 ${wb2>=0?'+ '+wb2:'- '+Math.abs(wb2)}x ${wc2>=0?'+ '+wc2:'- '+Math.abs(wc2)} = 0$`;
-        let wb3 = -b, wc3 = -c;
-        let d3 = `$x^2 ${wb3>=0?'+ '+wb3:'- '+Math.abs(wb3)}x ${wc3>=0?'+ '+wc3:'- '+Math.abs(wc3)} = 0$`;
-        ds = [d1, d2, d3];
+        okFactor = `-(${a}x ${pm(-p).replace('+ ','+').replace('- ','-')})(x ${pm(-q).replace('+ ','+').replace('- ','-')})`;
+    }
+    okFactor = okFactor.replace(/\+/g, '+ ').replace(/-/g, '- ').replace(/\(\s+-/g, '(-').replace(/\)\s+\(/g, ')(');
+    // Чисти форматиране
+    okFactor = (sign===1?'':'-') + `(${a}x ${p>=0?'- '+p:'+ '+Math.abs(p)})(x ${q>=0?'- '+q:'+ '+Math.abs(q)})`;
+    
+    const ok = `$${okFactor}$`;
+    const ds = [
+        `$${(sign===1?'':'-')}(${a}x ${p>=0?'+ '+p:'- '+Math.abs(p)})(x ${q>=0?'+ '+q:'- '+Math.abs(q)})$`,
+        `$(${a}x ${p>=0?'- '+p:'+ '+Math.abs(p)})(x ${q>=0?'+ '+q:'- '+Math.abs(q)})$`,
+        `$(${A}x^2)(x)$`
+    ];
+    
+    return {
+        type:'Разлагане на множители', difficulty:'Повишена',
+        q:`Да се разложи на множители многочленът:<br>$$M = ${polyParts.join(' ')}$$`,
+        ...makeOptions(ok, ds),
+        explain:`Корените на уравнението $${polyParts.join(' ')} = 0$ са $x_1=${fracTex(p,a)}$ и $x_2=${q}$. По формулата за разлагане се получава $M=${okFactor}$.`,
+        visual:'factor'
+    };
+}
+
+/* ----- 3.а)  Дискриминанта и знаци на корените ----- */
+function qDiscriminant(){
+    // Избираме коефициенти a, b, c с D > 0
+    let a, b, c, D;
+    do{
+        a = choice([1,2,3,-2,4]);
+        const r1 = rnd(-4,5) || 1;
+        const r2 = rnd(-3,4) || 2;
+        if(r1===r2) continue;
+        b = -a*(r1+r2);
+        c = a*r1*r2;
+        D = b*b - 4*a*c;
+    } while(D<=0 || Math.abs(c)>30 || Math.abs(b)>20);
+    
+    // Знаци на корените (по Виет)
+    const sumRoots = -b/a;
+    const prodRoots = c/a;
+    let signsDesc;
+    if(prodRoots>0 && sumRoots>0) signsDesc = 'два положителни корена';
+    else if(prodRoots>0 && sumRoots<0) signsDesc = 'два отрицателни корена';
+    else signsDesc = 'корени с различни знаци';
+    
+    const ok = `$D=${D}$, ${signsDesc}`;
+    const ds = [
+        `$D=${D}$, няма реални корени`,
+        `$D=${b*b+4*a*c}$, два реални корена`,
+        `$D=0$, един двоен корен`
+    ];
+    
+    const polyParts = [
+        `${a===1?'':(a===-1?'-':a)}x^2`,
+        termX(b),
+        termC(c)
+    ].filter(Boolean).join(' ');
+    
+    return {
+        type:'Квадратно уравнение', difficulty:'Средна',
+        q:`За уравнението $$${polyParts} = 0$$ да се определят броят и знаците на корените.`,
+        ...makeOptions(ok, ds),
+        explain:`$D = b^2 - 4ac = (${b})^2 - 4\\cdot(${a})\\cdot(${c}) = ${D}$. <br>Тъй като $D>0$, уравнението има два различни реални корена. По формулите на Виет $x_1\\cdot x_2 = \\frac{c}{a} = ${fracTex(c,a)}$ и $x_1+x_2 = -\\frac{b}{a} = ${fracTex(-b,a)}$, откъдето следва, че корените са ${signsDesc}.`,
+        visual:'discriminant'
+    };
+}
+
+/* ----- 3.б)  Стойност на израз чрез Виет ----- */
+function qVietaExpression(){
+    // Конструираме уравнение ax² + bx + c с D > 0
+    let a, b, c, D;
+    do{
+        a = choice([2,3,4,-2]);
+        b = rnd(-8,8) || 1;
+        c = rnd(-5,5) || 1;
+        D = b*b - 4*a*c;
+    } while(D<=0);
+    
+    // Виет: S = x1+x2 = -b/a, P = x1*x2 = c/a
+    // Числено
+    const S_num = -b, S_den = a;
+    const P_num = c,  P_den = a;
+    
+    // Избираме тип израз
+    const exprType = rnd(1,3);
+    let exprText, val_num, val_den, explainCalc;
+    
+    if(exprType===1){
+        // x1² + x2² = S² - 2P
+        // = (S_num²/S_den²) - 2*(P_num/P_den)
+        // = (S_num² * P_den - 2*P_num*S_den²) / (S_den²*P_den)
+        const num = S_num*S_num*P_den - 2*P_num*S_den*S_den;
+        const den = S_den*S_den*P_den;
+        exprText = `x_1^2 + x_2^2`;
+        val_num = num; val_den = den;
+        explainCalc = `$x_1^2+x_2^2 = (x_1+x_2)^2 - 2x_1x_2 = \\left(${fracTex(S_num,S_den)}\\right)^2 - 2\\cdot${fracTex(P_num,P_den)} = ${fracTex(num,den)}$`;
+    } else if(exprType===2){
+        // x1(x1-1) + x2(x2-1) = (x1² + x2²) - (x1+x2) = S² - 2P - S
+        const num1 = S_num*S_num*P_den - 2*P_num*S_den*S_den;       // числител на S²-2P (със знам.  S_den²*P_den)
+        const den1 = S_den*S_den*P_den;
+        // - S = -S_num/S_den = -S_num*(S_den*P_den)/(S_den²*P_den)
+        const num = num1 - S_num*S_den*P_den;
+        const den = den1;
+        exprText = `x_1(x_1-1) + x_2(x_2-1)`;
+        val_num = num; val_den = den;
+        explainCalc = `$x_1(x_1-1)+x_2(x_2-1) = x_1^2+x_2^2 - (x_1+x_2) = (x_1+x_2)^2 - 2x_1x_2 - (x_1+x_2) = ${fracTex(num,den)}$`;
+    } else {
+        // x1(x2+k) + x2(x1+k) = 2*x1*x2 + k*(x1+x2) = 2P + k*S
+        const k = rnd(2,5);
+        // 2P + kS = 2P_num/P_den + k*S_num/S_den = (2P_num*S_den + k*S_num*P_den)/(P_den*S_den)
+        const num = 2*P_num*S_den + k*S_num*P_den;
+        const den = P_den*S_den;
+        exprText = `x_1(x_2+${k}) + x_2(x_1+${k})`;
+        val_num = num; val_den = den;
+        explainCalc = `$x_1(x_2+${k})+x_2(x_1+${k}) = 2x_1x_2 + ${k}(x_1+x_2) = 2\\cdot${fracTex(P_num,P_den)} + ${k}\\cdot${fracTex(S_num,S_den)} = ${fracTex(num,den)}$`;
+    }
+    
+    const okFrac = fracTex(val_num, val_den);
+    const ok = `$${okFrac}$`;
+    // Разсейки — обичайни грешки
+    const ds = [
+        `$${fracTex(S_num,S_den)}$`,
+        `$${fracTex(P_num,P_den)}$`,
+        `$${fracTex(val_num+1, val_den)}$`
+    ];
+    
+    const polyParts = [
+        `${a===1?'':(a===-1?'-':a)}x^2`,
+        termX(b),
+        termC(c)
+    ].filter(Boolean).join(' ');
+    
+    return {
+        type:'Квадратно уравнение', difficulty:'Висока',
+        q:`Ако $x_1$ и $x_2$ са корените на уравнението $$${polyParts}=0,$$ да се пресметне стойността на израза $$P = ${exprText}.$$`,
+        ...makeOptions(ok, ds),
+        explain:`По формулите на Виет: $x_1+x_2 = -\\frac{b}{a} = ${fracTex(S_num,S_den)}$ и $x_1x_2 = \\frac{c}{a} = ${fracTex(P_num,P_den)}$. <br>Тогава ${explainCalc}.`,
+        visual:'discriminant'
+    };
+}
+
+/* ----- 4.  Параметричен корен ----- */
+function qParameterRoot(){
+    // x² + px + q = 0, даден е един корен, търсим другия и неизвестния параметър
+    const x1 = rnd(-6,6) || 2;
+    const x2 = rnd(-5,5) || -3;
+    if(x1===x2) return qParameterRoot();
+    
+    // По Виет: x1+x2 = -p, x1*x2 = q
+    const p = -(x1+x2);
+    const q = x1*x2;
+    
+    // Случайно решаваме дали неизвестно е p или q
+    const askP = Math.random()<0.5;
+    
+    let eq, ok, ds, explainText;
+    if(askP){
+        // Уравнение: x² + p*x + q = 0
+        eq = `x^2 + px ${pm(q)} = 0`;
+        ok = `$x_2=${x2};\\ p=${p}$`;
+        ds = [
+            `$x_2=${-x2};\\ p=${-p}$`,
+            `$x_2=${x2};\\ p=${-p}$`,
+            `$x_2=${-x2};\\ p=${p}$`
+        ];
+        explainText = `От Виет: $x_1\\cdot x_2 = ${q}$, значи $x_2 = \\frac{${q}}{${x1}} = ${x2}$. <br>Тогава $x_1+x_2 = -p \\Rightarrow ${x1}+(${x2}) = -p \\Rightarrow p = ${p}$.`;
+    } else {
+        eq = `x^2 ${pm(p)}x + q = 0`;
+        ok = `$x_2=${x2};\\ q=${q}$`;
+        ds = [
+            `$x_2=${-x2};\\ q=${-q}$`,
+            `$x_2=${x2};\\ q=${-q}$`,
+            `$x_2=${-x2};\\ q=${q}$`
+        ];
+        explainText = `От Виет: $x_1+x_2 = ${-p}$, значи $x_2 = ${-p}-${x1} = ${x2}$. <br>Тогава $q = x_1\\cdot x_2 = ${x1}\\cdot(${x2}) = ${q}$.`;
     }
     
     return {
-        type: "Съставяне на уравнение", difficulty: "Повишена",
-        q: `Да се състави квадратно уравнение, чиито корени са $x_1 = ${x1}$ и $x_2 = ${x2}$.`,
+        type:'Квадратно уравнение', difficulty:'Повишена',
+        q:`Единият от корените на уравнението $$${eq}$$ е равен на $${x1}$. Да се намерят другият корен и съответният параметър.`,
         ...makeOptions(ok, ds),
-        explain: `По формулите на Виет, $p = -(x_1 + x_2) = ${b}$ и $q = x_1 \\cdot x_2 = ${c}$.<br> Търсеното уравнение е $x^2 + px + q = 0$.`,
-        visual: "vieta"
-    }
+        explain:explainText,
+        visual:'discriminant'
+    };
 }
 
-// 12. Дискриминанта
-function qDiscriminant() {
-    let a = choice([1, 1, 2]), r1 = rnd(-5, 6), r2 = rnd(-5, 6);
-    let b = -a * (r1 + r2), c = a * r1 * r2, D = b * b - 4 * a * c, ok = `$D = ${D}$`;
-    let signB = b >= 0 ? "+ " + b : "- " + Math.abs(b), signC = c >= 0 ? "+ " + c : "- " + Math.abs(c);
-    let ds = [`$D = ${b*b + 4*a*c}$`, `$D = ${-b*b - 4*a*c}$`, `$D = ${b*b - a*c}$`]; 
-    return {
-        type: "Квадратни уравнения", difficulty: "Средна",
-        q: `Да се пресметне дискриминантата на квадратното уравнение: <br>$$${a === 1 ? "" : a}x^2 ${signB}x ${signC} = 0$$`,
-        ...makeOptions(ok, ds),
-        explain: `Използва се формулата за дискриминанта: $D = b^2 - 4ac = (${b})^2 - 4 \\cdot ${a} \\cdot (${c}) = ${D}$.`, visual: "discriminant"
-    }
-}
-
-// 13. Централен и вписан ъгъл
-function qAngles() {
-    let central = choice([60, 72, 80, 90, 100, 120, 140]), per = central / 2, askPer = Math.random() < .5;
-    let ok = `$${askPer ? per : central}^\\circ$`;
-    let ds = askPer ? [`$${central}^\\circ$`, `$${central*2}^\\circ$`, `$${180-per}^\\circ$`] : [`$${per}^\\circ$`, `$${per/2}^\\circ$`, `$${180-central}^\\circ$`]; 
-    return {
-        type: "Вписани и централни ъгли", difficulty: "Средна",
-        q: askPer ? `Точките $A, B$ и $C$ лежат на окръжност с център $O$, като $C$ принадлежи на по-голямата дъга $\\widehat{AB}$. Ако централният ъгъл $\\angle AOB = ${central}^\\circ$, да се намери мярката на вписания ъгъл $\\angle ACB$.` : `Точките $A, B$ и $C$ лежат на окръжност с център $O$, като $C$ принадлежи на по-голямата дъга $\\widehat{AB}$. Ако вписаният ъгъл $\\angle ACB = ${per}^\\circ$, да се намери мярката на централния ъгъл $\\angle AOB$.`,
-        ...makeOptions(ok, ds),
-        explain: askPer ? `Съгласно теоремата, вписаният ъгъл се измерва с половината от съответния му централен ъгъл: $\\frac{${central}^\\circ}{2} = ${per}^\\circ$.` : `Съгласно теоремата, централният ъгъл е два пъти по-голям от съответния му вписан ъгъл: $2 \\cdot ${per}^\\circ = ${central}^\\circ$.`, visual: "angles"
-    }
-}
-
-// 14. Отношение на дъги
-function qArcRatio() {
-    let ratios = [[1, 2], [1, 3], [1, 4], [1, 5], [2, 3], [3, 5], [4, 5]];
-    let pair = choice(ratios);
-    let p = pair[0], q = pair[1];
-    let part = 360 / (p+q);
-    let arc1 = p * part;
-    let ok = `$${arc1/2}^\\circ$`;
-    let ds = [`$${arc1}^\\circ$`, `$${arc1*2}^\\circ$`, `$${(q*part)/2}^\\circ$`];
-    return {
-        type: "Ъгли в окръжност", difficulty: "Средна",
-        q: `Хорда разделя окръжност на две дъги, несъдържащи общи вътрешни точки, чиито мерки се отнасят както $${p} : ${q}$. Да се намери мярката на вписания ъгъл, който се опира на по-малката от двете дъги.`,
-        ...makeOptions(ok, ds),
-        explain: `Мярката на цялата окръжност е $360^\\circ$. По-малката дъга е $\\frac{${p}}{${p+q}} \\cdot 360^\\circ = ${arc1}^\\circ$.<br> Вписаният ъгъл се измерва с половината от дъгата: $\\frac{${arc1}^\\circ}{2} = ${arc1/2}^\\circ$.`,
-        visual: "angles"
-    }
-}
-
-// 15. Допирателни
-function qTangentSegments() {
-    let alpha = rnd(4, 8)*10;
-    let ok = `$${(180-alpha)/2}^\\circ$`;
-    let ds = [`$${180-alpha}^\\circ$`, `$${alpha}^\\circ$`, `$${90-alpha/2}^\\circ$`];
-    if (ds.includes(ok)) ds[2] = `$${alpha/2}^\\circ$`;
-    return {
-        type: "Свойства на допирателните", difficulty: "Средна",
-        q: `През външна за окръжността точка $P$ са построени допирателни $PA$ and $PB$ ($A$ и $B$ са точките на допиране). Ако $\\angle APB = ${alpha}^\\circ$, да се намери мярката на $\\angle PAB$.`,
-        ...makeOptions(ok, ds),
-        explain: `Допирателните от външна точка са равни ($PA = PB$), следователно $\\triangle PAB$ е равнобедрен.<br> Оттук $\\angle PAB = \\frac{180^\\circ - ${alpha}^\\circ}{2} = ${(180-alpha)/2}^\\circ$.`,
-        visual: "externalAngle"
-    }
-}
-
-// 16. Вътрешен ъгъл между пресичащи хорди
-function qInternalAngle() {
-    let arc1 = rnd(30, 80), arc2 = rnd(20, 60);
-    let ok = `$${(arc1+arc2)/2}^\\circ$`;
-    let ds = [`$${arc1+arc2}^\\circ$`, `$${Math.abs(arc1-arc2)/2}^\\circ$`, `$${180 - (arc1+arc2)/2}^\\circ$`]; 
-    return {
-        type: "Ъгли в окръжност", difficulty: "Висока", 
-        q: `В окръжност хордите $AB$ и $CD$ се пресичат в точка $M$. Ако дъгите $\\widehat{AD}$ и $\\widehat{BC}$, заключени между раменете на връхните ъгли $\\angle AMD$ и $\\angle BMC$, имат мерки съответно ${arc1}^\\circ$ и ${arc2}^\\circ$, да се намери $\\angle AMD$.`,
-        ...makeOptions(ok, ds),
-        explain: `Съгласно теоремата за ъгъл с връх вътре в окръжност, мярката му е равна на полусбора от прилежащите му дъги: $\\frac{${arc1}^\\circ + ${arc2}^\\circ}{2} = ${(arc1+arc2)/2}^\\circ$.`, visual: "chords" 
-    }
-}
-
-// 17. Външен ъгъл
-function qExternalAngle() {
-    let a1 = rnd(10, 16)*10, a2 = rnd(2, 8)*10;
-    if (a1 <= a2) a1 = a2 + 40;
-    let ok = `$${(a1-a2)/2}^\\circ$`;
-    let ds = [`$${(a1+a2)/2}^\\circ$`, `$${a1-a2}^\\circ$`, `$${180 - (a1-a2)/2}^\\circ$`]; 
-    return {
-        type: "Ъгли в окръжност", difficulty: "Повишена", 
-        q: `През външна за окръжността точка $P$ са построени секащите $PA$ и $PB$, които пресичат окръжността съответно в точки $C$ и $D$ ($C$ е между $P$ и $A$, а $D$ е между $P$ и $B$). Ако дъгите, заключени между раменете на $\\angle APB$, имат мерки $\\widehat{AB} = ${a1}^\\circ$ и $\\widehat{CD} = ${a2}^\\circ$, да се намери $\\angle APB$.`,
-        ...makeOptions(ok, ds),
-        explain: `Съгласно теоремата за ъгъл с връх вън от окръжността, мярката му е равна на полуразликата от прилежащите му дъги: $\\frac{${a1}^\\circ - ${a2}^\\circ}{2} = ${(a1-a2)/2}^\\circ$.`, visual: "externalAngle"
-    }
-}
-
-// 18. Периферен ъгъл
-function qPeripheralAngle() {
-    let arc = rnd(4, 14)*10;
-    let ok = `$${arc/2}^\\circ$`;
-    let ds = [`$${arc}^\\circ$`, `$${180-arc/2}^\\circ$`, `$${90-arc/2}^\\circ$`]; 
-    return {
-        type: "Периферен ъгъл", difficulty: "Средна", 
-        q: `През точка $T$ от окръжност са построени хорда $TA$ и допирателна $p$. Ако съответната дъга $\\widehat{TA}$, намираща се във вътрешността на периферния ъгъл, има мярка ${arc}^\\circ$, да се намери мярката на този периферен ъгъл.`,
-        ...makeOptions(ok, ds),
-        explain: `Съгласно теоремата, периферният ъгъл се измерва с половината от мярката на прилежащата му дъга: $\\frac{${arc}^\\circ}{2} = ${arc/2}^\\circ$.`, visual: "peripheralAngle"
-    }
-}
-
-// 19. Вписан ъгъл и диаметър (Теорема на Талес)
-function qThalesTheorem() {
-    let a = choice([25, 30, 35, 40, 50, 55, 60]);
-    let b = 90 - a;
-    let ok = `$${b}^\\circ$`;
-    let ds = [`$${a}^\\circ$`, `$${90+a}^\\circ$`, `$${180-a}^\\circ$`, `$90^\\circ$`];
-    return {
-        type: "Свойства на диаметъра", difficulty: "Средна", 
-        q: `В окръжност е построен диаметър $AB$. Точка $C$ лежи на окръжността, като по-малката дъга $\\widehat{BC}$ има мярка ${2*a}^\\circ$ (т.е. $\\angle BAC = ${a}^\\circ$). Да се намери мярката на $\\angle ABC$.`,
-        ...makeOptions(ok, ds),
-        explain: `Тъй като хордата $AB$ е диаметър, вписаният $\\angle ACB$ се опира на полуокръжност и следователно е прав ($\\angle ACB = 90^\\circ$). Сумата от ъглите в $\\triangle ABC$ е $180^\\circ$, откъдето $\\angle ABC = 90^\\circ - ${a}^\\circ = ${b}^\\circ$.`, visual: "thales"
-    }
-}
-
-// 20. Взаимно положение на права и окръжност
-function qLineCirclePos() {
-    let r = rnd(5, 12), diff = rnd(1, 4), type = rnd(1, 3);
-    let d, ans, explain_text;
-    if (type === 1) { d = r - diff; ans = "2 (пресичат се)"; explain_text = "по-малко от радиуса ($d < r$)"; }
-    else if (type === 2) { d = r; ans = "1 (допират се)"; explain_text = "равно на радиуса ($d = r$)"; }
-    else { d = r + diff; ans = "0 (нямат общи точки)"; explain_text = "по-голямо от радиуса ($d > r$)"; }
+/* ----- 5.  Перпендикулярни хорди през точка от окръжността ----- */
+function qPerpChords(){
+    // Геометрия:
+    // През точка K от окръжността с център O са построени две взаимно
+    // перпендикулярни хорди KP и KQ. Тогава вписаният ъгъл ∠PKQ = 90°,
+    // следователно PQ е диаметър.
+    //
+    // Нека M е средата на KP, N — средата на KQ. Тогава OM⊥KP и ON⊥KQ.
+    // Четириъгълникът OMKN е правоъгълник (с три прави ъгъла), затова:
+    //   d(O, KP) = ON = KN = KQ/2
+    //   d(O, KQ) = OM = KM = KP/2
+    //
+    // Числови случаи (питагорови тройки KP, KQ, диаметър = 2R):
+    const triples = [
+        {KP:6,  KQ:8,  diam:10},   // 3-4-5
+        {KP:5,  KQ:12, diam:13},   // 5-12-13
+        {KP:8,  KQ:6,  diam:10},
+        {KP:12, KQ:5,  diam:13},
+        {KP:8,  KQ:15, diam:17},
+        {KP:9,  KQ:12, diam:15},   // 3-4-5 × 3
+    ];
+    const t = choice(triples);
     
-    let ds = ["2 (пресичат се)", "1 (допират се)", "0 (нямат общи точки)", "безброй много"].filter(x=>x!==ans);
-    return {
-        type: "Взаимно положение", difficulty: "Лесна", 
-        q: `Дадена е окръжност с радиус $r = ${r} \\text{ cm}$ и права $a$. Ако разстоянието от центъра на окръжността до правата е $d = ${d} \\text{ cm}$, да се устави взаимното положение на правата и окръжността (броят на общите им точки).`,
-        ...makeOptions(ans, ds),
-        explain: `Тъй като разстоянието $d = ${d}$ е ${explain_text}, правата и окръжността имат ${ans}.`, visual: "lineCircle"
-    }
-}
-
-// 21. Взаимно положение на две окръжности
-function qTwoCirclesPos() {
-    let r1 = rnd(6, 10), r2 = rnd(2, 5), type = rnd(1, 4);
-    let d, ans, explain_text;
-    if(type===1) { d = r1+r2+rnd(2,4); ans="външни (нямат общи точки)"; explain_text = `$d > r_1 + r_2$ (${d} > ${r1+r2})`; }
-    else if(type===2) { d = r1+r2; ans="външно допиращи се (1 точка)"; explain_text = `$d = r_1 + r_2$ (${d} = ${r1+r2})`; }
-    else if(type===3) { d = r1+r2-rnd(1, r2-1); ans="пресичащи се (2 точки)"; explain_text = `$r_1 - r_2 < d < r_1 + r_2$ (${r1-r2} < ${d} < ${r1+r2})`; }
-    else { d = r1-r2; ans="вътрешно допиращи се (1 точка)"; explain_text = `$d = r_1 - r_2$ (${d} = ${r1-r2})`; }
+    // Две възможни постановки:
+    // (А) Дадена е дължина на едната хорда — търсим разстояние до ДРУГАТА
+    // (Б) Дадено е разстояние до едната хорда — търсим ДЪЛЖИНАТА на другата
+    const scenario = rnd(1,2);
     
-    let ds = ["външни (нямат общи точки)", "външно допиращи се (1 точка)", "пресичащи се (2 точки)", "вътрешно допиращи се (1 точка)"].filter(x=>x!==ans);
+    let q, okText, ds, explain;
+    
+    if(scenario === 1){
+        // (А): дадена е KP, търси се d(O, KQ) = KP/2
+        const givenLen = t.KP;
+        const distVal = t.KP/2;
+        const distStr = distVal % 1 === 0 ? distVal : distVal.toString().replace('.', ',');
+        okText = `$${distStr}$ см`;
+        ds = [
+            `$${givenLen}$ см`,
+            `$${givenLen*2}$ см`,
+            `$${(t.KQ)}$ см`
+        ];
+        q = `През точка $K$ от окръжност с център $O$ са построени две взаимно перпендикулярни хорди $KP$ и $KQ$. Ако $KP = ${givenLen}$ см, да се намери разстоянието от центъра $O$ до хордата $KQ$.`;
+        explain = `Тъй като $\\angle PKQ = 90^\\circ$ е вписан ъгъл, опиращ се на хордата $PQ$, то $PQ$ е диаметър. Перпендикулярите от центъра $O$ към хордите $KP$ и $KQ$ ги разполовяват. Получава се правоъгълник $OMKN$, откъдето разстоянието от $O$ до $KQ$ е равно на половината от $KP$, т.е. $\\frac{${givenLen}}{2} = ${distStr}$ см.`;
+    } else {
+        // (Б): дадено е d(O, KP) = KQ/2, търси се KQ (= другата хорда)
+        const distGiven = t.KQ/2;
+        const distGivenStr = distGiven % 1 === 0 ? distGiven : distGiven.toString().replace('.', ',');
+        const askLen = t.KQ;  // питаме за КQ — другата хорда
+        okText = `$${askLen}$ см`;
+        ds = [
+            `$${distGivenStr}$ см`,
+            `$${askLen*2}$ см`,
+            `$${askLen + 2}$ см`
+        ];
+        // Премахваме дубликати
+        ds = [...new Set(ds.filter(d => d !== okText))];
+        q = `През точка $K$ от окръжност с център $O$ са построени две взаимно перпендикулярни хорди $KP$ и $KQ$. Ако разстоянието от центъра $O$ до хордата $KP$ е $${distGivenStr}$ см, да се намери дължината на хордата $KQ$.`;
+        explain = `Тъй като $\\angle PKQ = 90^\\circ$ (вписан ъгъл, опиращ се на $PQ$), отсечката $PQ$ е диаметър. Перпендикулярите от $O$ към двете хорди заедно с двете полу-хорди образуват правоъгълник. Следователно разстоянието от $O$ до $KP$ е равно на половината от $KQ$. От $\\frac{KQ}{2} = ${distGivenStr}$ следва $KQ = ${askLen}$ см.`;
+    }
+    
     return {
-        type: "Взаимно положение", difficulty: "Средна", 
-        q: `Дадени са две окръжности с радиуси $r_1 = ${r1} \\text{ cm}$ и $r_2 = ${r2} \\text{ cm}$. Ако разстоянието между техните центрове е $d = ${d} \\text{ cm}$, да се определи взаимното положение на двете окръжности.`,
-        ...makeOptions(ans, ds),
-        explain: `Установява се чрез сравняване на разстоянието със сбора и разликата на радиусите: ${explain_text}. Следователно окръжностите са ${ans.split(" (")[0]}.`, visual: "twoCircles"
+        type:'Хорди в окръжност', difficulty:'Средна',
+        q: q,
+        ...makeOptions(okText, ds),
+        explain: explain,
+        visual:'chordsPerpThroughPoint'
+    };
+}
+
+/* ----- 6.  Пресичащи се хорди + външна точка (ъгли) ----- */
+function qIntersectingChordsAngles(){
+    // Хордите AC и BD се пресичат в Q (вътре), правите AB и CD се пресичат в M (вън).
+    // Главни формули:
+    // ∠AQD = (дъга AD + дъга BC) / 2
+    // ∠BMC = |дъга AD - дъга BC| / 2     (приемаме дъга AD > дъга BC)
+    // ∠ABD = ∠ACD = дъга AD / 2  (вписани, опират на AD)
+    // ∠BAC = ∠BDC = дъга BC / 2  (вписани, опират на BC)
+    
+    // Избираме мерките на дъгите AD и BC
+    const arcAD = rnd(8,18)*10;   // 80..180
+    const arcBC = rnd(2,7)*10;    // 20..70
+    if(arcAD <= arcBC) return qIntersectingChordsAngles();
+    
+    const angAQD = (arcAD + arcBC) / 2;
+    const angBMC = (arcAD - arcBC) / 2;
+    const angABD = arcAD / 2;       // = ∠ACD
+    const angBDC = arcBC / 2;       // = ∠BAC
+    
+    // Избираме какво е дадено и какво се търси
+    const scenario = rnd(1,2);
+    let q, ok, ds, explain;
+    
+    if(scenario===1){
+        // Дадени са ∠AQD и един от вписаните за BC
+        q = `В окръжност хордите $AC$ и $BD$ се пресичат в точка $Q$, а правите $AB$ и $CD$ — в точка $M$ (извън окръжността). Дадено е, че $\\angle AQD = ${angAQD}^\\circ$ и $\\angle BDC = ${angBDC}^\\circ$. Да се намерят $\\angle ABD$ и $\\angle BMC$.`;
+        ok = `$\\angle ABD = ${angABD}^\\circ;\\ \\angle BMC = ${angBMC}^\\circ$`;
+        ds = [
+            `$\\angle ABD = ${angBMC}^\\circ;\\ \\angle BMC = ${angABD}^\\circ$`,
+            `$\\angle ABD = ${angAQD}^\\circ;\\ \\angle BMC = ${angBDC}^\\circ$`,
+            `$\\angle ABD = ${arcAD}^\\circ;\\ \\angle BMC = ${arcBC}^\\circ$`
+        ];
+        explain = `$\\angle BDC$ е вписан ъгъл, опиращ се на дъга $BC$, затова $\\overset{\\frown}{BC} = 2\\cdot ${angBDC}^\\circ = ${arcBC}^\\circ$. Ъгълът $\\angle AQD$ е с връх вътре в окръжността: $\\angle AQD = \\frac{\\overset{\\frown}{AD}+\\overset{\\frown}{BC}}{2}$, откъдето $\\overset{\\frown}{AD} = 2\\cdot ${angAQD}^\\circ - ${arcBC}^\\circ = ${arcAD}^\\circ$. <br>$\\angle ABD$ е вписан и опира на дъга $AD$: $\\angle ABD = ${arcAD}^\\circ/2 = ${angABD}^\\circ$. <br>$\\angle BMC$ е с връх извън окръжността: $\\angle BMC = \\frac{${arcAD}^\\circ - ${arcBC}^\\circ}{2} = ${angBMC}^\\circ$.`;
+    } else {
+        // Дадени са ∠BMC и един от вписаните за AD
+        q = `В окръжност хордите $AC$ и $BD$ се пресичат в точка $Q$, а правите $AB$ и $CD$ — в точка $M$ (извън окръжността). Дадено е, че $\\angle BMC = ${angBMC}^\\circ$ и $\\angle ABD = ${angABD}^\\circ$. Да се намерят $\\angle AQD$ и $\\angle BDC$.`;
+        ok = `$\\angle AQD = ${angAQD}^\\circ;\\ \\angle BDC = ${angBDC}^\\circ$`;
+        ds = [
+            `$\\angle AQD = ${angBDC}^\\circ;\\ \\angle BDC = ${angAQD}^\\circ$`,
+            `$\\angle AQD = ${angABD}^\\circ;\\ \\angle BDC = ${angBMC}^\\circ$`,
+            `$\\angle AQD = ${arcAD}^\\circ;\\ \\angle BDC = ${arcBC}^\\circ$`
+        ];
+        explain = `$\\angle ABD$ е вписан и опира на дъга $AD$: $\\overset{\\frown}{AD} = 2\\cdot ${angABD}^\\circ = ${arcAD}^\\circ$. Ъгълът $\\angle BMC$ е с връх извън окръжността: $\\angle BMC = \\frac{\\overset{\\frown}{AD}-\\overset{\\frown}{BC}}{2}$, откъдето $\\overset{\\frown}{BC} = ${arcAD}^\\circ - 2\\cdot ${angBMC}^\\circ = ${arcBC}^\\circ$. <br>$\\angle AQD = \\frac{${arcAD}^\\circ + ${arcBC}^\\circ}{2} = ${angAQD}^\\circ$ и $\\angle BDC = ${arcBC}^\\circ/2 = ${angBDC}^\\circ$.`;
+    }
+    
+    return {
+        type:'Хорди и ъгли в окръжност', difficulty:'Висока',
+        q:q, ...makeOptions(ok, ds),
+        explain:explain, visual:'chordsIntersect'
+    };
+}
+
+/* ----- 7.  Допирателна и секуща, отношение на дъги ----- */
+function qTangentSecantWithRatio(){
+    // Точки M, A, B на окръжност, t допирателна в M, AB и t се пресичат в Q.
+    // ∠AMB = α (вписан, опира на дъга AB)
+    // дъга AB = 2α
+    // дъгата извън AB = 360 - 2α, разделя се на дъга MA и дъга MB в отношение m:n
+    
+    const alpha = choice([50, 60, 70, 80]);
+    const ratios = [[1,3], [2,3], [1,4], [3,5]];
+    const [m, n] = choice(ratios);
+    
+    const arcAB = 2 * alpha;
+    const rest = 360 - arcAB;
+    const arcMA = m * rest / (m + n);
+    const arcMB = n * rest / (m + n);
+    
+    if(arcMA<=0 || arcMB<=0) return qTangentSecantWithRatio();
+    
+    const angMBA = arcMA / 2;       // вписан, опира на дъга MA
+    const angMOB = arcMB;           // централен, дъга MB
+    const angAMQ = arcMA / 2;       // ъгъл между допирателна и хорда MA
+    const angBQM = Math.abs(arcMB - arcMA) / 2; // външен ъгъл при Q
+    
+    const fmt = v => {
+        if(v%1===0) return `${v}^\\circ`;
+        const whole = Math.floor(v);
+        const min = Math.round((v-whole)*60);
+        return `${whole}^\\circ${min}'`;
+    };
+    
+    const ok = `$\\angle MBA = ${fmt(angMBA)};\\ \\angle MOB = ${fmt(angMOB)};\\ \\angle AMQ = ${fmt(angAMQ)};\\ \\angle BQM = ${fmt(angBQM)}$`;
+    const ds = [
+        `$\\angle MBA = ${fmt(angMOB)};\\ \\angle MOB = ${fmt(angMBA)};\\ \\angle AMQ = ${fmt(angBQM)};\\ \\angle BQM = ${fmt(angAMQ)}$`,
+        `$\\angle MBA = ${fmt(arcMA)};\\ \\angle MOB = ${fmt(arcMB)};\\ \\angle AMQ = ${fmt(alpha)};\\ \\angle BQM = ${fmt(alpha/2)}$`,
+        `$\\angle MBA = ${fmt(angMBA+5)};\\ \\angle MOB = ${fmt(angMOB-5)};\\ \\angle AMQ = ${fmt(angAMQ+5)};\\ \\angle BQM = ${fmt(angBQM+5)}$`
+    ];
+    
+    return {
+        type:'Допирателна и секуща', difficulty:'Висока',
+        q:`Точките $M, A$ и $B$ лежат на окръжност с център $O$. Правата $t$ е допирателна в точка $M$, а правите $AB$ и $t$ се пресичат в точка $Q$. Дадено е, че $\\angle AMB = ${alpha}^\\circ$ и мерките на дъгите $\\overset{\\frown}{MA}$ и $\\overset{\\frown}{MB}$ (които не съдържат точката $A$ или $B$ съответно) се отнасят както $${m}:${n}$. Да се намерят мерките на $\\angle MBA$, $\\angle MOB$, $\\angle AMQ$ и $\\angle BQM$.`,
+        ...makeOptions(ok, ds),
+        explain:`$\\angle AMB$ е вписан и опира на дъга $\\overset{\\frown}{AB}$, така че $\\overset{\\frown}{AB}=2\\cdot ${alpha}^\\circ=${arcAB}^\\circ$. Остатъкът ${rest}^\\circ$ се разделя в отношение $${m}:${n}$, откъдето $\\overset{\\frown}{MA}=${arcMA}^\\circ$ и $\\overset{\\frown}{MB}=${arcMB}^\\circ$. <br>• $\\angle MBA$ е вписан в дъга $\\overset{\\frown}{MA}$: ${fmt(angMBA)}. <br>• $\\angle MOB$ е централен ъгъл за дъга $\\overset{\\frown}{MB}$: ${fmt(angMOB)}. <br>• $\\angle AMQ$ е ъгъл между допирателна и хорда $MA$: ${fmt(angAMQ)}. <br>• $\\angle BQM$ е външен ъгъл при $Q$ между допирателна и секуща: $\\frac{|\\overset{\\frown}{MB}-\\overset{\\frown}{MA}|}{2}=${fmt(angBQM)}$.`,
+        visual:'tangentSecant'
+    };
+}
+
+/* ============================================================
+   ============= НОВИ, ПО-ЛЕСНИ ГЕНЕРАТОРИ ===================
+   Квадратни уравнения (по-лесни типове, които не присъстват
+   в примерните варианти, но са важни за основната подготовка)
+   ============================================================ */
+
+/* ----- Е1) Просто квадратно: x² = a ----- */
+function qSimpleQuadratic(){
+    // x² = a, или (x - p)² = q
+    const variant = rnd(1,3);
+    let q, okText, ds, explain;
+    if(variant === 1){
+        // x² = a
+        const r = rnd(2,9);
+        const a = r*r;
+        q = `Да се намерят корените на уравнението: $x^2 = ${a}$.`;
+        okText = `$x_1 = ${r};\\ x_2 = -${r}$`;
+        ds = [
+            `$x = ${r}$`,
+            `$x_1 = ${a};\\ x_2 = -${a}$`,
+            `Няма реални корени`
+        ];
+        explain = `Когато $x^2 = ${a}$, корените са $x = \\pm\\sqrt{${a}} = \\pm ${r}$.`;
+    } else if(variant === 2){
+        // x² - a = 0
+        const r = rnd(2,8);
+        const a = r*r;
+        q = `Да се намерят корените на уравнението: $x^2 - ${a} = 0$.`;
+        okText = `$x_1 = ${r};\\ x_2 = -${r}$`;
+        ds = [
+            `$x = ${r}$`,
+            `$x = ${a}$`,
+            `Няма реални корени`
+        ];
+        explain = `Прехвърляме $-${a}$ от другата страна: $x^2 = ${a}$, откъдето $x = \\pm ${r}$.`;
+    } else {
+        // (x-p)² = q
+        const p = rnd(1,5);
+        const r = rnd(2,7);
+        const q2 = r*r;
+        q = `Да се намерят корените на уравнението: $(x - ${p})^2 = ${q2}$.`;
+        const r1 = p + r, r2 = p - r;
+        const [rA, rB] = r1 < r2 ? [r1, r2] : [r2, r1];
+        okText = `$x_1 = ${rA};\\ x_2 = ${rB}$`;
+        ds = [
+            `$x = ${p + r}$`,
+            `$x = ${p}$`,
+            `$x_1 = ${p};\\ x_2 = ${r}$`
+        ];
+        explain = `Извличаме корен от двете страни: $x - ${p} = \\pm ${r}$, откъдето $x_{1,2} = ${p} \\pm ${r}$, т.е. $x_1 = ${rA}$ и $x_2 = ${rB}$.`;
+    }
+    return {
+        type:'Квадратно уравнение', difficulty:'Лесна',
+        q: q,
+        ...makeOptions(okText, ds),
+        explain: explain,
+        visual:'simpleQuad'
+    };
+}
+
+/* ----- Е2) Непълно квадратно: ax² + bx = 0 ----- */
+function qIncompleteB(){
+    const a = choice([1,2,3,4]);
+    const b = choice([2,3,4,5,6,8,9,10]) * choice([-1,1]);
+    // ax² + bx = 0 → x(ax + b) = 0 → x = 0 или x = -b/a
+    const otherNum = -b;
+    const otherDen = a;
+    const g = gcd(Math.abs(otherNum), otherDen);
+    const num = otherNum / g, den = otherDen / g;
+    
+    let otherStr;
+    if(den === 1) otherStr = `${num}`;
+    else otherStr = `\\frac{${num}}{${den}}`;
+    
+    const bStr = b > 0 ? `+ ${b}x` : `- ${Math.abs(b)}x`;
+    const aStr = a === 1 ? '' : `${a}`;
+    
+    const okText = `$x_1 = 0;\\ x_2 = ${otherStr}$`;
+    const ds = [
+        `$x_1 = 0;\\ x_2 = ${-num}$`,
+        `$x = 0$`,
+        `Няма реални корени`
+    ];
+    
+    return {
+        type:'Квадратно уравнение', difficulty:'Лесна',
+        q: `Да се намерят корените на уравнението: $${aStr}x^2 ${bStr} = 0$.`,
+        ...makeOptions(okText, ds),
+        explain: `Изнасяме общия множител $x$ пред скоби: $x(${aStr}x ${b>0?'+ '+b:'- '+Math.abs(b)}) = 0$. Произведение е нула, когато поне един множител е нула: $x = 0$ или $${aStr}x ${b>0?'+ '+b:'- '+Math.abs(b)} = 0 \\Rightarrow x = ${otherStr}$.`,
+        visual: 'factor'
+    };
+}
+
+/* ----- Е3) x² - a² = 0 (разлагане на разлика на квадрати) ----- */
+function qIncompleteDiff(){
+    const r = rnd(2,9);
+    const a = r*r;
+    const okText = `$x_1 = ${r};\\ x_2 = -${r}$`;
+    const ds = [
+        `$x = ${r}$`,
+        `$x_1 = ${a};\\ x_2 = -${a}$`,
+        `Няма реални корени`
+    ];
+    return {
+        type:'Квадратно уравнение', difficulty:'Лесна',
+        q: `Да се намерят корените на уравнението: $x^2 - ${a} = 0$.`,
+        ...makeOptions(okText, ds),
+        explain: `Прилагаме формулата за разлика от квадрати: $x^2 - ${a} = (x - ${r})(x + ${r}) = 0$. Произведение е нула, когато $x - ${r} = 0$ или $x + ${r} = 0$, т.е. $x = \\pm ${r}$.`,
+        visual: 'factor'
+    };
+}
+
+/* ----- Е4) Квадратно с цели корени: x² + bx + c = 0 ----- */
+function qIntegerRoots(){
+    // Избираме два цели корена и формираме x² + bx + c = 0
+    const r1 = rnd(-6, 6);
+    let r2 = rnd(-6, 6);
+    if(r2 === r1) r2 = r1 + 1;
+    // По Виет: x² - (r1+r2)x + r1·r2 = 0
+    const bCoeff = -(r1 + r2);   // коеф пред x
+    const cCoeff = r1 * r2;
+    
+    const bStr = bCoeff === 0 ? '' : (bCoeff > 0 ? ` + ${bCoeff}x` : ` - ${Math.abs(bCoeff)}x`);
+    const cStr = cCoeff === 0 ? '' : (cCoeff > 0 ? ` + ${cCoeff}` : ` - ${Math.abs(cCoeff)}`);
+    if(bCoeff === 0 || cCoeff === 0) return qIntegerRoots();  // прескачаме твърде прости
+    
+    const [rA, rB] = r1 < r2 ? [r1, r2] : [r2, r1];
+    const okText = `$x_1 = ${rA};\\ x_2 = ${rB}$`;
+    const ds = [
+        `$x_1 = ${-rA};\\ x_2 = ${-rB}$`,
+        `$x_1 = ${rA + 1};\\ x_2 = ${rB - 1}$`,
+        `Няма реални корени`
+    ];
+    return {
+        type:'Квадратно уравнение', difficulty:'Лесна',
+        q: `Да се намерят корените на уравнението: $x^2${bStr}${cStr} = 0$.`,
+        ...makeOptions(okText, ds),
+        explain: `По формулите на Виет за $x^2 + px + q = 0$: $x_1 + x_2 = -p = ${-bCoeff}$ и $x_1\\cdot x_2 = q = ${cCoeff}$. Търсим два цели числа с тази сума и произведение: $x_1 = ${rA}$ и $x_2 = ${rB}$.`,
+        visual: 'factor'
+    };
+}
+
+/* ----- Е5) Виет (просто): намери x₁+x₂ и x₁·x₂ ----- */
+function qVietaSimple(){
+    // ax² + bx + c = 0, питаме за x₁+x₂ и x₁·x₂
+    const a = rnd(2, 4);
+    const b = rnd(-8, 8);
+    const c = rnd(-10, 10);
+    if(b === 0 || c === 0) return qVietaSimple();
+    // Проверка дискриминантата за реални корени (за яснота)
+    if(b*b - 4*a*c < 0) return qVietaSimple();
+    
+    // Виет: x₁+x₂ = -b/a, x₁·x₂ = c/a
+    const sumNum = -b, sumDen = a;
+    const gS = gcd(Math.abs(sumNum), sumDen);
+    const sN = sumNum / gS, sD = sumDen / gS;
+    const sumStr = sD === 1 ? `${sN}` : `\\frac{${sN}}{${sD}}`;
+    
+    const prodNum = c, prodDen = a;
+    const gP = gcd(Math.abs(prodNum), prodDen);
+    const pN = prodNum / gP, pD = prodDen / gP;
+    const prodStr = pD === 1 ? `${pN}` : `\\frac{${pN}}{${pD}}`;
+    
+    const bStr = b > 0 ? ` + ${b}x` : ` - ${Math.abs(b)}x`;
+    const cStr = c > 0 ? ` + ${c}` : ` - ${Math.abs(c)}`;
+    
+    const okText = `$x_1+x_2 = ${sumStr};\\ x_1 x_2 = ${prodStr}$`;
+    const ds = [
+        `$x_1+x_2 = ${-sN}${sD===1?'':'/'+sD};\\ x_1 x_2 = ${-pN}${pD===1?'':'/'+pD}$`,
+        `$x_1+x_2 = ${b};\\ x_1 x_2 = ${c}$`,
+        `$x_1+x_2 = ${prodStr};\\ x_1 x_2 = ${sumStr}$`
+    ];
+    return {
+        type:'Квадратно уравнение', difficulty:'Лесна',
+        q: `За уравнението $${a}x^2${bStr}${cStr} = 0$ да се намерят $x_1 + x_2$ и $x_1 \\cdot x_2$.`,
+        ...makeOptions(okText, ds),
+        explain: `По формулите на Виет за $ax^2 + bx + c = 0$: $x_1 + x_2 = -\\frac{b}{a} = -\\frac{${b}}{${a}} = ${sumStr}$ и $x_1\\cdot x_2 = \\frac{c}{a} = \\frac{${c}}{${a}} = ${prodStr}$.`,
+        visual: 'factor'
+    };
+}
+
+/* ============================================================
+   ============= НОВИ, ПО-ЛЕСНИ ГЕНЕРАТОРИ ===================
+   Окръжност (основни теми)
+   ============================================================ */
+
+/* ----- F) Взаимно положение на права и окръжност ----- */
+function qLineCirclePos(){
+    // Случаи: d < R (секуща), d = R (допирателна), d > R (няма общи точки)
+    const R = rnd(3, 10);
+    const variant = rnd(1, 3);
+    let d, ok, dsRaw;
+    if(variant === 1){
+        d = rnd(1, R - 1);
+        ok = 'правата е секуща (две общи точки)';
+    } else if(variant === 2){
+        d = R;
+        ok = 'правата е допирателна (една обща точка)';
+    } else {
+        d = R + rnd(1, 5);
+        ok = 'правата няма общи точки с окръжността';
+    }
+    dsRaw = [
+        'правата е секуща (две общи точки)',
+        'правата е допирателна (една обща точка)',
+        'правата няма общи точки с окръжността'
+    ];
+    
+    return {
+        type:'Взаимно положение', difficulty:'Лесна',
+        q: `Окръжност има радиус $R = ${R}$ см, а разстоянието от центъра ѝ до права $\\ell$ е $d = ${d}$ см. Да се определи взаимното положение на правата $\\ell$ и окръжността.`,
+        ...makeOptions(ok, dsRaw),
+        explain: `Сравняваме $d$ и $R$: <br>• $d < R$ → секуща; <br>• $d = R$ → допирателна; <br>• $d > R$ → няма общи точки. <br>В нашия случай $d = ${d}$ и $R = ${R}$, следователно ${ok}.`,
+        visual: 'lineCircle'
+    };
+}
+
+/* ----- G) Взаимно положение на две окръжности ----- */
+function qTwoCirclesPos(){
+    // Случаи: d > R₁+R₂, d = R₁+R₂, |R₁-R₂|<d<R₁+R₂, d = |R₁-R₂|, d < |R₁-R₂|
+    let R1 = rnd(2, 7);
+    let R2 = rnd(2, 7);
+    if(R1 === R2) R2 = R1 + 1;
+    if(R2 > R1){ const t = R1; R1 = R2; R2 = t; }  // R1 >= R2
+    const sum = R1 + R2;
+    const diff = R1 - R2;
+    
+    const variant = rnd(1, 5);
+    let d, ok;
+    if(variant === 1){
+        d = sum + rnd(1, 4);
+        ok = 'окръжностите нямат общи точки (външно разположени)';
+    } else if(variant === 2){
+        d = sum;
+        ok = 'окръжностите се допират външно (една обща точка)';
+    } else if(variant === 3){
+        // Пресичащи: трябва diff < d < sum
+        if(sum - diff <= 2){ // твърде малък интервал
+            return qTwoCirclesPos();
+        }
+        d = diff + rnd(1, sum - diff - 1);
+        ok = 'окръжностите се пресичат (две общи точки)';
+    } else if(variant === 4){
+        d = diff;
+        if(d === 0) return qTwoCirclesPos();  // конкентрични не са вътрешно допиращи
+        ok = 'окръжностите се допират вътрешно (една обща точка)';
+    } else {
+        d = diff > 0 ? rnd(0, diff - 1) : 0;
+        if(d === 0) ok = 'окръжностите са концентрични (нямат общи точки)';
+        else ok = 'едната окръжност е разположена изцяло вътре в другата (нямат общи точки)';
+    }
+    
+    const dsRaw = [
+        'окръжностите нямат общи точки (външно разположени)',
+        'окръжностите се допират външно (една обща точка)',
+        'окръжностите се пресичат (две общи точки)',
+        'окръжностите се допират вътрешно (една обща точка)'
+    ];
+    
+    return {
+        type:'Взаимно положение', difficulty:'Лесна',
+        q: `Дадени са две окръжности с радиуси $R_1 = ${R1}$ см и $R_2 = ${R2}$ см. Разстоянието между центровете им е $d = ${d}$ см. Да се определи взаимното им положение.`,
+        ...makeOptions(ok, dsRaw),
+        explain: `Сравняваме $d$ с $R_1+R_2 = ${sum}$ и $|R_1-R_2| = ${diff}$. <br>• $d > R_1+R_2$ → външно без общи; <br>• $d = R_1+R_2$ → външно допирателни; <br>• $|R_1-R_2| < d < R_1+R_2$ → пресичащи; <br>• $d = |R_1-R_2|$ → вътрешно допирателни; <br>• $d < |R_1-R_2|$ → една в друга. <br>За $d = ${d}$: ${ok}.`,
+        visual: 'twoCircles'
+    };
+}
+
+/* ----- H) Централен и вписан ъгъл върху същата дъга ----- */
+function qCentralInscribed(){
+    // Връзка: централен = 2 × вписан върху същата дъга
+    const variant = rnd(1, 2);
+    let q, okText, ds, explain;
+    
+    if(variant === 1){
+        // Даден централен, питаме вписан
+        const central = rnd(3, 16) * 10;  // 30..160°
+        const inscribed = central / 2;
+        q = `В окръжност централният ъгъл $\\angle AOB = ${central}^\\circ$. Точка $M$ лежи на голямата дъга $\\overset{\\frown}{AB}$. Да се намери вписаният ъгъл $\\angle AMB$.`;
+        okText = `$\\angle AMB = ${inscribed}^\\circ$`;
+        ds = [
+            `$\\angle AMB = ${central}^\\circ$`,
+            `$\\angle AMB = ${2*central}^\\circ$`,
+            `$\\angle AMB = ${180-central}^\\circ$`
+        ];
+        explain = `Вписаният ъгъл е равен на половината от централния ъгъл, опиращ се на същата дъга: $\\angle AMB = \\frac{\\angle AOB}{2} = \\frac{${central}^\\circ}{2} = ${inscribed}^\\circ$.`;
+    } else {
+        // Даден вписан, питаме централен
+        const inscribed = rnd(2, 8) * 10;  // 20..80°
+        const central = 2 * inscribed;
+        q = `В окръжност с център $O$ вписаният ъгъл $\\angle AMB = ${inscribed}^\\circ$ опира на хордата $AB$. Да се намери централният ъгъл $\\angle AOB$.`;
+        okText = `$\\angle AOB = ${central}^\\circ$`;
+        ds = [
+            `$\\angle AOB = ${inscribed}^\\circ$`,
+            `$\\angle AOB = ${inscribed/2}^\\circ$`,
+            `$\\angle AOB = ${180-inscribed}^\\circ$`
+        ];
+        explain = `Централният ъгъл е два пъти по-голям от вписания ъгъл, опиращ се на същата дъга: $\\angle AOB = 2 \\cdot \\angle AMB = 2 \\cdot ${inscribed}^\\circ = ${central}^\\circ$.`;
+    }
+    
+    return {
+        type:'Централен и вписан ъгъл', difficulty:'Лесна',
+        q: q,
+        ...makeOptions(okText, ds),
+        explain: explain,
+        visual:'centralInscribed'
+    };
+}
+
+/* ----- I) Вписан ъгъл върху диаметър ----- */
+function qDiameterAngle(){
+    // AB е диаметър, C е на окръжността → ∠ACB = 90°
+    // Дадени са катетите или един катет + хипотенуза, или ъгъл
+    const variant = rnd(1, 3);
+    let q, okText, ds, explain;
+    
+    if(variant === 1){
+        // Даден един ъгъл (различен от 90°), питаме другия остър ъгъл
+        const angA = rnd(2, 7) * 10;  // 20..70°
+        const angB = 90 - angA;
+        q = `Точките $A$, $B$, $C$ лежат на окръжност, като $AB$ е диаметър. Дадено е, че $\\angle BAC = ${angA}^\\circ$. Да се намерят ъглите $\\angle ACB$ и $\\angle ABC$.`;
+        okText = `$\\angle ACB = 90^\\circ;\\ \\angle ABC = ${angB}^\\circ$`;
+        ds = [
+            `$\\angle ACB = ${angA}^\\circ;\\ \\angle ABC = 90^\\circ$`,
+            `$\\angle ACB = ${angB}^\\circ;\\ \\angle ABC = 90^\\circ$`,
+            `$\\angle ACB = ${2*angA}^\\circ;\\ \\angle ABC = ${angA}^\\circ$`
+        ];
+        explain = `Вписаният ъгъл $\\angle ACB$ опира на диаметъра $AB$, следователно $\\angle ACB = 90^\\circ$. Тогава от сбора на ъглите в $\\triangle ABC$: $\\angle ABC = 180^\\circ - 90^\\circ - ${angA}^\\circ = ${angB}^\\circ$.`;
+    } else if(variant === 2){
+        // Питагорови тройки: дадени са катетите, питаме диаметъра
+        const triples = [{a:3,b:4,c:5}, {a:6,b:8,c:10}, {a:5,b:12,c:13}, {a:8,b:15,c:17}, {a:9,b:12,c:15}];
+        const t = choice(triples);
+        q = `Точките $A$, $B$, $C$ лежат на окръжност с център $O$, като $AB$ е диаметър. Дадено е, че $AC = ${t.a}$ см и $BC = ${t.b}$ см. Да се намери радиусът $R$ на окръжността.`;
+        const R = t.c/2;
+        const Rstr = R % 1 === 0 ? `${R}` : R.toString().replace('.', ',');
+        okText = `$R = ${Rstr}$ см`;
+        ds = [
+            `$R = ${t.c}$ см`,
+            `$R = ${t.a + t.b}$ см`,
+            `$R = ${Math.max(t.a, t.b)}$ см`
+        ];
+        explain = `Тъй като $AB$ е диаметър, $\\angle ACB = 90^\\circ$. По питагоровата теорема в $\\triangle ABC$: $AB = \\sqrt{AC^2 + BC^2} = \\sqrt{${t.a*t.a} + ${t.b*t.b}} = \\sqrt{${t.c*t.c}} = ${t.c}$ см. Радиусът е $R = \\frac{AB}{2} = ${Rstr}$ см.`;
+    } else {
+        // Даден диаметър и един катет, питаме другия катет
+        const triples = [{a:3,b:4,c:5}, {a:6,b:8,c:10}, {a:5,b:12,c:13}, {a:8,b:15,c:17}];
+        const t = choice(triples);
+        q = `В окръжност с диаметър $AB = ${t.c}$ см е вписан $\\triangle ABC$ ($C$ е на окръжността). Ако $AC = ${t.a}$ см, да се намери $BC$.`;
+        okText = `$BC = ${t.b}$ см`;
+        ds = [
+            `$BC = ${t.c - t.a}$ см`,
+            `$BC = ${t.a}$ см`,
+            `$BC = ${t.c}$ см`
+        ];
+        explain = `Вписаният ъгъл $\\angle ACB$ опира на диаметъра $AB$, така че $\\angle ACB = 90^\\circ$. По питагоровата теорема: $BC = \\sqrt{AB^2 - AC^2} = \\sqrt{${t.c*t.c} - ${t.a*t.a}} = \\sqrt{${t.b*t.b}} = ${t.b}$ см.`;
+    }
+    
+    return {
+        type:'Триъгълник в окръжност', difficulty:'Лесна',
+        q: q,
+        ...makeOptions(okText, ds),
+        explain: explain,
+        visual:'diameterAngle'
+    };
+}
+
+/* ----- J) Разстояние от център до хорда ----- */
+function qChordDistanceFromCenter(){
+    // R² = d² + (хорда/2)²
+    const triples = [{half:3, d:4, R:5}, {half:6, d:8, R:10}, {half:5, d:12, R:13},
+                     {half:9, d:12, R:15}, {half:8, d:15, R:17}, {half:4, d:3, R:5}];
+    const t = choice(triples);
+    const chord = 2 * t.half;
+    
+    const variant = rnd(1, 3);
+    let q, okText, ds, explain;
+    
+    if(variant === 1){
+        // Дадени радиус и разстояние, питаме хорда
+        q = `Окръжност с център $O$ има радиус $R = ${t.R}$ см. Разстоянието от $O$ до хорда $AB$ е $${t.d}$ см. Да се намери дължината на хордата $AB$.`;
+        okText = `$AB = ${chord}$ см`;
+        ds = [
+            `$AB = ${t.half}$ см`,
+            `$AB = ${t.R + t.d}$ см`,
+            `$AB = ${Math.abs(t.R - t.d)}$ см`
+        ];
+        explain = `Перпендикулярът от $O$ към $AB$ разполовява хордата. По питагоровата теорема в правоъгълния триъгълник с хипотенуза $R$: $\\left(\\frac{AB}{2}\\right)^2 = R^2 - d^2 = ${t.R*t.R} - ${t.d*t.d} = ${t.half*t.half}$, откъдето $\\frac{AB}{2} = ${t.half}$ и $AB = ${chord}$ см.`;
+    } else if(variant === 2){
+        // Дадени радиус и хорда, питаме разстояние
+        q = `Окръжност с център $O$ има радиус $R = ${t.R}$ см. Дължината на хорда $AB$ е $${chord}$ см. Да се намери разстоянието от центъра $O$ до хордата $AB$.`;
+        okText = `$${t.d}$ см`;
+        ds = [
+            `$${t.half}$ см`,
+            `$${t.R}$ см`,
+            `$${chord/2 + 1}$ см`
+        ];
+        explain = `Перпендикулярът от $O$ към $AB$ разполовява хордата на две части по $\\frac{AB}{2} = ${t.half}$ см. По питагоровата теорема: $d^2 = R^2 - \\left(\\frac{AB}{2}\\right)^2 = ${t.R*t.R} - ${t.half*t.half} = ${t.d*t.d}$, откъдето $d = ${t.d}$ см.`;
+    } else {
+        // Дадени хорда и разстояние, питаме радиус
+        q = `Хорда $AB$ в окръжност с център $O$ има дължина $${chord}$ см, а разстоянието от $O$ до $AB$ е $${t.d}$ см. Да се намери радиусът $R$ на окръжността.`;
+        okText = `$R = ${t.R}$ см`;
+        ds = [
+            `$R = ${chord}$ см`,
+            `$R = ${t.half + t.d}$ см`,
+            `$R = ${chord + t.d}$ см`
+        ];
+        explain = `Перпендикулярът от центъра до хордата я разполовява. По питагоровата теорема: $R^2 = d^2 + \\left(\\frac{AB}{2}\\right)^2 = ${t.d*t.d} + ${t.half*t.half} = ${t.R*t.R}$, откъдето $R = ${t.R}$ см.`;
+    }
+    
+    return {
+        type:'Разстояние от център до хорда', difficulty:'Лесна',
+        q: q,
+        ...makeOptions(okText, ds),
+        explain: explain,
+        visual: 'chordDistance'
+    };
+}
+
+/* ============================================================
+   ГЕНЕРИРАНЕ НА ТЕСТ
+   30 задачи: 15 за квадратни уравнения + 15 за окръжност
+   ============================================================ */
+function generate(){
+    // Пълни планове (когато TOTAL = 30): 15 алгебра + 15 геометрия.
+    // При по-малки тестове броят се намалява пропорционално (приблизително наполовина за всяка тема),
+    // като приоритетно се пазят задачите от примерните варианти.
+
+    // === КВАДРАТНИ УРАВНЕНИЯ — пълен пул от 15 ===
+    const quadraticPlan = [
+        // Лесни (6):
+        qSimpleQuadratic, qSimpleQuadratic,
+        qIncompleteB, qIncompleteDiff, qIntegerRoots, qVietaSimple,
+        // От примерните варианти (9):
+        qReducibleToQuadratic, qReducibleType2, qBiquadratic, qSubstitution,
+        qFactorTrinomial, qFactorTrinomial,
+        qDiscriminant, qVietaExpression, qParameterRoot
+    ];
+
+    // === ОКРЪЖНОСТ — пълен пул от 15 ===
+    // 5 лесни (нови типове) + 10 от примерните варианти
+    const circlePlan = [
+        // Лесни (5) — по една от всеки тип:
+        qLineCirclePos, qTwoCirclesPos, qCentralInscribed,
+        qDiameterAngle, qChordDistanceFromCenter,
+        // От примерните варианти (10):
+        qPerpChords, qPerpChords,
+        qIntersectingChordsAngles, qIntersectingChordsAngles,
+        qIntersectingChordsAngles, qIntersectingChordsAngles,
+        qTangentSecantWithRatio, qTangentSecantWithRatio,
+        qTangentSecantWithRatio, qTangentSecantWithRatio
+    ];
+
+    // === Адаптираме броя ===
+    // Делим TOTAL приблизително наполовина между алгебра и геометрия (с приоритет на алгебрата при нечетен брой).
+    const halfA = Math.ceil(TOTAL / 2);
+    const halfG = TOTAL - halfA;
+
+    // Вземаме по halfA задачи от quadraticPlan и halfG от circlePlan.
+    // Ако броят надвишава наличните, повтаряме (всеки генератор рандомизира числата).
+    const pickN = (pool, n) => {
+        if(n <= pool.length){
+            return shuffle(pool).slice(0, n);
+        }
+        const out = [...pool];
+        while(out.length < n) out.push(pool[Math.floor(Math.random()*pool.length)]);
+        return shuffle(out);
+    };
+
+    const planMerged = [...pickN(quadraticPlan, halfA), ...pickN(circlePlan, halfG)];
+    return planMerged.map(fn => fn());
+}
+
+/* ============================================================
+   ИНТЕРФЕЙС НА ТЕСТА
+   ============================================================ */
+function initDots(){
+    dots.innerHTML="";
+    for(let i=0;i<TOTAL;i++){
+        const b=document.createElement("button");
+        b.className="dot";
+        b.textContent=i+1;
+        b.onclick=()=>jump(i);
+        dots.appendChild(b);
     }
 }
 
+function initPuzzle(){
+    puzzleBoard.innerHTML="";
+    for(let i=0;i<TOTAL;i++){
+        const t=document.createElement("div");
+        t.className="tile";
+        puzzleBoard.appendChild(t);
+    }
+}
 
-function initDots(){dots.innerHTML="";for(let i=0;i<TOTAL;i++){let b=document.createElement("button");b.className="dot";b.textContent=i+1;b.onclick=()=>jump(i);dots.appendChild(b)}}
-function initPuzzle(){puzzleBoard.innerHTML="";for(let i=0;i<TOTAL;i++){let t=document.createElement("div"),col=i%6,row=Math.floor(i/6);t.className="tile";t.style.setProperty("--pos",`${col*20}% ${row*25}%`);puzzleBoard.appendChild(t)}}
-function reveal(i){let tiles=[...puzzleBoard.children];if(tiles[i])tiles[i].classList.add("revealed")}
-function nextUnanswered(){for(let i=current+1;i<TOTAL;i++)if(!answers[i])return i;for(let i=0;i<current;i++)if(!answers[i])return i;return-1}
-function jump(i){if(!started)return;current=i;render()}
-function update(){let answeredCount=answers.filter(Boolean).length;statQuestion.textContent=started?`${current+1}/${TOTAL}`:`0/${TOTAL}`;statScore.textContent=Math.round(score);statCorrect.textContent=correct;statLevel.textContent=score>=90?"Отличен":score>=70?"Мн. добър":score>=50?"Добър":started?"В процес":"Старт";progress.style.width=started?`${answeredCount/TOTAL*100}%`:"0%";[...dots.children].forEach((d,i)=>{d.className="dot";if(answers[i])d.classList.add(answers[i].ok?"correct":"wrong");if(started&&i===current)d.classList.add("active")})}
+function reveal(i){
+    const tiles=[...puzzleBoard.children];
+    if(tiles[i]){
+        tiles[i].classList.add("revealed");
+        tiles[i].textContent = "✓";
+    }
+}
 
-// Красиви, напълно абстрактни анимирани графики за алгебра и реални чертежи за геометрия
-function visual(type){const v={
-    infinity: `<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="gradInf" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#38bdf8" />
-            <stop offset="50%" stop-color="#818cf8" />
-            <stop offset="100%" stop-color="#e879f9" />
-          </linearGradient>
-        </defs>
-        <path d="M 150 90 C 150 30, 230 30, 230 90 C 230 150, 310 150, 310 90 C 310 30, 230 30, 230 90 C 230 150, 150 150, 150 90 Z" fill="none" stroke="url(#gradInf)" stroke-width="4" stroke-dasharray="1000" stroke-dashoffset="1000">
-          <animate attributeName="stroke-dashoffset" values="1000; 0" dur="4s" repeatCount="indefinite" />
-        </path>
-        <circle cx="230" cy="90" r="4" fill="#fff">
-            <animate attributeName="opacity" values="0.2; 1; 0.2" dur="2s" repeatCount="indefinite"/>
-        </circle>
-    </svg>`,
-    polygons: `<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(230, 90)">
-          <polygon points="0,-45 39,-22.5 39,22.5 0,45 -39,22.5 -39,-22.5" fill="none" stroke="#2dd4bf" stroke-width="2" opacity="0.6">
-            <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="15s" repeatCount="indefinite" />
-          </polygon>
-          <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" fill="none" stroke="#fbbf24" stroke-width="3">
-            <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="10s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0.3; 1; 0.3" dur="3s" repeatCount="indefinite" />
-          </polygon>
-          <circle cx="0" cy="0" r="10" fill="#f43f5e">
-              <animateTransform attributeName="transform" type="scale" values="1; 1.5; 1" dur="2s" repeatCount="indefinite"/>
-          </circle>
-        </g>
-    </svg>`,
-    wave: `<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="gradWave" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#f472b6" />
-            <stop offset="100%" stop-color="#3b82f6" />
-          </linearGradient>
-        </defs>
-        <path d="M -50 90 Q 57 30, 115 90 T 230 90 T 345 90 T 460 90 T 510 90" fill="none" stroke="url(#gradWave)" stroke-width="4">
-          <animate attributeName="d" values="M -50 90 Q 57 30, 115 90 T 230 90 T 345 90 T 460 90 T 510 90; M -50 90 Q 57 150, 115 90 T 230 90 T 345 90 T 460 90 T 510 90; M -50 90 Q 57 30, 115 90 T 230 90 T 345 90 T 460 90 T 510 90" dur="4s" repeatCount="indefinite" />
-        </path>
-        <path d="M -50 90 Q 57 150, 115 90 T 230 90 T 345 90 T 460 90 T 510 90" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2">
-          <animate attributeName="d" values="M -50 90 Q 57 150, 115 90 T 230 90 T 345 90 T 460 90 T 510 90; M -50 90 Q 57 30, 115 90 T 230 90 T 345 90 T 460 90 T 510 90; M -50 90 Q 57 150, 115 90 T 230 90 T 345 90 T 460 90 T 510 90" dur="4s" repeatCount="indefinite" />
-        </path>
-    </svg>`,
-    orbits: `<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="230" cy="90" r="35" fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="10 6">
-          <animateTransform attributeName="transform" type="rotate" from="0 230 90" to="360 230 90" dur="6s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="230" cy="90" r="55" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="15 10">
-          <animateTransform attributeName="transform" type="rotate" from="360 230 90" to="0 230 90" dur="10s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="230" cy="90" r="75" fill="none" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="20 15">
-          <animateTransform attributeName="transform" type="rotate" from="0 230 90" to="360 230 90" dur="14s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="230" cy="90" r="15" fill="#fcd34d">
-            <animate attributeName="r" values="12; 18; 12" dur="3s" repeatCount="indefinite"/>
-        </circle>
-    </svg>`,
-    hexagons: `<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(230, 90)">
-           <path d="M 0 -40 L 34.6 -20 L 34.6 20 L 0 40 L -34.6 20 L -34.6 -20 Z" fill="none" stroke="#f472b6" stroke-width="3" opacity="0.8">
-             <animateTransform attributeName="transform" type="scale" values="0.8; 1.8; 0.8" dur="4s" repeatCount="indefinite" />
-             <animate attributeName="opacity" values="0.8; 0; 0.8" dur="4s" repeatCount="indefinite" />
-           </path>
-           <path d="M 0 -40 L 34.6 -20 L 34.6 20 L 0 40 L -34.6 20 L -34.6 -20 Z" fill="none" stroke="#60a5fa" stroke-width="3">
-             <animateTransform attributeName="transform" type="scale" values="0.4; 1.2; 0.4" dur="4s" repeatCount="indefinite" />
-           </path>
-           <path d="M 0 -40 L 34.6 -20 L 34.6 20 L 0 40 L -34.6 20 L -34.6 -20 Z" fill="#c084fc" opacity="0.2">
-             <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite" />
-           </path>
-        </g>
-    </svg>`,
-    angles:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="79" r="56" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="5"/><circle cx="230" cy="79" r="5" fill="#fff"/><text x="218" y="73" font-size="17" font-weight="900" fill="#fff">O</text><circle cx="181" cy="52" r="5" fill="#ef4444"/><circle cx="279" cy="52" r="5" fill="#ef4444"/><circle cx="230" cy="135" r="5" fill="#ef4444"/><text x="166" y="48" font-size="17" font-weight="900" fill="#fff">A</text><text x="286" y="48" font-size="17" font-weight="900" fill="#fff">B</text><text x="232" y="153" font-size="17" font-weight="900" fill="#fff">C</text><line x1="230" y1="79" x2="181" y2="52" stroke="#f97316" stroke-width="5"/><line x1="230" y1="79" x2="279" y2="52" stroke="#f97316" stroke-width="5"/><line x1="230" y1="135" x2="181" y2="52" stroke="#22c55e" stroke-width="4"/><line x1="230" y1="135" x2="279" y2="52" stroke="#22c55e" stroke-width="4"/></svg>`,
-    chords:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="79" r="56" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="5"/><line x1="180" y1="52" x2="280" y2="106" stroke="#f97316" stroke-width="4"/><line x1="180" y1="106" x2="280" y2="52" stroke="#22c55e" stroke-width="4"/><circle cx="230" cy="79" r="4" fill="#fff"/><text x="165" y="48" font-size="16" font-weight="900" fill="#fff">A</text><text x="285" y="122" font-size="16" font-weight="900" fill="#fff">B</text><text x="165" y="122" font-size="16" font-weight="900" fill="#fff">C</text><text x="285" y="48" font-size="16" font-weight="900" fill="#fff">D</text><text x="215" y="98" font-size="16" font-weight="900" fill="#fff">M</text></svg>`,
-    externalAngle:`<svg class="svg" viewBox="0 0 460 158"><circle cx="250" cy="79" r="50" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/><circle cx="250" cy="79" r="4" fill="#fff"/><line x1="100" y1="79" x2="290" y2="40" stroke="#f97316" stroke-width="3"/><line x1="100" y1="79" x2="290" y2="118" stroke="#22c55e" stroke-width="3"/><circle cx="100" cy="79" r="5" fill="#ef4444"/><text x="80" y="84" font-size="16" font-weight="900" fill="#fff">P</text><text x="300" y="38" font-size="16" font-weight="900" fill="#fff">A</text><text x="300" y="128" font-size="16" font-weight="900" fill="#fff">B</text><text x="195" y="55" font-size="16" font-weight="900" fill="#fff">C</text><text x="195" y="115" font-size="16" font-weight="900" fill="#fff">D</text></svg>`,
-    peripheralAngle:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="70" r="50" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/><line x1="120" y1="120" x2="340" y2="120" stroke="#f97316" stroke-width="4"/><line x1="230" y1="120" x2="270" y2="40" stroke="#22c55e" stroke-width="4"/><circle cx="230" cy="120" r="5" fill="#ef4444"/><circle cx="230" cy="70" r="4" fill="#fff"/><text x="225" y="140" font-size="16" font-weight="900" fill="#fff">T</text><text x="275" y="35" font-size="16" font-weight="900" fill="#fff">A</text><text x="130" y="140" font-size="16" font-weight="900" fill="#fff">p</text></svg>`,
-    thales:`<svg class="svg" viewBox="0 0 460 158"><circle cx="230" cy="82" r="54" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="5"/><line x1="176" y1="82" x2="284" y2="82" stroke="#f97316" stroke-width="5"/><line x1="176" y1="82" x2="231" y2="28" stroke="#22c55e" stroke-width="4"/><line x1="284" y1="82" x2="231" y2="28" stroke="#22c55e" stroke-width="4"/><circle cx="230" cy="82" r="4" fill="#fff"/><text x="160" y="95" font-size="16" font-weight="900" fill="#fff">A</text><text x="290" y="95" font-size="16" font-weight="900" fill="#fff">B</text><text x="226" y="20" font-size="16" font-weight="900" fill="#fff">C</text><text x="225" y="98" font-size="16" font-weight="900" fill="#fff">O</text></svg>`,
-    lineCircle:`<svg class="svg" viewBox="0 0 460 158"><circle cx="190" cy="79" r="50" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/><line x1="270" y1="10" x2="270" y2="148" stroke="#f97316" stroke-width="4"/><line x1="190" y1="79" x2="270" y2="79" stroke="#94a3b8" stroke-width="3" stroke-dasharray="5 5"/><circle cx="190" cy="79" r="4" fill="#fff"/><text x="175" y="85" font-size="16" font-weight="900" fill="#fff">O</text><text x="280" y="25" font-size="16" font-weight="900" fill="#fff">a</text><text x="225" y="70" font-size="16" font-weight="900" fill="#fff">d</text></svg>`,
-    twoCircles:`<svg class="svg" viewBox="0 0 460 158"><circle cx="180" cy="79" r="50" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/><circle cx="290" cy="79" r="30" fill="rgba(34,197,94,.1)" stroke="#22c55e" stroke-width="4"/><line x1="180" y1="79" x2="290" y2="79" stroke="#f97316" stroke-width="3" stroke-dasharray="4 4"/><circle cx="180" cy="79" r="4" fill="#fff"/><circle cx="290" cy="79" r="4" fill="#fff"/><text x="165" y="70" font-size="16" font-weight="900" fill="#fff">O_1</text><text x="295" y="70" font-size="16" font-weight="900" fill="#fff">O_2</text><text x="230" y="70" font-size="16" font-weight="900" fill="#fff">d</text></svg>`
-};
+function nextUnanswered(){
+    for(let i=current+1;i<TOTAL;i++) if(!answers[i]) return i;
+    for(let i=0;i<current;i++) if(!answers[i]) return i;
+    return -1;
+}
 
-const mapping = {
-    "roots": v.infinity,
-    "biquadratic": v.wave,
-    "factor": v.hexagons,
-    "vieta": v.polygons,
-    "discriminant": v.polygons,
-    "chords": v.chords,
-    "externalAngle": v.externalAngle,
-    "peripheralAngle": v.peripheralAngle,
-    "thales": v.thales,
-    "lineCircle": v.lineCircle,
-    "twoCircles": v.twoCircles,
-    "angles": v.angles
-};
-return mapping[type] || v.infinity;}
+function jump(i){
+    if(!started) return;
+    current=i;
+    render();
+}
 
-function showStart(){started=false;update();screen.innerHTML=`<div class="card animate-enter"><h2>Тестови задачи за подготовка</h2><p style="font-size:18px;line-height:1.6;color:#475569;margin:0">Представените задачи обхващат учебния материал по алгебра и геометрия за 8. клас, предвиден за класна работа № 2.</p><div class="start-grid"><div class="info"><h3>📘 Уравнения и разлагане</h3><ul><li>Уравнения, свеждащи се до квадратни</li><li>Биквадратни уравнения и полагане</li><li>Разлагане на квадратен тричлен</li><li>Формули на Виет</li><li>Параметрични задачи</li></ul></div><div class="info orange"><h3>⭕ Геометрия на окръжността</h3><ul><li>Централни, вписани и периферни ъгли</li><li>Вътрешни и външни ъгли за окръжността</li><li>Вписан ъгъл и диаметър (Теорема на Талес)</li><li>Взаимни положения на окръжности и прави</li></ul></div><div class="info green"><h3>🖼️ Разкриване на изображение</h3><p>При всеки правилно посочен отговор се разкрива част от графичното изображение на екрана.</p></div><div class="info"><h3>🏆 Оценяване</h3><p>90–100 т. — Отличен (6)<br>70–89 т. — Много добър (5)<br>50–69 т. — Добър (4)<br>под 50 т. — Слаб/Среден</p></div></div><div class="actions"><button class="btn primary" onclick="startGame()" style="font-size:18px;padding:16px 32px;border-radius:999px;width:100%">🚀 Начало на теста</button></div></div>`}
+function update(){
+    const answeredCount=answers.filter(Boolean).length;
+    statQuestion.textContent=started?`${current+1}/${TOTAL}`:`0/${TOTAL}`;
+    statScore.textContent=Math.round(score);
+    statCorrect.textContent=correct;
+    statLevel.textContent= score>=90?"Отличен":score>=70?"Мн. добър":score>=50?"Добър":started?"В процес":"Старт";
+    progress.style.width=started?`${answeredCount/TOTAL*100}%`:"0%";
+    [...dots.children].forEach((d,i)=>{
+        d.className="dot";
+        if(answers[i]) d.classList.add(answers[i].ok?"correct":"wrong");
+        if(started && i===current) d.classList.add("active");
+    });
+}
 
-function startGame(){questions=generate();started=true;current=0;score=0;correct=0;selected=null;answered=false;answers=[];initPuzzle();render();update()}
+function showStart(){
+    started=false;
+    update();
+    const sb = document.getElementById('startBtn');
+    if(sb) sb.style.display = '';
+    screen.innerHTML=`<div class="card animate-enter">
+      <h2 style="margin:0 0 8px">Подготовка за класна работа № 2 — 8. клас</h2>
+      <p style="font-size:16px;line-height:1.55;color:#475569;margin:0 0 6px">
+        Тестът съдържа задачи от <strong>две основни теми: квадратни уравнения и окръжност</strong>.
+        При всяко стартиране задачите се рандомизират — числовите данни и редът са нови.
+      </p>
+
+      <!-- Поле за име на ученика -->
+      <div class="student-name-row">
+        <label for="studentNameInput">👤 Име на ученика:</label>
+        <input id="studentNameInput" type="text" placeholder="Въведете име и фамилия"
+               value="${studentName||''}" maxlength="60"
+               oninput="setStudentName(this.value)"/>
+      </div>
+
+      <!-- Стъпков избор на брой задачи -->
+      <div class="qcount-row">
+        <label for="qcountInput">Брой задачи в теста:</label>
+        <div class="qcount-stepper">
+          <button id="qcountDec" onclick="changeQCount(-1)" aria-label="Намали">−</button>
+          <input id="qcountInput" type="number" value="${TOTAL}" min="6" max="30" step="1"
+                 oninput="setQCount(this.value)"/>
+          <button id="qcountInc" onclick="changeQCount(1)" aria-label="Увеличи">+</button>
+        </div>
+      </div>
+
+      <!-- Карта на теста -->
+      <div class="info green">
+        <h3 style="margin:0 0 6px">🗺️ Карта на теста</h3>
+        <p style="margin:0">
+          При всеки правилен отговор се отключва квадрат от мозайката горе.
+          Целта е да отключите всичките <strong id="puzzleTarget">${TOTAL}</strong> квадрата.
+        </p>
+      </div>
+
+      <!-- Разтваряема секция: подробна информация за теста -->
+      <button class="info-toggle" id="infoToggle" onclick="toggleStartInfo()" aria-expanded="false">
+        <span>📋 Подробна информация за теста</span>
+        <span class="chev">▾</span>
+      </button>
+      <div class="info-content" id="infoContent">
+        <div class="start-grid" style="margin-top:0">
+          <div class="info">
+            <h3>📘 Алгебра — Квадратни уравнения</h3>
+            <ul>
+              <li>Просто квадратно: $x^2 = a$</li>
+              <li>Непълно квадратно: $ax^2 + bx = 0$ и разлика от квадрати</li>
+              <li>Квадратни с цели корени по Виет</li>
+              <li>Биквадратни уравнения</li>
+              <li>Уравнения с полагане</li>
+              <li>Уравнения, свеждащи се до квадратни</li>
+              <li>Разлагане на квадратен тричлен</li>
+              <li>Дискриминанта и знаци на корените</li>
+              <li>Формули на Виет — стойност на изрази</li>
+              <li>Параметрични задачи</li>
+            </ul>
+          </div>
+          <div class="info orange">
+            <h3>⭕ Геометрия на окръжността</h3>
+            <ul>
+              <li>Взаимно положение на права и окръжност</li>
+              <li>Взаимно положение на две окръжности</li>
+              <li>Централен и вписан ъгъл върху същата дъга</li>
+              <li>Вписан ъгъл върху диаметър</li>
+              <li>Разстояние от център до хорда</li>
+              <li>Перпендикулярни хорди през точка от окръжността</li>
+              <li>Пресичащи се хорди; ъгли с връх вътре в окръжност</li>
+              <li>Външни ъгли (връх извън окръжността)</li>
+              <li>Допирателна, хорда и секуща; отношение на дъги</li>
+            </ul>
+          </div>
+          <div class="info">
+            <h3>🏆 Оценяване</h3>
+            <p>90–100 т. — Отличен (6)<br>70–89 т. — Много добър (5)<br>50–69 т. — Добър (4)<br>под 50 т. — необходим е преговор</p>
+          </div>
+          <div class="info green">
+            <h3>💡 Как работи</h3>
+            <p>След като изберете отговор, бутонът „Провери" става активен. Получавате обяснение веднага и преминавате към следваща задача. Можете да се връщате към предишни задачи чрез точките за навигация.</p>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    updateMath();
+    setStudentName(studentName);
+}
+
+/* === Управление на броя задачи === */
+function setQCount(val){
+    let n = parseInt(val, 10);
+    if(isNaN(n)) n = 20;
+    n = Math.max(6, Math.min(30, n));
+    TOTAL = n;
+    PTS = 100/TOTAL;
+    const inp = document.getElementById('qcountInput');
+    if(inp && parseInt(inp.value,10) !== n) inp.value = n;
+    const targ = document.getElementById('puzzleTarget');
+    if(targ) targ.textContent = n;
+    const dec = document.getElementById('qcountDec');
+    const inc = document.getElementById('qcountInc');
+    if(dec) dec.disabled = n <= 6;
+    if(inc) inc.disabled = n >= 30;
+    statQuestion.textContent = `0/${TOTAL}`;
+    initDots();
+    initPuzzle();
+}
+function changeQCount(delta){
+    const cur = parseInt(document.getElementById('qcountInput').value, 10) || TOTAL;
+    setQCount(cur + delta);
+}
+
+/* === Управление на името на ученика === */
+function setStudentName(val){
+    studentName = (val || "").trim();
+    const lbl = document.getElementById('studentNameLabel');
+    const valEl = document.getElementById('studentNameValue');
+    if(lbl && valEl){
+        if(studentName){
+            valEl.textContent = studentName;
+            lbl.classList.add('show');
+        } else {
+            valEl.textContent = '—';
+            lbl.classList.remove('show');
+        }
+    }
+    // Обновяваме и във финалния екран ако той е активен
+    const finalNameEl = document.getElementById('finalStudentName');
+    if(finalNameEl) finalNameEl.textContent = studentName || 'Анонимен ученик';
+}
+
+/* === Разтваряема секция за информация === */
+function toggleStartInfo(){
+    const btn = document.getElementById('infoToggle');
+    const cnt = document.getElementById('infoContent');
+    if(!btn || !cnt) return;
+    const isOpen = btn.classList.toggle('open');
+    cnt.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+    if(isOpen) setTimeout(updateMath, 350);
+}
+
+function startGame(){
+    questions=generate();
+    started=true;
+    current=0; score=0; correct=0; selected=null; answered=false; answers=[];
+    const sb = document.getElementById('startBtn');
+    if(sb) sb.style.display = 'none';
+    initPuzzle();
+    render();
+    update();
+}
 
 function render(){
-    let item=questions[current], saved=answers[current];
-    selected=saved?saved.selected:null; answered=!!saved;
-    let ops=item.options.map((op,i)=>{
+    const item=questions[current];
+    const saved=answers[current];
+    selected = saved ? saved.selected : null;
+    answered = !!saved;
+    
+    const ops = item.options.map((op,i)=>{
         let cls="option";
-        if(!saved&&selected===i)cls+=" selected";
-        if(saved&&i===item.answer)cls+=" correct";
-        if(saved&&i===saved.selected&&!saved.ok)cls+=" wrong";
-        let animStyle = saved ? `opacity:1; animation:none;` : `animation-delay: ${i * 0.15}s;`;
+        if(!saved && selected===i) cls+=" selected";
+        if(saved && i===item.answer) cls+=" correct";
+        if(saved && i===saved.selected && !saved.ok) cls+=" wrong";
+        const animStyle = saved ? `opacity:1; animation:none;` : `animation-delay:${i*0.12}s;`;
         return `<button class="${cls}" style="${animStyle}" onclick="selectOption(${i})" ${saved?"disabled":""}>${String.fromCharCode(1040+i)}) ${op}</button>`;
     }).join("");
     
-    let count=answers.filter(Boolean).length;
-    let action=saved?(count===TOTAL?`<button class="btn orange-btn animate-enter" onclick="finishGame()">Резултати от теста ➜</button>`:`<button class="btn orange-btn animate-enter" onclick="goNext()">Следващ въпрос ➜</button>`):`<button class="btn primary" id="checkBtn" onclick="checkAnswer()" disabled>Избор на отговор</button>`;
-    let feed=saved?`<div class="feedback show ${saved.ok?"good":"bad"}"><b>${saved.ok?"✓ Правилен отговор.":"✗ Грешен отговор."}</b><br>${item.explain}</div>`:`<div class="feedback" id="feedback"></div>`;
+    const count = answers.filter(Boolean).length;
+    const action = saved
+        ? (count===TOTAL
+            ? `<button class="btn orange-btn animate-enter" onclick="finishGame()">Резултати от теста ➜</button>`
+            : `<button class="btn orange-btn animate-enter" onclick="goNext()">Следващ въпрос ➜</button>`)
+        : `<button class="btn primary" id="checkBtn" onclick="checkAnswer()" disabled>Изберете отговор</button>`;
     
-    let escapeState = !saved ? "question" : (saved.ok ? "correct" : "wrong");
-    let escapeAnim = `<div class="escape-status ${escapeState === "question" ? "unanswered" : escapeState}">${escapeState === "correct" ? svgCorrect : escapeState === "wrong" ? svgWrong : svgUnanswered}</div>`;
-    const geometryVisualTypes = ["angles", "chords", "externalAngle", "peripheralAngle", "thales", "lineCircle", "twoCircles"];
-    const geometryDrawing = geometryVisualTypes.includes(item.visual) ? `<div class="visual geometry-drawing">${visual(item.visual)}</div>` : "";
-
+    const feed = saved
+        ? `<div class="feedback show ${saved.ok?"good":"bad"}"><b>${saved.ok?"✓ Правилен отговор.":"✗ Грешен отговор."}</b><br>${item.explain}</div>`
+        : `<div class="feedback" id="feedback"></div>`;
+    
+    const escapeState = !saved ? "question" : (saved.ok ? "correct" : "wrong");
+    const escapeBook = saved ? messageBookFromText(saved.ok, saved.message || pickMessage(saved.ok)) : "";
+    const geometryVisualTypes = [
+        "chordsPerpThroughPoint","chordsIntersect","tangentSecant","inscribedAngle",
+        "lineCircle","twoCircles","centralInscribed","diameterAngle","chordDistance"
+    ];
+    const geometryDrawing = geometryVisualTypes.includes(item.visual)
+        ? `<div class="visual geometry-drawing">${VISUALS[item.visual]||''}</div>`
+        : "";
+    
     screen.innerHTML=`<div class="card animate-enter">
-        ${escapeAnim}
-        <div class="escape-scene ${escapeState}" id="escapeScene">${escapeScene(escapeState)}</div>
+        <div class="escape-scene ${escapeState}" id="escapeScene">${escapeScene(escapeState)}${escapeBook}</div>
         ${geometryDrawing}
         <div class="q-header">
             <div class="q-meta">
                 <span class="pill diff">Сложност: ${item.difficulty}</span>
+                <span class="pill">${item.type}</span>
                 <span class="pill">Въпрос ${current+1} / ${TOTAL}</span>
             </div>
         </div>
@@ -882,187 +2347,134 @@ function render(){
     </div>`;
     
     update();
-    updateMath(); 
+    updateMath();
 }
 
-function goNext(){let n=nextUnanswered();if(n===-1)finishGame();else{current=n;render()}}
-function selectOption(i){if(answered)return;selected=i;document.querySelectorAll(".option").forEach((b,j)=>b.classList.toggle("selected",j===i));$("checkBtn").disabled=false}
+function goNext(){
+    const n=nextUnanswered();
+    if(n===-1) finishGame();
+    else { current=n; render(); }
+}
+
+function selectOption(i){
+    if(answered) return;
+    selected=i;
+    document.querySelectorAll(".option").forEach((b,j)=>b.classList.toggle("selected", j===i));
+    const cb=$("checkBtn");
+    if(cb) cb.disabled=false;
+}
 
 function checkAnswer(){
-    if(selected===null||answered)return;
+    if(selected===null || answered) return;
     answered=true;
-    let item=questions[current],ok=selected===item.answer;
-    document.querySelectorAll(".option").forEach((b,i)=>{b.disabled=true;if(i===item.answer)b.classList.add("correct");if(i===selected&&!ok)b.classList.add("wrong")});
-    setEscapeState(ok ? "correct" : "wrong");
+    const item=questions[current];
+    const ok = selected===item.answer;
+    
+    document.querySelectorAll(".option").forEach((b,i)=>{
+        b.disabled=true;
+        if(i===item.answer) b.classList.add("correct");
+        if(i===selected && !ok) b.classList.add("wrong");
+    });
+    
     if(ok){
         reveal(current);
-        score+=PTS;correct++;confetti(18);document.querySelector(".card").classList.add("pop-correct");
-    }else{
+        score += PTS;
+        correct++;
+        confetti(18);
+        document.querySelector(".card").classList.add("pop-correct");
+    } else {
         document.querySelector(".card").classList.add("shake");
     }
-    answers[current]={ok,selected,explain:item.explain};
-    let f=$("feedback");f.className="feedback show "+(ok?"good":"bad");f.innerHTML=(ok?"<b>✓ Правилен отговор.</b><br> ":"<b>✗ Грешен отговор.</b><br> ")+item.explain;
-    document.querySelector(".actions").innerHTML=answers.filter(Boolean).length===TOTAL?`<button class="btn orange-btn animate-enter" onclick="finishGame()">Резултати от теста ➜</button>`:`<button class="btn orange-btn animate-enter" onclick="goNext()">Следващ въпрос ➜</button>`;
+    
+    answers[current] = { ok, selected, explain:item.explain, message: pickMessage(ok) };
+    
+    const f=$("feedback");
+    f.className = "feedback show " + (ok?"good":"bad");
+    f.innerHTML = (ok?"<b>✓ Правилен отговор.</b><br>":"<b>✗ Грешен отговор.</b><br>") + item.explain;
+    
+    const escapeScene_el = $("escapeScene");
+    if(escapeScene_el){
+        escapeScene_el.className = "escape-scene " + (ok?"correct":"wrong");
+        escapeScene_el.innerHTML = escapeScene(ok?"correct":"wrong") + messageBookFromText(ok, answers[current].message);
+    }
+    
+    document.querySelector(".actions").innerHTML = answers.filter(Boolean).length===TOTAL
+        ? `<button class="btn orange-btn animate-enter" onclick="finishGame()">Резултати от теста ➜</button>`
+        : `<button class="btn orange-btn animate-enter" onclick="goNext()">Следващ въпрос ➜</button>`;
+    
     update();
     updateMath();
 }
 
 function finishGame(){
-    progress.style.width="100%";confetti(80);
-    let s=Math.round(score),msg=s>=90?"Отличен резултат! Показахте задълбочени знания.":s>=70?"Много добро усвояване на материала. Препоръчва се преглед на допуснатите грешки.":s>=50?"Задоволителни знания. Необходими са допълнителни упражнения върху основните правила и формули.":"Незадоволителен резултат. Наложителен е целенасочен преговор на теоретичния материал.";
-    let review=answers.map((a,i)=>`<div class="row ${a.ok?"ok":"no"}"><strong>${i+1}. ${a.ok?"Правилен":"Грешен"}:</strong> ${a.explain}</div>`).join("");
-    screen.innerHTML=`<div class="card animate-enter"><h2>Резултати от теста</h2><div class="result">${s}/100</div><p style="font-size:20px;line-height:1.55;color:#475569">${msg}</p><div class="info green"><h3>Резултат</h3><p>Правилно решени задачи: <strong>${correct}</strong> от общо <strong>${TOTAL}</strong></p></div><h3>Анализ на решенията</h3><div class="review">${review}</div><div class="actions"><button class="btn primary" onclick="startGame()">🔁 Нов вариант на теста</button><button class="btn ghost" onclick="showStart()">Начален екран</button></div></div>`;
+    progress.style.width="100%";
+    confetti(80);
+    const s = Math.round(score);
+    const msg = s>=90?"Отличен резултат! Показахте задълбочени знания.":
+                s>=70?"Много добро усвояване на материала. Препоръчва се преглед на допуснатите грешки.":
+                s>=50?"Задоволителни знания. Необходими са допълнителни упражнения върху основните правила и формули.":
+                "Незадоволителен резултат. Наложителен е целенасочен преговор на теоретичния материал.";
+    
+    const review = answers.map((a,i)=>
+        `<div class="row ${a.ok?"ok":"no"}"><strong>${i+1}. ${a.ok?"Правилен":"Грешен"}:</strong> ${a.explain}</div>`
+    ).join("");
+    
+    screen.innerHTML = `<div class="card animate-enter">
+        <h2>Резултати от теста</h2>
+        <div class="info" style="margin:8px 0 16px;">
+            <p style="margin:0;font-size:17px"><strong>👤 Ученик:</strong> <span id="finalStudentName" style="color:#4338ca;font-weight:900">${studentName || 'Анонимен ученик'}</span></p>
+        </div>
+        <div class="result">${s}/100</div>
+        <p style="font-size:20px;line-height:1.55;color:#475569">${msg}</p>
+        <div class="info green">
+            <h3>Резултат</h3>
+            <p>Правилно решени задачи: <strong>${correct}</strong> от общо <strong>${TOTAL}</strong></p>
+        </div>
+        <h3>Анализ на решенията</h3>
+        <div class="review">${review}</div>
+        <div class="actions">
+            <button class="btn primary" onclick="startGame()">🔁 Нов вариант на теста</button>
+            <button class="btn ghost" onclick="showStart()">Начален екран</button>
+        </div>
+    </div>`;
+    
     update();
     updateMath();
 }
 
-function confetti(n){let colors=["#4f46e5","#f97316","#22c55e","#06b6d4","#ec4899","#facc15"];for(let i=0;i<n;i++){let p=document.createElement("div");p.className="confetti";p.style.left=Math.random()*100+"vw";p.style.background=choice(colors);p.style.animationDelay=Math.random()*.4+"s";document.body.appendChild(p);setTimeout(()=>p.remove(),2800)}}
-
-
-/* =========================================================
-   Нов генератор: задачи, близки по структура до качените
-   примерни варианти за класна работа №2 – 8. клас.
-   Заменя стария генератор с по-разнообразни и по-сериозни задачи.
-   ========================================================= */
-function pm(n){return n>=0?`+ ${n}`:`- ${Math.abs(n)}`}
-function termX(coef){
-    if(coef===0) return '';
-    if(coef===1) return '+ x';
-    if(coef===-1) return '- x';
-    return coef>0?`+ ${coef}x`:`- ${Math.abs(coef)}x`;
-}
-function fmtNum(n){return Number.isInteger(n)?String(n):String(n).replace('.', ',')}
-function sqrLabel(n){return n===1?'x^2':`${n}x^2`}
-function fracTex(a,b){
-    if(b<0){a=-a;b=-b}
-    if(a%b===0) return `${a/b}`;
-    return `\\frac{${a}}{${b}}`;
-}
-function niceFactor(a,b){
-    // ax+b, with clean sign
-    if(a===1) return `(x ${b>=0?'+ '+b:'- '+Math.abs(b)})`;
-    return `(${a}x ${b>=0?'+ '+b:'- '+Math.abs(b)})`;
-}
-
-function qPDF_EqProduct(){
-    const variants=[
-        {q:`3(x-2)(x+2)=17(x-2)`, roots:[2, fracTex(11,3)], ds:[`$x=2$`,`$x=-2; x=\\frac{11}{3}$`,`$x=2; x=-\\frac{11}{3}$`]}, // Коригирано на 17 за точен отговор
-        {q:`(2x-1)^2-3(x-2)(x+2)=18`, roots:[5,-1], ds:[`$x=5$`,`$x=-5; x=1$`,`$x=1; x=-5$`]},
-        {q:`4(x-1)(x+2)=5(x+2)`, roots:[-2, fracTex(9,4)], ds:[`$x=-2$`,`$x=2; x=\\frac{9}{4}$`,`$x=-2; x=-\\frac{9}{4}$`]},
-        {q:`(x+3)^2-2(x-1)(x+1)=10x-1`, roots:[-6,2], ds:[`$x=-6$`,`$x=6; x=-2$`,`$x=-3; x=2$`]}
-    ];
-    let v=choice(variants); let ok=`$x_1=${v.roots[0]};\\ x_2=${v.roots[1]}$`;
-    return {type:'Уравнения',difficulty:'Повишена',q:`Да се реши уравнението:<br>$$${v.q}$$`,...makeOptions(ok,v.ds),explain:`Първо се разкриват скобите и всички членове се прехвърлят в едната страна. Получава се квадратно уравнение с корени ${ok}.`,visual:'discriminant'};
-}
-
-function qPDF_Biquad(){
-    const data=[{a:1,b:-13,c:36,ans:['-3','-2','2','3']},{a:1,b:-8,c:0,ans:['-2\\sqrt2','0','2\\sqrt2']},{a:1,b:-5,c:4,ans:['-2','-1','1','2']},{a:1,b:-1,c:0,ans:['-1','0','1']}];
-    let v=choice(data), bstr=pm(v.b).replace('+ -','- '), cstr=pm(v.c);
-    let ok=`$x\\in\\{${v.ans.join('; ')}\\}$`;
-    let ds=[`$x\\in\\{${v.ans.filter(x=>!x.includes('-')).join('; ')}\\}$`,`$x\\in\\{${v.b}; ${v.c}\\}$`,`$x^2=${Math.abs(v.b)}$`];
-    return {type:'Биквадратни уравнения',difficulty:'Средна',q:`Да се реши уравнението:<br>$$x^4 ${pm(v.b)}x^2 ${pm(v.c)}=0$$`,...makeOptions(ok,ds),explain:`Полага се $y=x^2$ и се решава квадратно уравнение за $y$. Само неотрицателните стойности на $y$ дават реални корени за $x$.`,visual:'biquadratic'};
-}
-
-function qPDF_Substitution(){
-    const variants=[
-        {expr:'x^2-2x', eq:'(x^2-2x)^2-11(x^2-2x)+24=0', y:[3,8]},
-        {expr:'3x^2-x', eq:'(3x^2-x)^2-8(3x^2-x)-9=0', y:[9,-1]},
-        {expr:'x^2+4x', eq:'(x^2+4x)^2+2(x^2+4x)-15=0', y:[3,-5]},
-        {expr:'2x^2-5x', eq:'(2x^2-5x)^2-5(2x^2-5x)-14=0', y:[7,-2]}
-    ];
-    let v=choice(variants), ok=`$y_1=${v.y[0]};\\ y_2=${v.y[1]}$`;
-    return {type:'Уравнения с полагане',difficulty:'Повишена',q:`Чрез полагане $y=${v.expr}$ намерете корените на полученото квадратно уравнение:<br>$$${v.eq}$$`,...makeOptions(ok,[`$y=${v.y[0]}$`,`$y_1=${-v.y[0]};\\ y_2=${-v.y[1]}$`,`$y_1=${v.y[0]+v.y[1]};\\ y_2=${v.y[0]*v.y[1]}$`]),explain:`След полагането се получава обикновено квадратно уравнение по отношение на $y$. Решават се първо стойностите на $y$, а след това при пълно решение се връщаме към израза за $x$.`,visual:'factor'};
-}
-
-function qPDF_FactorTrinomial(){
-    const variants=[
-        {poly:'3x^2-10x+3',ok:'(3x-1)(x-3)'},
-        {poly:'-4x^2+11x-6',ok:'-(4x-3)(x-2)'},
-        {poly:'5x^2-14x+8',ok:'(5x-4)(x-2)'},
-        {poly:'-3x^2-5x+12',ok:'-(3x-4)(x+3)'}
-    ];
-    let v=choice(variants);
-    return {type:'Разлагане',difficulty:'Повишена',q:`Да се разложи многочленът на множители:<br>$$M=${v.poly}$$`,...makeOptions(`$${v.ok}$`,[`$${v.ok.replace(/-/g,'+').replace('++','+')}$`,`$(${v.poly})x$`,`$${v.ok.replace('x-','x+')}$`]),explain:`Разлагането може да се направи чрез корените на съответното квадратно уравнение или чрез групиране. Получава се $M=${v.ok}$.`,visual:'factor'};
-}
-
-function qPDF_DiscriminantSign(){
-    const variants=[{a:2,b:-5,c:1,D:17,roots:'два различни реални корена'},{a:3,b:-5,c:1,D:13,roots:'два различни реални корена'},{a:-2,b:8,c:3,D:88,roots:'два различни реални корена'},{a:4,b:-8,c:-1,D:80,roots:'два различни реални корена'}];
-    let v=choice(variants); let poly=`${v.a}x^2 ${termX(v.b)} ${pm(v.c)}=0`;
-    let ok=`$D=${v.D}$, ${v.roots}`;
-    return {type:'Дискриминанта',difficulty:'Средна',q:`За уравнението $$${poly}$$ да се определи дискриминантата и броят на реалните корени.`,...makeOptions(ok,[`$D=${v.D}$, няма реални корени`,`$D=${Math.abs(v.b*v.b+4*v.a*v.c)}$, два реални корена`,`$D=0$, един двоен корен`]),explain:`Използва се $D=b^2-4ac$. Тък $D=${v.D}>0$, затова уравнението има два различни реални корена.`,visual:'discriminant'};
-}
-
-function qPDF_VietaExpression(){
-    const variants=[
-        {eq:'2x^2-5x+1=0',sum:'\\frac{5}{2}',prod:'\\frac{1}{2}',expr:'x_1(x_1-1)+x_2(x_2-1)',ans:'\\frac{11}{4}'}, // Коригирано на 11/4
-        {eq:'3x^2-5x+1=0',sum:'\\frac{5}{3}',prod:'\\frac{1}{3}',expr:'x_1(x_2+1)+x_2(x_1+1)',ans:'\\frac{7}{3}'}, // Коригиран изразът за да отговаря на 7/3
-        {eq:'-2x^2+8x+3=0',sum:'4',prod:'-\\frac{3}{2}',expr:'x_1(x_1+3)+x_2(x_2+3)',ans:'31'},
-        {eq:'4x^2-8x-1=0',sum:'2',prod:'-\\frac{1}{4}',expr:'x_1(x_2+2)+x_2(x_1+2)',ans:'\\frac{7}{2}'} // Коригирано на 7/2
-    ];
-    let v=choice(variants);
-    return {type:'Формули на Виет',difficulty:'Висока',q:`Ако $x_1$ и $x_2$ са корените на уравнението $$${v.eq}$$ пресметнете стойността на израза $$P=${v.expr}.$$`,...makeOptions(`$${v.ans}$`,[`$${v.sum}$`,`$${v.prod}$`,`$${String(v.ans).includes('frac')?'7':Number(v.ans||0)+2}$`]),explain:`Използват се формулите на Виет: $x_1+x_2=${v.sum}$ и $x_1x_2=${v.prod}$. Изразът се преобразува чрез сумата и произведението на корените.`,visual:'vieta'};
-}
-
-function qPDF_Parameter(){
-    const variants=[
-        {eq:'x^2+px-24=0',given:'единият корен е 4',ask:'другия корен и коефициента p',ans:'$x_2=-6;\\ p=2$', ds:['$x_2=6;\\ p=-2$','$x_2=-4;\\ p=6$','$x_2=-6;\\ p=-2$']},
-        {eq:'x^2-x+q=0',given:'единият корен е 3',ask:'другия корен и свободния член q',ans:'$x_2=-2;\\ q=-6$', ds:['$x_2=2;\\ q=6$','$x_2=-3;\\ q=6$','$x_2=-2;\\ q=6$']},
-        {eq:'x^2+px+20=0',given:'единият корен е 5',ask:'другия корен и коефициента p',ans:'$x_2=4;\\ p=-9$', ds:['$x_2=-4;\\ p=9$','$x_2=4;\\ p=9$','$x_2=5;\\ p=-10$']},
-        {eq:'x^2+7x+q=0',given:'единият корен е -3',ask:'другия корен и свободния член q',ans:'$x_2=-4;\\ q=12$', ds:['$x_2=4;\\ q=-12$','$x_2=-4;\\ q=-12$','$x_2=3;\\ q=12$']}
-    ];
-    let v=choice(variants);
-    return {type:'Параметри и Виет',difficulty:'Повишена',q:`Дадено е уравнението $$${v.eq}.$$ Ако ${v.given}, намерете ${v.ask}.`,...makeOptions(v.ans,v.ds),explain:`Прилага се произведението и сумата на корените по формулите на Виет. Първо се намира неизвестният корен, след това търсеният параметър.`,visual:'vieta'};
-}
-
-// Изцяло пренаписан с коректни геометрични задачи за хорди и Питагорова теорема
-function qPDF_ChordDistance(){
-    const variants=[
-        {q:'В окръжност с радиус $R = 10\\text{ cm}$ е прекарана хорда с дължина $16\\text{ cm}$. Намерете разстоянието $d$ от центъра на окръжността до хордата.', ans:'$d = 6\\text{ cm}$', ds:['$d = 8\\text{ cm}$','$d = 4\\text{ cm}$','$d = 5\\text{ cm}$']},
-        {q:'Хорда с дължина $24\\text{ cm}$ се намира на разстояние $5\\text{ cm}$ от центъра на окръжността. Намерете радиуса $R$ на окръжността.', ans:'$R = 13\\text{ cm}$', ds:['$R = 12\\text{ cm}$','$R = 14\\text{ cm}$','$R = 17\\text{ cm}$']},
-        {q:'В окръжност с радиус $R = 17\\text{ cm}$ разстоянието от центъра до хорда $AB$ е $8\\text{ cm}$. Намерете дължината на хордата $AB$.', ans:'$AB = 30\\text{ cm}$', ds:['$AB = 15\\text{ cm}$','$AB = 25\\text{ cm}$','$AB = 34\\text{ cm}$']},
-        {q:'В окръжност хорда с дължина $10\\text{ cm}$ е на разстояние $12\\text{ cm}$ от центъра. Намерете диаметъра $D$ на окръжността.', ans:'$D = 26\\text{ cm}$', ds:['$D = 13\\text{ cm}$','$D = 24\\text{ cm}$','$D = 20\\text{ cm}$']}
-    ];
-    let v=choice(variants);
-    return {type:'Окръжност и хорди',difficulty:'Средна',q:`${v.q}`,...makeOptions(v.ans,v.ds),explain:`Радиусът на окръжността, разстоянието от центъра до хордата и половината от хордата образуват правоъгълен триъгълник. По Питагоровата теорема: $R^2 = d^2 + (b/2)^2$.`,visual:'lineCircle'};
-}
-
-function qPDF_IntersectingChordsAngles(){
-    const variants=[
-        {given:'∠AQD=80° и ∠BDC=20°',ask:'∠ABD и ∠BMC',ans:'$\\angle ABD=60^\\circ;\\ \\angle BMC=40^\\circ$',ds:['$\\angle ABD=40^\\circ;\\ \\angle BMC=60^\\circ$','$\\angle ABD=80^\\circ;\\ \\angle BMC=20^\\circ$','$\\angle ABD=50^\\circ;\\ \\angle BMC=30^\\circ$']},
-        {given:'∠AQD=75° и ∠BAC=20°',ask:'∠ACD и ∠BMC',ans:'$\\angle ACD=55^\\circ;\\ \\angle BMC=35^\\circ$',ds:['$\\angle ACD=35^\\circ;\\ \\angle BMC=55^\\circ$','$\\angle ACD=75^\\circ;\\ \\angle BMC=20^\\circ$','$\\angle ACD=50^\\circ;\\ \\angle BMC=25^\\circ$']},
-        {given:'∠BMC=25° и ∠ABD=55°',ask:'∠AQD и ∠BDC',ans:'$\\angle AQD=85^\\circ;\\ \\angle BDC=30^\\circ$',ds:['$\\angle AQD=55^\\circ;\\ \\angle BDC=25^\\circ$','$\\angle AQD=80^\\circ;\\ \\angle BDC=35^\\circ$','$\\angle AQD=30^\\circ;\\ \\angle BDC=85^\\circ$']},
-        {given:'∠BMC=30° и ∠ACD=45°',ask:'∠AQD и ∠BDC',ans:'$\\angle AQD=60^\\circ;\\ \\angle BDC=15^\\circ$',ds:['$\\angle AQD=45^\\circ;\\ \\angle BDC=30^\\circ$','$\\angle AQD=75^\\circ;\\ \\angle BDC=15^\\circ$','$\\angle AQD=60^\\circ;\\ \\angle BDC=30^\\circ$']}
-    ];
-    let v=choice(variants);
-    return {type:'Ъгли в окръжност',difficulty:'Висока',q:`В окръжност хордите $AC$ и $BD$ се пресичат в точка $Q$, а правите $AB$ и $CD$ се пресичат в точка $M$. Ако ${v.given}, намерете ${v.ask}.`,...makeOptions(v.ans,v.ds),explain:`Използват се теоремите за вписан ъгъл, за ъгъл с връх вътре в окръжност и за ъгъл с връх вън от окръжност.`,visual:'chords'};
-}
-
-// Коригирани ъглите от AMQ на MAQ и пресичането на MB и допирателната t
-function qPDF_TangentSecantRatio(){
-    const variants=[
-        {ang:70,ratio:'2:3',ans:'$\\angle MBA=44^\\circ;\\ \\angle MOB=132^\\circ;\\ \\angle MAQ=44^\\circ;\\ \\angle BQM=22^\\circ$',ds:['$40^\\circ;120^\\circ;40^\\circ;20^\\circ$','$44^\\circ;132^\\circ;22^\\circ;44^\\circ$','$70^\\circ;110^\\circ;44^\\circ;22^\\circ$']},
-        {ang:50,ratio:'1:4',ans:'$\\angle MBA=26^\\circ;\\ \\angle MOB=152^\\circ;\\ \\angle MAQ=26^\\circ;\\ \\angle BQM=78^\\circ$',ds:['$25^\\circ;150^\\circ;25^\\circ;75^\\circ$','$26^\\circ;152^\\circ;78^\\circ;26^\\circ$','$50^\\circ;130^\\circ;26^\\circ;78^\\circ$']},
-        {ang:80,ratio:'3:5',ans:'$\\angle MBA=37^\\circ30′;\\ \\angle MOB=125^\\circ;\\ \\angle MAQ=37^\\circ30′;\\ \\angle BQM=25^\\circ$',ds:['$40^\\circ;120^\\circ;40^\\circ;20^\\circ$','$37^\\circ30′;125^\\circ;25^\\circ;37^\\circ30′$','$80^\\circ;100^\\circ;37^\\circ30′;25^\\circ$']},
-        {ang:60,ratio:'1:3',ans:'$\\angle MBA=30^\\circ;\\ \\angle MOB=180^\\circ;\\ \\angle MAQ=30^\\circ;\\ \\angle BQM=60^\\circ$',ds:['$30^\\circ;120^\\circ;30^\\circ;60^\\circ$','$60^\\circ;180^\\circ;30^\\circ;30^\\circ$','$30^\\circ;180^\\circ;60^\\circ;30^\\circ$']}
-    ];
-    let v=choice(variants);
-    return {type:'Допирателна и секуща',difficulty:'Висока',q:`Точките $A$, $B$ и $M$ лежат на окръжност с център $O$. Правата $t$ е допирателна в $A$, а правата $MB$ и допирателната $t$ се пресичат в точка $Q$. Дадено е $\\angle AMB=${v.ang}^\\circ$, а мерките на дъгите $MA$ и $MB$ се отнасят както ${v.ratio}. Определете съответните ъгли.`,...makeOptions(v.ans,v.ds),explain:`Комбинират се вписан ъгъл (за определяне на дъгата $AB$), централен ъгъл ($MOB$), ъгъл между допирателна и хорда ($MAQ$) и ъгъл между допирателна и секуща ($BQM = (\\widehat{MB} - \widehat{MA})/2$).`,visual:'externalAngle'};
-}
-
-function generate(){
-    const core=[
-        qPDF_EqProduct,qPDF_Biquad,qPDF_Substitution,qPDF_FactorTrinomial,qPDF_DiscriminantSign,
-        qPDF_VietaExpression,qPDF_Parameter,qPDF_ChordDistance,qPDF_IntersectingChordsAngles,qPDF_TangentSecantRatio
-    ];
-    let list=[];
-    // 30 въпроса: 18 алгебра + 12 геометрия, по-близки до класната работа
-    for(let round=0; round<3; round++){
-        list.push(qPDF_EqProduct(),qPDF_Biquad(),qPDF_Substitution(),qPDF_FactorTrinomial(),qPDF_DiscriminantSign(),qPDF_VietaExpression(),qPDF_Parameter());
-        list.push(qPDF_ChordDistance(),qPDF_IntersectingChordsAngles(),qPDF_TangentSecantRatio());
+function confetti(n){
+    const colors=["#4f46e5","#f97316","#22c55e","#06b6d4","#ec4899","#facc15"];
+    for(let i=0;i<n;i++){
+        const p=document.createElement("div");
+        p.className="confetti";
+        p.style.left=Math.random()*100+"vw";
+        p.style.background=choice(colors);
+        p.style.animationDelay=Math.random()*.4+"s";
+        document.body.appendChild(p);
+        setTimeout(()=>p.remove(),2800);
     }
-    return shuffle(list).slice(0,TOTAL);
 }
 
-initDots();initPuzzle();showStart();
+/* Стартиране */
+initDots();
+initPuzzle();
+showStart();
+
+/* === Циклично сменя математическия символ в мисловното мехурче === */
+(function cycleMascotSymbol(){
+    const symbols = ["x²", "√", "x₁,₂", "π", "Δ", "y", "∠", "R", "x²", "0=?"];
+    let idx = 0;
+    const el = document.getElementById("bubbleSymbol");
+    if(!el) return;
+    setInterval(() => {
+        idx = (idx + 1) % symbols.length;
+        el.style.opacity = "0";
+        setTimeout(() => {
+            el.textContent = symbols[idx];
+            el.style.opacity = "1";
+        }, 200);
+    }, 2400);
+})();
 </script>
-</body></html>
+</body>
+</html>
