@@ -83,15 +83,13 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .tile{position:relative;background:linear-gradient(135deg,#312e81,#7c3aed);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);z-index:1;}
 .tile:before{content:"?";position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:24px;font-weight:1000}
 .tile.revealed{
-    background:linear-gradient(135deg,#fef3c7,#fde68a);
     animation:pop .6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     z-index:2;
     box-shadow:none;
-    display:grid;
-    place-items:center;
-    font-size:24px;
-    font-weight:900;
-    color:#7c2d12;
+    background-image:url("puzzle-image.png");
+    background-size:var(--bg-size, 600% 500%);
+    background-position:var(--bg-pos, 0% 0%);
+    background-repeat:no-repeat;
 }
 .tile.revealed:before{display:none}
 @keyframes pop{
@@ -2095,20 +2093,69 @@ function initDots(){
     }
 }
 
+/* === Изчисляване на размер на пъзела (брой колони × редове) според TOTAL === */
+function puzzleGrid(n){
+    // Връща {cols, rows} така че cols*rows = n (или близо до n), и cols/rows ≈ 16/9
+    const presets = {
+        6:  {cols:3, rows:2},
+        8:  {cols:4, rows:2},
+        10: {cols:5, rows:2},
+        12: {cols:4, rows:3},
+        14: {cols:7, rows:2},
+        15: {cols:5, rows:3},
+        16: {cols:4, rows:4},
+        18: {cols:6, rows:3},
+        20: {cols:5, rows:4},
+        21: {cols:7, rows:3},
+        22: {cols:11,rows:2},
+        24: {cols:6, rows:4},
+        25: {cols:5, rows:5},
+        26: {cols:13,rows:2},
+        27: {cols:9, rows:3},
+        28: {cols:7, rows:4},
+        30: {cols:6, rows:5}
+    };
+    if(presets[n]) return presets[n];
+    // Резерв: най-близкото съотношение 16/9
+    let bestC=1, bestR=n, bestDiff=Infinity;
+    for(let c=1; c<=n; c++){
+        if(n % c === 0){
+            const r = n/c;
+            const diff = Math.abs(c/r - 16/9);
+            if(diff < bestDiff){ bestDiff = diff; bestC = c; bestR = r; }
+        }
+    }
+    return {cols:bestC, rows:bestR};
+}
+
 function initPuzzle(){
     puzzleBoard.innerHTML="";
-    for(let i=0;i<TOTAL;i++){
-        const t=document.createElement("div");
-        t.className="tile";
+    const grid = puzzleGrid(TOTAL);
+    puzzleBoard.style.gridTemplateColumns = `repeat(${grid.cols}, 1fr)`;
+    puzzleBoard.style.gridTemplateRows = `repeat(${grid.rows}, 1fr)`;
+    // Aspect ratio на цялата мозайка следва решетката, така че изображението не се изкривява
+    puzzleBoard.style.aspectRatio = `${grid.cols} / ${grid.rows}`;
+    for(let i=0; i<TOTAL; i++){
+        const t = document.createElement("div");
+        t.className = "tile";
+        // Изчисляваме позицията на тази плочка в решетката
+        const col = i % grid.cols;
+        const row = Math.floor(i / grid.cols);
+        // background-size: cols*100% × rows*100%
+        // background-position: процент за всяка плочка
+        // (cols-1) дава 100% максимум, така че за col=k → k/(cols-1) × 100%
+        const xPct = grid.cols > 1 ? (col / (grid.cols - 1)) * 100 : 50;
+        const yPct = grid.rows > 1 ? (row / (grid.rows - 1)) * 100 : 50;
+        t.style.setProperty('--bg-size', `${grid.cols * 100}% ${grid.rows * 100}%`);
+        t.style.setProperty('--bg-pos', `${xPct}% ${yPct}%`);
         puzzleBoard.appendChild(t);
     }
 }
 
 function reveal(i){
-    const tiles=[...puzzleBoard.children];
+    const tiles = [...puzzleBoard.children];
     if(tiles[i]){
         tiles[i].classList.add("revealed");
-        tiles[i].textContent = "✓";
     }
 }
 
