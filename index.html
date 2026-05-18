@@ -117,6 +117,9 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .qtext mjx-container { max-width: 100% !important; }
 .card{overflow-x:hidden;}
 .options{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin:18px 0}
+.options.wide{grid-template-columns:minmax(0,1fr)}
+.options.wide .option{padding:14px 18px;font-size:16px}
+.options .option-content{line-height:1.55}
 
 .escape-scene{
     min-height:200px;
@@ -1557,6 +1560,7 @@ function qIntersectingChordsAngles(){
     
     return {
         type:'Хорди и ъгли в окръжност', difficulty:'Висока',
+        wideOptions: true,
         q:q, ...makeOptions(ok, ds),
         explain:explain, visual:'chordsIntersect'
     };
@@ -1592,15 +1596,19 @@ function qTangentSecantWithRatio(){
         return `${whole}^\\circ${min}'`;
     };
     
-    const ok = `$\\angle MBA = ${fmt(angMBA)};\\ \\angle MOB = ${fmt(angMOB)};\\ \\angle AMQ = ${fmt(angAMQ)};\\ \\angle BQM = ${fmt(angBQM)}$`;
+    const fmtAns = (a, b, c, d) =>
+        `$\\angle MBA = ${fmt(a)};\\ \\angle MOB = ${fmt(b)}$<br>$\\angle AMQ = ${fmt(c)};\\ \\angle BQM = ${fmt(d)}$`;
+    
+    const ok = fmtAns(angMBA, angMOB, angAMQ, angBQM);
     const ds = [
-        `$\\angle MBA = ${fmt(angMOB)};\\ \\angle MOB = ${fmt(angMBA)};\\ \\angle AMQ = ${fmt(angBQM)};\\ \\angle BQM = ${fmt(angAMQ)}$`,
-        `$\\angle MBA = ${fmt(arcMA)};\\ \\angle MOB = ${fmt(arcMB)};\\ \\angle AMQ = ${fmt(alpha)};\\ \\angle BQM = ${fmt(alpha/2)}$`,
-        `$\\angle MBA = ${fmt(angMBA+5)};\\ \\angle MOB = ${fmt(angMOB-5)};\\ \\angle AMQ = ${fmt(angAMQ+5)};\\ \\angle BQM = ${fmt(angBQM+5)}$`
+        fmtAns(angMOB, angMBA, angBQM, angAMQ),
+        fmtAns(arcMA, arcMB, alpha, alpha/2),
+        fmtAns(angMBA+5, angMOB-5, angAMQ+5, angBQM+5)
     ];
     
     return {
         type:'Допирателна и секуща', difficulty:'Висока',
+        wideOptions: true,
         q:`Точките $M, A$ и $B$ лежат на окръжност с център $O$. Правата $t$ е допирателна в точка $M$, а правите $AB$ и $t$ се пресичат в точка $Q$. Дадено е, че $\\angle AMB = ${alpha}^\\circ$ и мерките на дъгите $\\overset{\\frown}{MA}$ и $\\overset{\\frown}{MB}$ (които не съдържат точката $A$ или $B$ съответно) се отнасят както $${m}:${n}$. Да се намерят мерките на $\\angle MBA$, $\\angle MOB$, $\\angle AMQ$ и $\\angle BQM$.`,
         ...makeOptions(ok, ds),
         explain:`$\\angle AMB$ е вписан и опира на дъга $\\overset{\\frown}{AB}$, така че $\\overset{\\frown}{AB}=2\\cdot ${alpha}^\\circ=${arcAB}^\\circ$. Остатъкът ${rest}^\\circ$ се разделя в отношение $${m}:${n}$, откъдето $\\overset{\\frown}{MA}=${arcMA}^\\circ$ и $\\overset{\\frown}{MB}=${arcMB}^\\circ$. <br>• $\\angle MBA$ е вписан в дъга $\\overset{\\frown}{MA}$: ${fmt(angMBA)}. <br>• $\\angle MOB$ е централен ъгъл за дъга $\\overset{\\frown}{MB}$: ${fmt(angMOB)}. <br>• $\\angle AMQ$ е ъгъл между допирателна и хорда $MA$: ${fmt(angAMQ)}. <br>• $\\angle BQM$ е външен ъгъл при $Q$ между допирателна и секуща: $\\frac{|\\overset{\\frown}{MB}-\\overset{\\frown}{MA}|}{2}=${fmt(angBQM)}$.`,
@@ -2388,7 +2396,7 @@ function render(){
             </div>
         </div>
         <div class="qtext">${item.q}</div>
-        <div class="options">${ops}</div>
+        <div class="options${item.wideOptions?' wide':''}">${ops}</div>
         <div class="actions">${action}</div>
         ${feed}
     </div>`;
