@@ -1048,15 +1048,18 @@ const VISUALS = {
     </svg>`,
     /* Разстояние от център до хорда */
     chordDistance:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
-        <circle cx="230" cy="95" r="62" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
-        <line x1="170" y1="55" x2="290" y2="55" stroke="#f97316" stroke-width="4"/>
-        <line x1="230" y1="95" x2="230" y2="55" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="5 3"/>
+        <!-- O=(230,95), R=60. Хорда AB на y=59. Тогава |OA|=|OB|=sqrt(48²+36²)=sqrt(2304+1296)=sqrt(3600)=60 ✓ -->
+        <circle cx="230" cy="95" r="60" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
+        <!-- Хорда AB: A=(182,59), B=(278,59) -->
+        <line x1="182" y1="59" x2="278" y2="59" stroke="#f97316" stroke-width="4"/>
+        <!-- Перпендикуляр от O до средата на AB (точка (230,59)) -->
+        <line x1="230" y1="95" x2="230" y2="59" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="5 3"/>
         <circle cx="230" cy="95" r="3.5" fill="#fff"/>
-        <circle cx="170" cy="55" r="3.5" fill="#fff"/>
-        <circle cx="290" cy="55" r="3.5" fill="#fff"/>
+        <circle cx="182" cy="59" r="3.5" fill="#fff"/>
+        <circle cx="278" cy="59" r="3.5" fill="#fff"/>
         <text x="220" y="115" font-size="14" font-weight="900" fill="#fff">O</text>
-        <text x="155" y="50"  font-size="15" font-weight="900" fill="#fff">A</text>
-        <text x="297" y="50"  font-size="15" font-weight="900" fill="#fff">B</text>
+        <text x="166" y="54"  font-size="15" font-weight="900" fill="#fff">A</text>
+        <text x="285" y="54"  font-size="15" font-weight="900" fill="#fff">B</text>
     </svg>`,
     /* Просто квадратно уравнение — неутрална илюстрация */
     simpleQuad:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
