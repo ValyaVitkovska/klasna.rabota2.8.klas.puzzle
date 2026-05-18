@@ -1033,18 +1033,19 @@ const VISUALS = {
     </svg>`,
     /* Вписан ъгъл върху диаметър */
     diameterAngle:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
-        <circle cx="230" cy="95" r="62" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
-        <line x1="168" y1="95" x2="292" y2="95" stroke="#f97316" stroke-width="4"/>
-        <line x1="168" y1="95" x2="266" y2="35" stroke="#22c55e" stroke-width="3.5"/>
-        <line x1="292" y1="95" x2="266" y2="35" stroke="#22c55e" stroke-width="3.5"/>
+        <!-- O=(230,95), R=60. AB е диаметър. C=(260,43) на окръжността; ∠ACB=90° -->
+        <circle cx="230" cy="95" r="60" fill="rgba(79,70,229,.1)" stroke="#4f46e5" stroke-width="4"/>
+        <line x1="170" y1="95" x2="290" y2="95" stroke="#f97316" stroke-width="4"/>
+        <line x1="170" y1="95" x2="260" y2="43" stroke="#22c55e" stroke-width="3.5"/>
+        <line x1="290" y1="95" x2="260" y2="43" stroke="#22c55e" stroke-width="3.5"/>
         <circle cx="230" cy="95" r="3.5" fill="#fff"/>
-        <circle cx="168" cy="95" r="3.5" fill="#fff"/>
-        <circle cx="292" cy="95" r="3.5" fill="#fff"/>
-        <circle cx="266" cy="35" r="3.5" fill="#fff"/>
-        <text x="237" y="100" font-size="14" font-weight="900" fill="#fff">O</text>
-        <text x="152" y="100" font-size="15" font-weight="900" fill="#fff">A</text>
-        <text x="298" y="100" font-size="15" font-weight="900" fill="#fff">B</text>
-        <text x="270" y="30"  font-size="15" font-weight="900" fill="#fff">C</text>
+        <circle cx="170" cy="95" r="3.5" fill="#fff"/>
+        <circle cx="290" cy="95" r="3.5" fill="#fff"/>
+        <circle cx="260" cy="43" r="3.5" fill="#fff"/>
+        <text x="226" y="115" font-size="14" font-weight="900" fill="#fff">O</text>
+        <text x="153" y="100" font-size="15" font-weight="900" fill="#fff">A</text>
+        <text x="296" y="100" font-size="15" font-weight="900" fill="#fff">B</text>
+        <text x="264" y="36"  font-size="15" font-weight="900" fill="#fff">C</text>
     </svg>`,
     /* Разстояние от център до хорда */
     chordDistance:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet">
