@@ -906,8 +906,6 @@ const VISUALS = {
         <line x1="218" y1="36"  x2="434" y2="106" stroke="#a855f7" stroke-width="2.5"/>
         <!-- Права CD продължена до M (виолетова): D=(183,145) през C=(290,124) до M=(415,100) -->
         <line x1="183" y1="145" x2="435" y2="96" stroke="#a855f7" stroke-width="2.5"/>
-        <!-- Център O -->
-        <circle cx="230" cy="100" r="3" fill="#fff"/>
         <!-- Точки на окръжността -->
         <circle cx="218" cy="36"  r="3.5" fill="#fff"/>
         <circle cx="277" cy="55"  r="3.5" fill="#fff"/>
@@ -921,7 +919,6 @@ const VISUALS = {
         <text x="284" y="48"  font-size="14" font-weight="900" fill="#fff">B</text>
         <text x="294" y="139" font-size="14" font-weight="900" fill="#fff">C</text>
         <text x="166" y="153" font-size="14" font-weight="900" fill="#fff">D</text>
-        <text x="237" y="105" font-size="13" font-weight="900" fill="#fff">O</text>
         <text x="256" y="73"  font-size="13" font-weight="900" fill="#fcd34d">Q</text>
         <text x="423" y="105" font-size="14" font-weight="900" fill="#fff">M</text>
     </svg>`,
@@ -1541,9 +1538,12 @@ function qIntersectingChordsAngles(){
         q = `В окръжност хордите $AC$ и $BD$ се пресичат в точка $Q$, а правите $AB$ и $CD$ — в точка $M$ (извън окръжността). Дадено е, че $\\angle AQD = ${angAQD}^\\circ$ и $\\angle BDC = ${angBDC}^\\circ$. Да се намерят $\\angle ABD$ и $\\angle BMC$.`;
         ok = `$\\angle ABD = ${angABD}^\\circ;\\ \\angle BMC = ${angBMC}^\\circ$`;
         ds = [
-            `$\\angle ABD = ${angBMC}^\\circ;\\ \\angle BMC = ${angABD}^\\circ$`,
-            `$\\angle ABD = ${angAQD}^\\circ;\\ \\angle BMC = ${angBDC}^\\circ$`,
-            `$\\angle ABD = ${arcAD}^\\circ;\\ \\angle BMC = ${arcBC}^\\circ$`
+            // Правилен първи ъгъл, грешен втори (вторият = ∠AQD - грешка от формула за вътрешен вместо външен)
+            `$\\angle ABD = ${angABD}^\\circ;\\ \\angle BMC = ${angAQD}^\\circ$`,
+            // Грешен първи ъгъл (взета е дъга вместо вписан), правилен втори
+            `$\\angle ABD = ${arcAD}^\\circ;\\ \\angle BMC = ${angBMC}^\\circ$`,
+            // Двата ъгъла разменени — често срещана грешка
+            `$\\angle ABD = ${angBMC}^\\circ;\\ \\angle BMC = ${angABD}^\\circ$`
         ];
         explain = `$\\angle BDC$ е вписан ъгъл, опиращ се на дъга $BC$, затова $\\overset{\\frown}{BC} = 2\\cdot ${angBDC}^\\circ = ${arcBC}^\\circ$. Ъгълът $\\angle AQD$ е с връх вътре в окръжността: $\\angle AQD = \\frac{\\overset{\\frown}{AD}+\\overset{\\frown}{BC}}{2}$, откъдето $\\overset{\\frown}{AD} = 2\\cdot ${angAQD}^\\circ - ${arcBC}^\\circ = ${arcAD}^\\circ$. <br>$\\angle ABD$ е вписан и опира на дъга $AD$: $\\angle ABD = ${arcAD}^\\circ/2 = ${angABD}^\\circ$. <br>$\\angle BMC$ е с връх извън окръжността: $\\angle BMC = \\frac{${arcAD}^\\circ - ${arcBC}^\\circ}{2} = ${angBMC}^\\circ$.`;
     } else {
@@ -1551,9 +1551,12 @@ function qIntersectingChordsAngles(){
         q = `В окръжност хордите $AC$ и $BD$ се пресичат в точка $Q$, а правите $AB$ и $CD$ — в точка $M$ (извън окръжността). Дадено е, че $\\angle BMC = ${angBMC}^\\circ$ и $\\angle ABD = ${angABD}^\\circ$. Да се намерят $\\angle AQD$ и $\\angle BDC$.`;
         ok = `$\\angle AQD = ${angAQD}^\\circ;\\ \\angle BDC = ${angBDC}^\\circ$`;
         ds = [
-            `$\\angle AQD = ${angBDC}^\\circ;\\ \\angle BDC = ${angAQD}^\\circ$`,
-            `$\\angle AQD = ${angABD}^\\circ;\\ \\angle BDC = ${angBMC}^\\circ$`,
-            `$\\angle AQD = ${arcAD}^\\circ;\\ \\angle BDC = ${arcBC}^\\circ$`
+            // Правилен първи, грешен втори (взета дъга вместо вписан)
+            `$\\angle AQD = ${angAQD}^\\circ;\\ \\angle BDC = ${arcBC}^\\circ$`,
+            // Грешен първи (взета дъга AD), правилен втори
+            `$\\angle AQD = ${arcAD}^\\circ;\\ \\angle BDC = ${angBDC}^\\circ$`,
+            // Двата разменени
+            `$\\angle AQD = ${angBDC}^\\circ;\\ \\angle BDC = ${angAQD}^\\circ$`
         ];
         explain = `$\\angle ABD$ е вписан и опира на дъга $AD$: $\\overset{\\frown}{AD} = 2\\cdot ${angABD}^\\circ = ${arcAD}^\\circ$. Ъгълът $\\angle BMC$ е с връх извън окръжността: $\\angle BMC = \\frac{\\overset{\\frown}{AD}-\\overset{\\frown}{BC}}{2}$, откъдето $\\overset{\\frown}{BC} = ${arcAD}^\\circ - 2\\cdot ${angBMC}^\\circ = ${arcBC}^\\circ$. <br>$\\angle AQD = \\frac{${arcAD}^\\circ + ${arcBC}^\\circ}{2} = ${angAQD}^\\circ$ и $\\angle BDC = ${arcBC}^\\circ/2 = ${angBDC}^\\circ$.`;
     }
@@ -1600,10 +1603,17 @@ function qTangentSecantWithRatio(){
         `$\\angle MBA = ${fmt(a)};\\ \\angle MOB = ${fmt(b)}$<br>$\\angle AMQ = ${fmt(c)};\\ \\angle BQM = ${fmt(d)}$`;
     
     const ok = fmtAns(angMBA, angMOB, angAMQ, angBQM);
+    // Често срещани грешки на учениците:
+    // — взема дъгата вместо вписания ъгъл (или обратно)
+    // — обърква външен ъгъл (разлика) със сума на дъгите
+    // — обърква централен ъгъл с някоя от съседните дъги
     const ds = [
-        fmtAns(angMOB, angMBA, angBQM, angAMQ),
-        fmtAns(arcMA, arcMB, alpha, alpha/2),
-        fmtAns(angMBA+5, angMOB-5, angAMQ+5, angBQM+5)
+        // Грешен първи (взета цяла дъга MA), грешен четвърти (вместо разлика — полусума)
+        fmtAns(arcMA, angMOB, angAMQ, (arcMA+arcMB)/2),
+        // Правилни 1, 2; грешен трети (взема alpha вместо ъгъл с допирателна) и грешен четвърти
+        fmtAns(angMBA, angMOB, alpha, (arcMB+arcMA)/2),
+        // Грешни 1 и 2 (взема ∠AMB вместо ∠MBA, дъга MA вместо MB), правилни 3 и 4
+        fmtAns(alpha, arcMA, angAMQ, angBQM)
     ];
     
     return {
