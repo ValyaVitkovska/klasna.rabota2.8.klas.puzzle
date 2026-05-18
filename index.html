@@ -327,6 +327,26 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
         0 2px 0 #312e81,
         0 5px 14px rgba(67,56,202,.4);
 }
+.btn-3d.disabled, .btn-3d:disabled {
+    background: linear-gradient(180deg, #94a3b8 0%, #64748b 50%, #475569 100%);
+    color: rgba(255,255,255,.75);
+    cursor: not-allowed;
+    transform: translateY(2px);
+    box-shadow:
+        0 1px 0 rgba(255,255,255,.3) inset,
+        0 -3px 0 rgba(71,85,105,.6) inset,
+        0 3px 0 #334155,
+        0 6px 14px rgba(15,23,42,.18);
+    animation: none !important;
+}
+.btn-3d.disabled:hover, .btn-3d:disabled:hover {
+    transform: translateY(2px);
+    box-shadow:
+        0 1px 0 rgba(255,255,255,.3) inset,
+        0 -3px 0 rgba(71,85,105,.6) inset,
+        0 3px 0 #334155,
+        0 6px 14px rgba(15,23,42,.18);
+}
 .btn-3d.orange {
     background: linear-gradient(180deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
     box-shadow:
@@ -406,28 +426,27 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
     margin-top: 14px;
 }
 
-/* === Поле за име на ученик (стартов екран) === */
-.student-name-row{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin:18px 0 14px;
-    padding:14px 18px;
-    background:rgba(99,102,241,.08);
-    border:1px solid rgba(99,102,241,.22);
+/* === Поле за име на ученик (вляво, над бутона за начало) === */
+.student-name-block{
+    margin:14px 0 0;
+    padding:14px 16px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.18);
     border-radius:16px;
-    flex-wrap:wrap;
 }
-.student-name-row label{
+.student-name-input-label{
+    display:block;
     font-weight:800;
-    color:#4338ca;
-    flex:0 0 auto;
+    color:#fff;
+    font-size:14px;
+    margin-bottom:8px;
 }
-.student-name-row input{
-    flex:1;
-    min-width:200px;
+.student-name-input{
+    display:block;
+    width:100%;
+    box-sizing:border-box;
     height:42px;
-    border:1px solid rgba(99,102,241,.3);
+    border:1px solid rgba(255,255,255,.25);
     border-radius:12px;
     padding:0 14px;
     font-size:16px;
@@ -435,40 +454,22 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
     color:#1e293b;
     background:#fff;
     outline:none;
-    box-shadow:0 2px 8px rgba(15,23,42,.05);
+    box-shadow:0 2px 8px rgba(15,23,42,.15);
     transition:border-color .15s, box-shadow .15s;
 }
-.student-name-row input:focus{
-    border-color:#6366f1;
-    box-shadow:0 0 0 4px rgba(99,102,241,.18);
+.student-name-input:focus{
+    border-color:#fcd34d;
+    box-shadow:0 0 0 4px rgba(252,211,77,.25);
 }
-
-/* === Етикет с името до пъзела === */
-.student-name-label{
-    display:none;
-    align-items:center;
-    gap:8px;
-    margin:6px 0 12px;
-    padding:8px 14px;
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.18);
-    border-radius:12px;
-    color:#fff;
-    font-size:14px;
+.student-name-hint{
+    margin:8px 0 0;
+    padding:0;
+    color:#fca5a5;
+    font-size:12px;
     font-weight:700;
+    line-height:1.4;
 }
-.student-name-label.show{ display:inline-flex; }
-.student-name-label .label-icon{ font-size:16px; }
-.student-name-label .label-text{ opacity:.7; font-weight:600; }
-.student-name-label .label-value{
-    color:#fde68a;
-    font-weight:900;
-    letter-spacing:.2px;
-    max-width:200px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
+.student-name-block.hidden{ display:none; }
 
 
 .qcount-row {
@@ -617,13 +618,22 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
   <aside class="reveal">
     <h2>Разкриване на изображение</h2>
     <p>При всеки правилен отговор се разкрива квадрат от мозайката с точките, които сте спечелили.</p>
-    <div class="student-name-label" id="studentNameLabel">
-      <span class="label-icon">👤</span>
-      <span class="label-text">Име:</span>
-      <span class="label-value" id="studentNameValue">—</span>
-    </div>
     <div class="puzzle" id="puzzleBoard"></div>
-    <button id="startBtn" class="btn-3d pulse" onclick="startGame()" style="margin-top:16px;width:100%">
+
+    <!-- Поле за име на ученика (задължително) -->
+    <div class="student-name-block" id="studentNameBlock">
+      <label for="studentNameInput" class="student-name-input-label">
+        👤 Име на ученика: <span style="color:#fca5a5">*</span>
+      </label>
+      <input id="studentNameInput" type="text" placeholder="Въведете име и фамилия"
+             maxlength="60" oninput="setStudentName(this.value)"
+             class="student-name-input"/>
+      <p id="nameRequiredHint" class="student-name-hint">
+        ⚠️ Името е задължително за стартиране на теста.
+      </p>
+    </div>
+
+    <button id="startBtn" class="btn-3d disabled" onclick="startGame()" disabled style="margin-top:12px;width:100%">
       🚀 Начало на теста
     </button>
   </aside>
@@ -2209,20 +2219,14 @@ function showStart(){
     update();
     const sb = document.getElementById('startBtn');
     if(sb) sb.style.display = '';
+    const nameBlock = document.getElementById('studentNameBlock');
+    if(nameBlock) nameBlock.classList.remove('hidden');
     screen.innerHTML=`<div class="card animate-enter">
       <h2 style="margin:0 0 8px">Подготовка за класна работа № 2 — 8. клас</h2>
       <p style="font-size:16px;line-height:1.55;color:#475569;margin:0 0 6px">
         Тестът съдържа задачи от <strong>две основни теми: квадратни уравнения и окръжност</strong>.
         При всяко стартиране задачите се рандомизират — числовите данни и редът са нови.
       </p>
-
-      <!-- Поле за име на ученика -->
-      <div class="student-name-row">
-        <label for="studentNameInput">👤 Име на ученика:</label>
-        <input id="studentNameInput" type="text" placeholder="Въведете име и фамилия"
-               value="${studentName||''}" maxlength="60"
-               oninput="setStudentName(this.value)"/>
-      </div>
 
       <!-- Стъпков избор на брой задачи -->
       <div class="qcount-row">
@@ -2322,17 +2326,27 @@ function changeQCount(delta){
 /* === Управление на името на ученика === */
 function setStudentName(val){
     studentName = (val || "").trim();
-    const lbl = document.getElementById('studentNameLabel');
-    const valEl = document.getElementById('studentNameValue');
-    if(lbl && valEl){
+    // Синхронизираме стойността на полето (например при програмно задаване)
+    const inp = document.getElementById('studentNameInput');
+    if(inp && inp.value !== val) inp.value = val;
+    // Включваме/изключваме бутона за начало на теста
+    const sb = document.getElementById('startBtn');
+    if(sb){
         if(studentName){
-            valEl.textContent = studentName;
-            lbl.classList.add('show');
+            sb.disabled = false;
+            sb.classList.add('pulse');
+            sb.classList.remove('disabled');
+            sb.title = '';
         } else {
-            valEl.textContent = '—';
-            lbl.classList.remove('show');
+            sb.disabled = true;
+            sb.classList.remove('pulse');
+            sb.classList.add('disabled');
+            sb.title = 'Първо въведете името си';
         }
     }
+    // Показваме/скриваме предупреждението под полето
+    const hint = document.getElementById('nameRequiredHint');
+    if(hint) hint.style.display = studentName ? 'none' : 'block';
     // Обновяваме и във финалния екран ако той е активен
     const finalNameEl = document.getElementById('finalStudentName');
     if(finalNameEl) finalNameEl.textContent = studentName || 'Анонимен ученик';
@@ -2350,11 +2364,27 @@ function toggleStartInfo(){
 }
 
 function startGame(){
+    // Защита: името на ученика е задължително
+    if(!studentName){
+        const inp = document.getElementById('studentNameInput');
+        if(inp){
+            inp.focus();
+            inp.style.borderColor = '#dc2626';
+            inp.style.boxShadow = '0 0 0 4px rgba(220,38,38,.18)';
+            setTimeout(() => {
+                inp.style.borderColor = '';
+                inp.style.boxShadow = '';
+            }, 2000);
+        }
+        return;
+    }
     questions=generate();
     started=true;
     current=0; score=0; correct=0; selected=null; answered=false; answers=[];
     const sb = document.getElementById('startBtn');
     if(sb) sb.style.display = 'none';
+    const nameBlock = document.getElementById('studentNameBlock');
+    if(nameBlock) nameBlock.classList.add('hidden');
     initPuzzle();
     render();
     update();
