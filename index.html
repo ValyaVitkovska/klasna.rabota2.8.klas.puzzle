@@ -577,6 +577,49 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
     line-height:1.4;
 }
 .student-name-block.hidden{ display:none; }
+.puzzle-start-controls{
+    display:grid;
+    gap:12px;
+    margin-top:2px;
+    padding-top:14px;
+    border-top:1px solid rgba(79,70,229,.14);
+}
+.puzzle-start-controls .info-toggle{
+    margin:0 !important;
+}
+.puzzle-start-controls .info-content{
+    margin-bottom:0 !important;
+}
+.puzzle-start-row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(210px,.52fr);
+    align-items:stretch;
+    gap:12px;
+}
+.puzzle-start-controls .student-name-block{
+    margin:0 !important;
+    padding:11px 12px;
+    background:rgba(79,70,229,.06);
+    border:1px solid rgba(79,70,229,.16);
+}
+.puzzle-start-controls .student-name-input-label{
+    color:#334155;
+    margin-bottom:6px;
+}
+.puzzle-start-controls .student-name-hint{
+    color:#dc2626;
+}
+.puzzle-start-controls #startBtn{
+    height:100%;
+    min-height:76px;
+    margin:0 !important;
+    padding:14px 16px;
+    font-size:18px;
+}
+@media(max-width:680px){
+    .puzzle-start-row{grid-template-columns:1fr}
+    .puzzle-start-controls #startBtn{min-height:58px}
+}
 
 .qcount-row {
     display: flex;
@@ -1711,54 +1754,6 @@ button:focus-visible,
         </div>
       </section>
 
-      <button class="info-toggle" id="infoToggle" onclick="toggleStartInfo()" aria-expanded="false" style="margin-top: 0; margin-bottom: 12px;">
-        <span>📋 Подробна информация за теста</span>
-        <span class="chev">▾</span>
-      </button>
-      <div class="info-content" id="infoContent" style="margin-bottom: 12px;">
-        <div class="start-grid" style="margin-top:0">
-          <div class="info">
-            <h3>📘 Алгебра</h3>
-            <ul style="padding-left: 20px; font-size: 14px; margin: 0; color: #475569;">
-              <li>Просто и непълно квадратно уравнение</li>
-              <li>Биквадратни уравнения и уравнения с полагане</li>
-              <li>Уравнения, свеждащи се до квадратни</li>
-              <li>Разлагане на квадратен тричлен</li>
-              <li>Формули на Виет и параметрични задачи</li>
-            </ul>
-          </div>
-          <div class="info orange">
-            <h3>⭕ Геометрия</h3>
-            <ul style="padding-left: 20px; font-size: 14px; margin: 0; color: #475569;">
-              <li>Взаимно положение на права и окръжност</li>
-              <li>Централен и вписан ъгъл</li>
-              <li>Разстояние от център до хорда</li>
-              <li>Пресичащи се хорди и ъгли</li>
-              <li>Допирателна, хорда и секуща</li>
-            </ul>
-          </div>
-          <div class="info">
-            <h3>🏆 Оценяване</h3>
-            <p style="font-size: 14px; margin: 0; color: #475569;">90–100 т. — Отличен (6)<br>70–89 т. — Много добър (5)<br>50–69 т. — Добър (4)<br>под 50 т. — необходим е преговор</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="student-name-block" id="studentNameBlock" style="margin-top: 0; margin-bottom: 16px;">
-        <label for="studentNameInput" class="student-name-input-label">
-          👤 Име на ученика: <span style="color:#fca5a5">*</span>
-        </label>
-        <input id="studentNameInput" type="text" placeholder="Въведете име и фамилия"
-               maxlength="60" oninput="setStudentName(this.value)"
-               class="student-name-input"/>
-        <p id="nameRequiredHint" class="student-name-hint">
-          ⚠️ Името е задължително за стартиране на теста.
-        </p>
-      </div>
-
-      <button id="startBtn" class="btn-3d disabled" onclick="startGame()" disabled style="margin-bottom: 0; width: 100%">
-        🚀 Начало на теста
-      </button>
     </div>
     <!-- КРАЙ НА ИНФОРМАЦИЯТА -->
 
@@ -1785,6 +1780,56 @@ button:focus-visible,
       </div>
       
       <div class="puzzle" id="puzzleBoard"></div>
+      <div class="puzzle-start-controls" id="puzzleStartControls">
+        <button class="info-toggle" id="infoToggle" onclick="toggleStartInfo()" aria-expanded="false">
+          <span>📋 Подробна информация за теста</span>
+          <span class="chev">▾</span>
+        </button>
+        <div class="info-content" id="infoContent">
+          <div class="start-grid" style="margin-top:0">
+            <div class="info">
+              <h3>📘 Алгебра</h3>
+              <ul style="padding-left:20px;font-size:14px;margin:0;color:#475569">
+                <li>Просто и непълно квадратно уравнение</li>
+                <li>Биквадратни уравнения и уравнения с полагане</li>
+                <li>Уравнения, свеждащи се до квадратни</li>
+                <li>Разлагане на квадратен тричлен</li>
+                <li>Формули на Виет и параметрични задачи</li>
+              </ul>
+            </div>
+            <div class="info orange">
+              <h3>⭕ Геометрия</h3>
+              <ul style="padding-left:20px;font-size:14px;margin:0;color:#475569">
+                <li>Взаимно положение на права и окръжност</li>
+                <li>Централен и вписан ъгъл</li>
+                <li>Разстояние от център до хорда</li>
+                <li>Пресичащи се хорди и ъгли</li>
+                <li>Допирателна, хорда и секуща</li>
+              </ul>
+            </div>
+            <div class="info">
+              <h3>🏆 Оценяване</h3>
+              <p style="font-size:14px;margin:0;color:#475569">90–100 т. — Отличен (6)<br>70–89 т. — Много добър (5)<br>50–69 т. — Добър (4)<br>под 50 т. — необходим е преговор</p>
+            </div>
+          </div>
+        </div>
+        <div class="puzzle-start-row">
+          <div class="student-name-block" id="studentNameBlock">
+            <label for="studentNameInput" class="student-name-input-label">
+              👤 Име на ученика: <span style="color:#dc2626">*</span>
+            </label>
+            <input id="studentNameInput" type="text" placeholder="Въведете име и фамилия"
+                   maxlength="60" oninput="setStudentName(this.value)"
+                   class="student-name-input"/>
+            <p id="nameRequiredHint" class="student-name-hint">
+              ⚠️ Името е задължително за стартиране на теста.
+            </p>
+          </div>
+          <button id="startBtn" class="btn-3d disabled" onclick="startGame()" disabled>
+            🚀 Начало на теста
+          </button>
+        </div>
+      </div>
       <div class="feedback puzzle-feedback" id="puzzleFeedbackHost" aria-live="polite"></div>
     </aside>
   </div> <!-- край на дясната колона -->
@@ -3150,6 +3195,7 @@ function showStart(){
     $("gameSection").style.display = "none";
     $("startInfoBlock").style.display = "block";
     $("puzzleHeaderWrapper").style.display = "none";
+    $("puzzleStartControls").style.display = "grid";
     
     const sb = document.getElementById('startBtn');
     if(sb) sb.style.display = '';
@@ -3187,6 +3233,7 @@ function startGame(){
     
     $("startInfoBlock").style.display = "none";
     $("puzzleHeaderWrapper").style.display = "block";
+    $("puzzleStartControls").style.display = "none";
     $("statsSection").style.display = ""; 
     $("gameSection").style.display = "block";
 
