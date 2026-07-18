@@ -135,18 +135,6 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .options.wide .option{padding:14px 18px;font-size:16px}
 .options .option-content{line-height:1.55}
 
-.escape-scene{
-    min-height:200px;
-    border-radius:26px;
-    margin:14px 0 16px;
-    background:linear-gradient(135deg,#111827,#1e1b4b 58%,#0f172a);
-    border:2px solid rgba(255,255,255,.12);
-    box-shadow:inset 0 18px 50px rgba(0,0,0,.48),0 14px 30px rgba(15,23,42,.12);
-    position:relative;
-    overflow:hidden;
-}
-.escape-scene svg{width:100%;height:160px;display:block}
-
 /* === Книга-послание === */
 .msg-book{
     position:absolute;
@@ -320,6 +308,7 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .svg{width:100%;height:100%;position:absolute;inset:0;}
 
 .feedback{min-height:58px;padding:14px 16px;border-radius:18px;margin-top:14px;font-weight:500;display:none;line-height:1.6;font-size:18px;min-width:0;}.feedback.show{display:block}.good{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}.bad{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
+.puzzle-feedback{display:none;margin-top:12px;text-align:left}
 .feedback-head{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:14px;margin-bottom:12px}
 .feedback-geo-wrap{position:relative;width:112px;height:112px}
 .feedback-geo{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 9px rgba(15,23,42,.22));transform-origin:50% 100%}
@@ -336,8 +325,6 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .feedback-solution mjx-container[display="true"]{width:max-content;min-width:100%}
 .formula-scroll-hint{display:none;margin:8px 0 0;color:currentColor;opacity:.75;font-size:12px;font-weight:700}
 .puzzle-instruction{margin:0 0 10px;padding:9px 11px;border-radius:13px;background:#ecfeff;color:#155e75;font-size:13px;font-weight:800;line-height:1.4;border:1px solid #a5f3fc}
-.puzzle-escape-scene{min-height:106px;margin:0 0 10px;border-radius:17px;box-shadow:inset 0 10px 28px rgba(0,0,0,.38),0 8px 18px rgba(15,23,42,.10)}
-.puzzle-escape-scene svg{height:102px}
 
 @keyframes slideInUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 .option{border:2px solid transparent;text-align:left;background:rgba(255,255,255,.94);border-radius:18px;padding:15px 16px;font-size:17px;cursor:pointer;min-height:62px;box-shadow:0 9px 20px rgba(15,23,42,.08);opacity:0;animation:slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;min-width:0;overflow-wrap:break-word;word-break:break-word;}
@@ -1020,7 +1007,18 @@ button:focus-visible,
         position:sticky;
         top:16px;
         align-self:start;
+        max-height:calc(100dvh - 32px);
+        overflow-y:auto;
+        overscroll-behavior:contain;
+        scrollbar-width:thin;
     }
+    body.game-active .task-feedback{display:none !important}
+    body.game-active .puzzle-feedback.show{display:block}
+    .puzzle-feedback .feedback-head{grid-template-columns:82px minmax(0,1fr);gap:10px;margin-bottom:9px}
+    .puzzle-feedback .feedback-geo-wrap{width:82px;height:82px}
+    .puzzle-feedback .feedback-puzzle-piece{width:27px;height:27px;font-size:21px}
+    .puzzle-feedback .feedback-message{font-size:14px;padding:8px 10px}
+    .puzzle-feedback .feedback-solution{font-size:15px;line-height:1.5}
 }
 
 .mobile-game-nav{
@@ -1029,6 +1027,7 @@ button:focus-visible,
 
 /* Телефон и таблет */
 @media(max-width:1120px){
+    .puzzle-feedback{display:none !important}
     .formula-scroll-hint{
         display:block;
     }
@@ -1037,10 +1036,10 @@ button:focus-visible,
         gap:18px;
     }
     body.game-active .right-col{
-        order:1;
+        order:2;
     }
     body.game-active .left-col{
-        order:2;
+        order:1;
     }
     body.game-active{
         padding-bottom:calc(76px + env(safe-area-inset-bottom));
@@ -1213,21 +1212,6 @@ button:focus-visible,
         min-width:0;
         min-height:42px;
         font-size:clamp(14px,4.4vw,20px);
-    }
-    .escape-scene{
-        min-height:155px;
-        border-radius:19px;
-    }
-    .escape-scene svg{
-        height:140px;
-    }
-    .puzzle-escape-scene{
-        min-height:86px;
-        margin-bottom:8px;
-        border-radius:14px;
-    }
-    .puzzle-escape-scene svg{
-        height:82px;
     }
     .q-header{
         margin-bottom:10px;
@@ -1798,10 +1782,10 @@ button:focus-visible,
         </div>
         <div class="progress-wrap" id="progressWrap" style="margin: 0 0 14px;"><div class="progress" id="progress"></div></div>
         <p class="puzzle-instruction">🧩 Всеки верен отговор разкрива една част от картината. При грешен отговор плочката остава отбелязана за преговор.</p>
-        <div class="escape-scene puzzle-escape-scene question" id="escapeScene" aria-live="polite"></div>
       </div>
       
       <div class="puzzle" id="puzzleBoard"></div>
+      <div class="feedback puzzle-feedback" id="puzzleFeedbackHost" aria-live="polite"></div>
     </aside>
   </div> <!-- край на дясната колона -->
 </div> <!-- край на play-area -->
@@ -2018,16 +2002,6 @@ function geoFeedbackFromText(ok, text, explanation){
     const status = ok ? "✓ Правилен отговор." : "✗ Грешен отговор.";
     const geoSrc = document.querySelector(".geo-guide-character")?.src || "Гео.png";
     return `<div class="feedback-head"><div class="feedback-geo-wrap"><img class="feedback-geo" src="${geoSrc}" alt="Гео"><span class="feedback-puzzle-piece" aria-hidden="true">🧩</span></div><div class="feedback-message" role="status" aria-live="polite"><strong>Гео:</strong> <span aria-hidden="true">${icon}</span> ${text}</div></div><div class="feedback-solution"><b>${status}</b><br>${explanation}<p class="formula-scroll-hint">↔ При дълга формула плъзнете наляво или надясно, за да я видите цялата.</p></div>`;
-}
-
-function escapeScene(state){
-    if(state==="correct"){
-        return `<svg viewBox="0 0 460 160" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="doorWood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#92400e"/><stop offset="1" stop-color="#451a03"/></linearGradient><radialGradient id="kLight" cx="50%" cy="48%" r="55%"><stop offset="0" stop-color="#fff7ad"/><stop offset=".48" stop-color="#facc15" stop-opacity=".72"/><stop offset="1" stop-color="#facc15" stop-opacity="0"/></radialGradient><radialGradient id="kLight2" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff7ad" stop-opacity="1"/><stop offset="1" stop-color="#facc15" stop-opacity="0"/></radialGradient></defs><rect width="460" height="160" fill="rgba(15,23,42,.15)"/><polygon points="214,55 360,25 380,135 214,115" fill="url(#kLight)" class="door-light"/><ellipse cx="248" cy="85" rx="55" ry="50" fill="url(#kLight2)" class="door-glow"/><rect x="176" y="30" width="94" height="115" rx="6" fill="#1f2937" stroke="#cbd5e1" stroke-width="4"/><rect x="180" y="34" width="86" height="107" rx="3" fill="#0f172a"/><g class="door-leaf"><path d="M184 38 L262 31 L262 140 L184 133 Z" fill="url(#doorWood)" stroke="#fed7aa" stroke-width="2"/><circle cx="246" cy="88" r="4" fill="#fde68a"/><rect x="195" y="50" width="55" height="35" rx="2" fill="none" stroke="#fed7aa" stroke-width="1" opacity="0.5"/><rect x="195" y="92" width="55" height="35" rx="2" fill="none" stroke="#fed7aa" stroke-width="1" opacity="0.5"/></g><text x="230" y="155" text-anchor="middle" fill="#fef3c7" font-size="14" font-weight="800">Отключено знание</text></svg>`;
-    }
-    if(state==="wrong"){
-        return `<svg viewBox="0 0 460 160" preserveAspectRatio="xMidYMid meet"><rect width="460" height="160" fill="rgba(15,23,42,.12)"/><g class="locked-door"><rect x="153" y="30" width="120" height="115" rx="7" fill="#111827" stroke="#94a3b8" stroke-width="4"/><rect x="167" y="42" width="92" height="92" rx="6" fill="#7f1d1d" stroke="#fecaca" stroke-width="2"/><circle cx="246" cy="88" r="4" fill="#fee2e2"/><rect x="195" y="78" width="38" height="28" rx="5" fill="#cbd5e1" stroke="#334155" stroke-width="3"/><path d="M204 78 V67 A10 10 0 0 1 224 67 V78" fill="none" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round"/></g><text x="230" y="155" text-anchor="middle" fill="#fecaca" font-size="14" font-weight="800">Преговорът отваря следващата врата</text></svg>`;
-    }
-    return `<svg viewBox="0 0 460 160" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="goldKey" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fde68a"/><stop offset=".45" stop-color="#f59e0b"/><stop offset="1" stop-color="#92400e"/></linearGradient></defs><rect width="460" height="160" fill="rgba(15,23,42,.10)"/><g class="floating-key"><circle cx="112" cy="70" r="22" fill="none" stroke="url(#goldKey)" stroke-width="8"/><path d="M132 70 L243 70" stroke="url(#goldKey)" stroke-width="11" stroke-linecap="round"/><path d="M213 70 L213 92 L228 92 L228 80 L243 80 L243 70" fill="none" stroke="#f59e0b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="112" cy="70" r="6" fill="#111827"/></g><g><rect x="292" y="70" width="84" height="60" rx="10" fill="#cbd5e1" stroke="#475569" stroke-width="4"/><path d="M309 70 V49 A25 25 0 0 1 359 49 V70" fill="none" stroke="#94a3b8" stroke-width="9" stroke-linecap="round"/><circle cx="334" cy="95" r="6" fill="#334155"/></g><text x="230" y="155" text-anchor="middle" fill="#e0e7ff" font-size="14" font-weight="800">Изберете правилния ключ</text></svg>`;
 }
 
 /* ============================================================
@@ -3220,7 +3194,7 @@ function startGame(){
     render();
     update();
     if(isCompactLayout()){
-        setTimeout(scrollToPuzzle, 120);
+        setTimeout(scrollToTask, 120);
     }
 }
 
@@ -3246,11 +3220,11 @@ function render(){
             : `<button class="btn orange-btn animate-enter" onclick="goNext()">Следващ въпрос ➜</button>`)
         : "";
     
-    const feed = saved
-        ? `<div class="feedback show ${saved.ok?"good":"bad"}">${geoFeedbackFromText(saved.ok, saved.message || pickMessage(saved.ok), item.explain)}</div>`
-        : `<div class="feedback" id="feedback"></div>`;
+    const feedbackHtml = saved
+        ? geoFeedbackFromText(saved.ok, saved.message || pickMessage(saved.ok), item.explain)
+        : "";
+    const feed = `<div class="feedback task-feedback${saved ? ` show ${saved.ok?"good":"bad"}` : ""}" id="feedback" aria-live="polite">${feedbackHtml}</div>`;
     
-    const escapeState = !saved ? "question" : (saved.ok ? "correct" : "wrong");
     const geometryVisualTypes = [
         "chordsPerpThroughPoint","chordsIntersect","tangentSecant","inscribedAngle",
         "lineCircle","twoCircles","centralInscribed","diameterAngle","chordDistance",
@@ -3265,7 +3239,6 @@ function render(){
     }
     
     screen.innerHTML=`<div class="card animate-enter">
-        ${geometryDrawing}
         <div class="q-header">
             <div class="q-meta">
                 <span class="pill diff">Сложност: ${item.difficulty}</span>
@@ -3274,15 +3247,16 @@ function render(){
             </div>
         </div>
         <div class="qtext">${item.q}</div>
+        ${geometryDrawing}
         <div class="options${item.wideOptions?' wide':''}">${ops}</div>
         ${feed}
         <div class="actions">${action}</div>
     </div>`;
 
-    const puzzleScene = $("escapeScene");
-    if(puzzleScene){
-        puzzleScene.className = "escape-scene puzzle-escape-scene " + escapeState;
-        puzzleScene.innerHTML = escapeScene(escapeState);
+    const puzzleFeedback = $("puzzleFeedbackHost");
+    if(puzzleFeedback){
+        puzzleFeedback.className = `feedback puzzle-feedback${saved ? ` show ${saved.ok?"good":"bad"}` : ""}`;
+        puzzleFeedback.innerHTML = feedbackHtml;
     }
     
     update();
@@ -3331,14 +3305,14 @@ function checkAnswer(){
     
     answers[current] = { ok, selected, explain:item.explain, message: pickMessage(ok) };
     
+    const feedbackHtml = geoFeedbackFromText(ok, answers[current].message, item.explain);
     const f=$("feedback");
-    f.className = "feedback show " + (ok?"good":"bad");
-    f.innerHTML = geoFeedbackFromText(ok, answers[current].message, item.explain);
-    
-    const escapeScene_el = $("escapeScene");
-    if(escapeScene_el){
-        escapeScene_el.className = "escape-scene puzzle-escape-scene " + (ok?"correct":"wrong");
-        escapeScene_el.innerHTML = escapeScene(ok?"correct":"wrong");
+    f.className = "feedback task-feedback show " + (ok?"good":"bad");
+    f.innerHTML = feedbackHtml;
+    const puzzleFeedback = $("puzzleFeedbackHost");
+    if(puzzleFeedback){
+        puzzleFeedback.className = "feedback puzzle-feedback show " + (ok?"good":"bad");
+        puzzleFeedback.innerHTML = feedbackHtml;
     }
     
     document.querySelector(".actions").innerHTML = answers.filter(Boolean).length===TOTAL
