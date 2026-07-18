@@ -113,6 +113,7 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .card{padding:26px;min-height:470px;position:relative;}.start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}.info{border-radius:22px;padding:18px;background:rgba(79,70,229,.08);border:1px solid rgba(79,70,229,.16)}.info.orange{background:rgba(249,115,22,.09)}.info.green{background:rgba(34,197,94,.09)}.info h3{margin:0 0 8px}.info p,.info ul{margin:0;line-height:1.55;color:#475569}
 .btn{border:0;border-radius:16px;padding:13px 18px;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 12px 22px rgba(15,23,42,.14);transition:.18s}.btn:hover{transform:translateY(-2px)}.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}.primary{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white}.orange-btn{background:linear-gradient(135deg,#f97316,#f59e0b);color:white}.ghost{background:#e2e8f0;color:#334155;box-shadow:none}
 .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.actions:empty{display:none}
 .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px;}
 .q-meta{display:flex;gap:8px;flex-wrap:wrap;z-index:2;}
 .pill{display:inline-flex;padding:8px 12px;border-radius:999px;background:#eef2ff;color:#4338ca;font-weight:900;font-size:14px;}
@@ -3222,7 +3223,7 @@ function render(){
         ? (count===TOTAL
             ? `<button class="btn orange-btn animate-enter" onclick="finishGame()">Резултати от теста ➜</button>`
             : `<button class="btn orange-btn animate-enter" onclick="goNext()">Следващ въпрос ➜</button>`)
-        : `<button class="btn primary" id="checkBtn" onclick="checkAnswer()" disabled>Изберете отговор</button>`;
+        : "";
     
     const feed = saved
         ? `<div class="feedback show ${saved.ok?"good":"bad"}">${geoFeedbackFromText(saved.ok, saved.message || pickMessage(saved.ok), item.explain)}</div>`
@@ -3283,8 +3284,7 @@ function selectOption(i){
     if(answered) return;
     selected=i;
     document.querySelectorAll(".option").forEach((b,j)=>b.classList.toggle("selected", j===i));
-    const cb=$("checkBtn");
-    if(cb) cb.disabled=false;
+    checkAnswer();
 }
 
 function checkAnswer(){
