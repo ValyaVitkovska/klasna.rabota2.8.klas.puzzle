@@ -583,9 +583,9 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .student-name-hint{
     margin:8px 0 0;
     padding:0;
-    color:#fca5a5;
-    font-size:12px;
-    font-weight:700;
+    color:#64748b;
+    font-size:11px;
+    font-weight:600;
     line-height:1.4;
 }
 .student-name-block.hidden{ display:none; }
@@ -619,7 +619,7 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
     margin-bottom:6px;
 }
 .puzzle-start-controls .student-name-hint{
-    color:#dc2626;
+    color:#64748b;
 }
 .puzzle-start-controls #startBtn{
     height:100%;
@@ -1858,16 +1858,16 @@ button:focus-visible,
         <div class="puzzle-start-row">
           <div class="student-name-block" id="studentNameBlock">
             <label for="studentNameInput" class="student-name-input-label">
-              👤 Име на ученика: <span style="color:#dc2626">*</span>
+              👤 Как да те нарича Гео?
             </label>
-            <input id="studentNameInput" type="text" placeholder="Въведете име и фамилия"
+            <input id="studentNameInput" type="text" placeholder="Име или инициали — по желание"
                    maxlength="60" oninput="setStudentName(this.value)"
-                   class="student-name-input"/>
-            <p id="nameRequiredHint" class="student-name-hint">
-              ⚠️ Името е задължително за стартиране на теста.
+                   class="student-name-input" aria-describedby="namePrivacyNote"/>
+            <p id="namePrivacyNote" class="student-name-hint">
+              Името се използва само по време на тази игра и не се съхранява.
             </p>
           </div>
-          <button id="startBtn" class="btn-3d disabled" onclick="startGame()" disabled>
+          <button id="startBtn" class="btn-3d pulse" onclick="startGame()">
             🚀 Начало на теста
           </button>
         </div>
@@ -1936,7 +1936,7 @@ const geoGuideText =
 
 Ето как се използва този ресурс:
 
-1️⃣ Въведете името си, за да се активира бутонът за старт.
+1️⃣ По желание въведете име или инициали, за да знае Гео как да се обръща към вас. Можете да започнете и без име.
 
 2️⃣ След старта изберете сами от картата коя номерирана плочка да отворите. Може да решавате задачите в предпочитан от вас ред.
 
@@ -3207,22 +3207,13 @@ function setStudentName(val){
     if(inp && inp.value !== val) inp.value = val;
     const sb = document.getElementById('startBtn');
     if(sb){
-        if(studentName){
-            sb.disabled = false;
-            sb.classList.add('pulse');
-            sb.classList.remove('disabled');
-            sb.title = '';
-        } else {
-            sb.disabled = true;
-            sb.classList.remove('pulse');
-            sb.classList.add('disabled');
-            sb.title = 'Първо въведете името си';
-        }
+        sb.disabled = false;
+        sb.classList.add('pulse');
+        sb.classList.remove('disabled');
+        sb.title = '';
     }
-    const hint = document.getElementById('nameRequiredHint');
-    if(hint) hint.style.display = studentName ? 'none' : 'block';
     const finalNameEl = document.getElementById('finalStudentName');
-    if(finalNameEl) finalNameEl.textContent = studentName || 'Анонимен ученик';
+    if(finalNameEl) finalNameEl.textContent = studentName || 'Без посочено име';
 }
 
 function toggleStartInfo(){
@@ -3291,19 +3282,6 @@ function showStart(){
 }
 
 function startGame(){
-    if(!studentName){
-        const inp = document.getElementById('studentNameInput');
-        if(inp){
-            inp.focus();
-            inp.style.borderColor = '#dc2626';
-            inp.style.boxShadow = '0 0 0 4px rgba(220,38,38,.18)';
-            setTimeout(() => {
-                inp.style.borderColor = '';
-                inp.style.boxShadow = '';
-            }, 2000);
-        }
-        return;
-    }
     questions=generate();
     started=true;
     document.body.classList.add("game-active");
@@ -3471,7 +3449,7 @@ function finishGame(){
     screen.innerHTML = `<div class="card animate-enter">
         <h2>Резултати от теста</h2>
         <div class="info" style="margin:8px 0 16px;">
-            <p style="margin:0;font-size:17px"><strong>👤 Ученик:</strong> <span id="finalStudentName" style="color:#4338ca;font-weight:900">${studentName || 'Анонимен ученик'}</span></p>
+            <p style="margin:0;font-size:17px"><strong>👤 Участник:</strong> <span id="finalStudentName" style="color:#4338ca;font-weight:900">${studentName || 'Без посочено име'}</span></p>
         </div>
         <div class="result">${s}/100</div>
         <p style="font-size:20px;line-height:1.55;color:#475569">${msg}</p>
