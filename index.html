@@ -80,7 +80,7 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .reveal h2,.map h2{margin:0;font-size:22px}.reveal p{margin:0;color:var(--muted);font-size:15px;line-height:1.4}
 
 .puzzle{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,1fr);gap:0;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:linear-gradient(135deg,#312e81,#7c3aed);border:4px solid rgba(79,70,229,.15);position:relative;}
-.puzzle:before{content:"🔓 Решете задачите (посочени с номер), за да отключите изображението";position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.55);font-weight:800;text-align:center;padding:20px;font-size:14px;z-index:0;transition:opacity 0.3s;}
+.puzzle:before{content:"🧩 Верният отговор разкрива една част от картината";position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.55);font-weight:800;text-align:center;padding:20px;font-size:14px;z-index:0;transition:opacity 0.3s;}
 .puzzle.finished:before{opacity:0;}
 .puzzle.finished:after{content:"💡 Докоснете или изберете плочка за решение";position:absolute;bottom:10px;right:10px;background:rgba(15,23,42,0.85);color:white;padding:6px 14px;border-radius:12px;font-size:13px;font-weight:800;pointer-events:none;z-index:10;animation:slideInUp 0.5s ease-out forwards;box-shadow:0 4px 12px rgba(0,0,0,0.3);}
 .tile{position:relative;background:linear-gradient(135deg,#312e81,#7c3aed);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);z-index:1;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.85);font-size:clamp(16px,2vw,24px);font-weight:900;cursor:pointer;border:none;padding:0;transition:transform 0.2s,box-shadow 0.2s,background 0.3s;}
@@ -311,7 +311,9 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 
 .feedback{min-height:58px;padding:14px 16px;border-radius:18px;margin-top:14px;font-weight:500;display:none;line-height:1.6;font-size:18px;min-width:0;}.feedback.show{display:block}.good{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}.bad{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
 .feedback-head{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:14px;margin-bottom:12px}
-.feedback-geo{width:112px;height:112px;object-fit:contain;filter:drop-shadow(0 8px 9px rgba(15,23,42,.22));transform-origin:50% 100%}
+.feedback-geo-wrap{position:relative;width:112px;height:112px}
+.feedback-geo{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 9px rgba(15,23,42,.22));transform-origin:50% 100%}
+.feedback-puzzle-piece{position:absolute;z-index:3;left:67%;top:25%;display:grid;place-items:center;width:34px;height:34px;font-size:27px;line-height:1;filter:drop-shadow(0 4px 4px rgba(15,23,42,.28));animation:geoPieceFloat 1.8s ease-in-out infinite}
 .feedback.good .feedback-geo{animation:geoCelebrate 1.05s ease-in-out .1s both}
 .feedback.bad .feedback-geo{animation:geoEncourage 1.05s ease-in-out .1s both}
 .feedback-message{position:relative;padding:12px 15px;border-radius:17px 17px 17px 5px;background:rgba(255,255,255,.86);border:2px solid rgba(13,148,136,.35);box-shadow:0 8px 18px rgba(15,23,42,.08);font-weight:800;line-height:1.4}
@@ -323,6 +325,9 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .feedback-solution mjx-container{max-width:none !important;overflow:visible !important}
 .feedback-solution mjx-container[display="true"]{width:max-content;min-width:100%}
 .formula-scroll-hint{display:none;margin:8px 0 0;color:currentColor;opacity:.75;font-size:12px;font-weight:700}
+.puzzle-instruction{margin:0 0 10px;padding:9px 11px;border-radius:13px;background:#ecfeff;color:#155e75;font-size:13px;font-weight:800;line-height:1.4;border:1px solid #a5f3fc}
+.puzzle-escape-scene{min-height:106px;margin:0 0 10px;border-radius:17px;box-shadow:inset 0 10px 28px rgba(0,0,0,.38),0 8px 18px rgba(15,23,42,.10)}
+.puzzle-escape-scene svg{height:102px}
 
 @keyframes slideInUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 .option{border:2px solid transparent;text-align:left;background:rgba(255,255,255,.94);border-radius:18px;padding:15px 16px;font-size:17px;cursor:pointer;min-height:62px;box-shadow:0 9px 20px rgba(15,23,42,.08);opacity:0;animation:slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;min-width:0;overflow-wrap:break-word;word-break:break-word;}
@@ -1199,6 +1204,14 @@ button:focus-visible,
     .escape-scene svg{
         height:140px;
     }
+    .puzzle-escape-scene{
+        min-height:86px;
+        margin-bottom:8px;
+        border-radius:14px;
+    }
+    .puzzle-escape-scene svg{
+        height:82px;
+    }
     .q-header{
         margin-bottom:10px;
     }
@@ -1243,9 +1256,14 @@ button:focus-visible,
         gap:9px;
         margin-bottom:10px;
     }
-    .feedback-geo{
+    .feedback-geo-wrap{
         width:78px;
         height:78px;
+    }
+    .feedback-puzzle-piece{
+        width:25px;
+        height:25px;
+        font-size:20px;
     }
     .feedback-message{
         padding:9px 11px;
@@ -1757,6 +1775,8 @@ button:focus-visible,
           </div>
         </div>
         <div class="progress-wrap" id="progressWrap" style="margin: 0 0 14px;"><div class="progress" id="progress"></div></div>
+        <p class="puzzle-instruction">🧩 Всеки верен отговор разкрива една част от картината. При грешен отговор плочката остава отбелязана за преговор.</p>
+        <div class="escape-scene puzzle-escape-scene question" id="escapeScene" aria-live="polite"></div>
       </div>
       
       <div class="puzzle" id="puzzleBoard"></div>
@@ -1974,7 +1994,8 @@ function pickMessage(ok){
 function geoFeedbackFromText(ok, text, explanation){
     const icon = ok ? "✨" : "📖";
     const status = ok ? "✓ Правилен отговор." : "✗ Грешен отговор.";
-    return `<div class="feedback-head"><img class="feedback-geo" src="Гео.png" alt="Гео"><div class="feedback-message" role="status" aria-live="polite"><strong>Гео:</strong> <span aria-hidden="true">${icon}</span> ${text}</div></div><div class="feedback-solution"><b>${status}</b><br>${explanation}<p class="formula-scroll-hint">↔ При дълга формула плъзнете наляво или надясно, за да я видите цялата.</p></div>`;
+    const geoSrc = document.querySelector(".geo-guide-character")?.src || "Гео.png";
+    return `<div class="feedback-head"><div class="feedback-geo-wrap"><img class="feedback-geo" src="${geoSrc}" alt="Гео"><span class="feedback-puzzle-piece" aria-hidden="true">🧩</span></div><div class="feedback-message" role="status" aria-live="polite"><strong>Гео:</strong> <span aria-hidden="true">${icon}</span> ${text}</div></div><div class="feedback-solution"><b>${status}</b><br>${explanation}<p class="formula-scroll-hint">↔ При дълга формула плъзнете наляво или надясно, за да я видите цялата.</p></div>`;
 }
 
 function escapeScene(state){
@@ -2968,7 +2989,8 @@ function initPuzzle(){
     const grid = puzzleGrid(TOTAL);
     puzzleBoard.style.gridTemplateColumns = `repeat(${grid.cols}, 1fr)`;
     puzzleBoard.style.gridTemplateRows = `repeat(${grid.rows}, 1fr)`;
-    puzzleBoard.style.aspectRatio = `${grid.cols} / ${grid.rows}`;
+    /* Картината е 1536×1024 (3:2), затова запазваме естествените ѝ пропорции. */
+    puzzleBoard.style.aspectRatio = "3 / 2";
     for(let i=0; i<TOTAL; i++){
         const t = document.createElement("button");
         t.className = "tile";
@@ -3221,7 +3243,6 @@ function render(){
     }
     
     screen.innerHTML=`<div class="card animate-enter">
-        <div class="escape-scene ${escapeState}" id="escapeScene">${escapeScene(escapeState)}</div>
         ${geometryDrawing}
         <div class="q-header">
             <div class="q-meta">
@@ -3235,6 +3256,12 @@ function render(){
         ${feed}
         <div class="actions">${action}</div>
     </div>`;
+
+    const puzzleScene = $("escapeScene");
+    if(puzzleScene){
+        puzzleScene.className = "escape-scene puzzle-escape-scene " + escapeState;
+        puzzleScene.innerHTML = escapeScene(escapeState);
+    }
     
     update();
     updateMath();
@@ -3289,7 +3316,7 @@ function checkAnswer(){
     
     const escapeScene_el = $("escapeScene");
     if(escapeScene_el){
-        escapeScene_el.className = "escape-scene " + (ok?"correct":"wrong");
+        escapeScene_el.className = "escape-scene puzzle-escape-scene " + (ok?"correct":"wrong");
         escapeScene_el.innerHTML = escapeScene(ok?"correct":"wrong");
     }
     
