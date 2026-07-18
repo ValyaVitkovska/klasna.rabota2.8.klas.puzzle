@@ -300,12 +300,25 @@ h1{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:0 0 10px;letter-spac
 .visual.geometry-drawing{
     min-height:170px;
     margin:12px 0 18px;
-    border-radius:24px;
-    background:linear-gradient(135deg,#0f172a,#111827);
+    border-radius:18px;
+    background-color:#fbfdff;
+    background-image:
+        linear-gradient(rgba(148,163,184,.18) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(148,163,184,.18) 1px,transparent 1px),
+        linear-gradient(rgba(148,163,184,.09) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(148,163,184,.09) 1px,transparent 1px);
+    background-size:40px 40px,40px 40px,10px 10px,10px 10px;
+    border:1px solid #cbd5e1;
+    box-shadow:inset 0 1px 0 #fff,0 8px 22px rgba(15,23,42,.08);
     position:relative;
     overflow:hidden;
 }
 .svg{width:100%;height:100%;position:absolute;inset:0;}
+.geometry-drawing text{font-family:Arial,sans-serif;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.geometry-drawing text[fill="#fff"]{fill:#1e293b}
+.geometry-drawing text[fill="#cbd5e1"]{fill:#334155}
+.geometry-drawing circle[fill="#fff"]{fill:#1e293b}
+.geometry-drawing rect[stroke="#fff"]{stroke:#1e293b}
 
 .feedback{min-height:58px;padding:14px 16px;border-radius:18px;margin-top:14px;font-weight:500;display:none;line-height:1.6;font-size:18px;min-width:0;}.feedback.show{display:block}.good{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}.bad{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
 .puzzle-feedback{display:none;margin-top:12px;text-align:left}
@@ -2102,6 +2115,12 @@ const VISUALS = {
     biquadratic:`<svg class="svg" viewBox="0 0 460 170" preserveAspectRatio="xMidYMid meet"><path d="M 30 130 Q 100 -20 230 100 Q 360 220 430 30" fill="none" stroke="#f472b6" stroke-width="3"/><line x1="0" y1="85" x2="460" y2="85" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 4"/><text x="20" y="160" fill="#cbd5e1" font-size="13" font-weight="800">y = x², след това x = ±√y</text></svg>`
 };
 
+/* Единствено тези означения принадлежат на геометрични задачи. */
+const GEOMETRY_VISUAL_TYPES = new Set([
+    "chordsPerpThroughPoint","chordsIntersect","tangentSecant","inscribedAngle",
+    "lineCircle","twoCircles","centralInscribed","diameterAngle","chordDistance"
+]);
+
 function updateMath(){
     if(window.MathJax && window.MathJax.typesetPromise){
         MathJax.typesetPromise().catch(err=>console.log(err));
@@ -2765,8 +2784,23 @@ function qLineCirclePos(){
                     `$\\bullet$ Ако $d = R$, правата е допирателна.<br>` +
                     `$\\bullet$ Ако $d > R$, правата няма общи точки с окръжността.<br>` +
                     `В нашата задача $d = ${d}$ и $R = ${R}$, следователно ${ok}.`;
+    const scale = 60 / Math.max(R, d);
+    const rp = R * scale, dp = d * scale;
+    const cx = 230, cy = 100, lineY = cy - dp;
+    const lineCircleSvg = `<svg class="svg" viewBox="0 0 460 180" preserveAspectRatio="xMidYMid meet">
+        <circle cx="${cx}" cy="${cy}" r="${rp}" fill="rgba(101,87,210,.08)" stroke="#6557d2" stroke-width="3"/>
+        <line x1="45" y1="${lineY}" x2="415" y2="${lineY}" stroke="#1f2937" stroke-width="2"/>
+        <line x1="${cx}" y1="${cy}" x2="${cx}" y2="${lineY}" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 4"/>
+        <line x1="${cx}" y1="${cy}" x2="${cx+rp}" y2="${cy}" stroke="#2563eb" stroke-width="2.5"/>
+        <circle cx="${cx}" cy="${cy}" r="4" fill="#1e293b"/>
+        <circle cx="${cx}" cy="${lineY}" r="4" fill="#ef4444"/>
+        <text x="${cx+8}" y="${cy+16}" fill="#1e293b" font-size="14" font-weight="700">O</text>
+        <text x="${cx+rp/2-8}" y="${cy-7}" fill="#2563eb" font-size="13" font-weight="700">R</text>
+        <text x="${cx+8}" y="${(cy+lineY)/2}" fill="#ef4444" font-size="13" font-weight="700">d</text>
+        <text x="400" y="${lineY-7}" fill="#1e293b" font-size="14" font-style="italic">ℓ</text>
+    </svg>`;
 
-    return { type:'Взаимно положение', difficulty:'Лесна', q: `Окръжност има радиус $R = ${R}$ см, а разстоянието от центъра ѝ до права $\\ell$ е $d = ${d}$ см. Да се определи взаимното положение на правата $\\ell$ и окръжността.`, ...makeOptions(ok, dsRaw), explain: explain, visual: 'lineCircle' };
+    return { type:'Взаимно положение', difficulty:'Лесна', q: `Окръжност има радиус $R = ${R}$ см, а разстоянието от центъра ѝ до права $\\ell$ е $d = ${d}$ см. Да се определи взаимното положение на правата $\\ell$ и окръжността.`, ...makeOptions(ok, dsRaw), explain: explain, customSvg: lineCircleSvg };
 }
 
 function qTwoCirclesPos(){
@@ -2810,8 +2844,20 @@ function qTwoCirclesPos(){
                     `$\\bullet$ Ако $d = ${diff}$, те се допират вътрешно.<br>` +
                     `$\\bullet$ Ако $d < ${diff}$, едната е изцяло вътре в другата.<br>` +
                     `Следователно: ${ok}.`;
+    const halfSpan = Math.max(d/2 + R1, d/2 + R2, R1, R2);
+    const scale = Math.min(145 / halfSpan, 72 / Math.max(R1, R2));
+    const cx1 = 230 - d*scale/2, cx2 = 230 + d*scale/2, cy = 92;
+    const twoCirclesSvg = `<svg class="svg" viewBox="0 0 460 184" preserveAspectRatio="xMidYMid meet">
+        <circle cx="${cx1}" cy="${cy}" r="${R1*scale}" fill="rgba(101,87,210,.07)" stroke="#6557d2" stroke-width="3"/>
+        <circle cx="${cx2}" cy="${cy}" r="${R2*scale}" fill="rgba(37,99,235,.06)" stroke="#2563eb" stroke-width="3"/>
+        ${d > 0 ? `<line x1="${cx1}" y1="${cy}" x2="${cx2}" y2="${cy}" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 4"/><text x="${(cx1+cx2)/2-5}" y="${cy-8}" fill="#ef4444" font-size="13" font-weight="700">d</text>` : ''}
+        <circle cx="${cx1}" cy="${cy}" r="4" fill="#6557d2"/>
+        <circle cx="${cx2}" cy="${cy}" r="4" fill="#2563eb"/>
+        <text x="${cx1-(d===0?28:8)}" y="${cy+18}" fill="#4338ca" font-size="14" font-weight="700">O₁</text>
+        <text x="${cx2+(d===0?8:-8)}" y="${cy+18}" fill="#1d4ed8" font-size="14" font-weight="700">O₂</text>
+    </svg>`;
 
-    return { type:'Взаимно положение', difficulty:'Лесна', q: `Дадени са две окръжности с радиуси $R_1 = ${R1}$ см и $R_2 = ${R2}$ см. Разстоянието между центровете им е $d = ${d}$ см. Да се определи взаимното им положение.`, ...makeOptions(ok, dsRaw), explain: explain, visual: 'twoCircles' };
+    return { type:'Взаимно положение', difficulty:'Лесна', q: `Дадени са две окръжности с радиуси $R_1 = ${R1}$ см и $R_2 = ${R2}$ см. Разстоянието между центровете им е $d = ${d}$ см. Да се определи взаимното им положение.`, ...makeOptions(ok, dsRaw), explain: explain, customSvg: twoCirclesSvg };
 }
 
 function qCentralInscribed(){
@@ -2962,10 +3008,9 @@ function showSolutionModal(i) {
     if(!item || !ans) return;
     
     let geometryDrawing = "";
-    const geometryVisualTypes = ["chordsPerpThroughPoint","chordsIntersect","tangentSecant","inscribedAngle","lineCircle","twoCircles","centralInscribed","diameterAngle","chordDistance","simpleQuad", "biquadratic", "factor", "discriminant"];
     if (item.customSvg) {
         geometryDrawing = `<div class="visual geometry-drawing" style="min-height:140px; margin:10px 0;">${item.customSvg}</div>`;
-    } else if (geometryVisualTypes.includes(item.visual)) {
+    } else if (GEOMETRY_VISUAL_TYPES.has(item.visual)) {
         geometryDrawing = `<div class="visual geometry-drawing" style="min-height:140px; margin:10px 0;">${VISUALS[item.visual]||''}</div>`;
     }
 
@@ -3272,16 +3317,10 @@ function render(){
         : "";
     const feed = `<div class="feedback task-feedback${saved ? ` show ${saved.ok?"good":"bad"}` : ""}" id="feedback" aria-live="polite">${feedbackHtml}</div>`;
     
-    const geometryVisualTypes = [
-        "chordsPerpThroughPoint","chordsIntersect","tangentSecant","inscribedAngle",
-        "lineCircle","twoCircles","centralInscribed","diameterAngle","chordDistance",
-        "simpleQuad", "biquadratic", "factor", "discriminant"
-    ];
-    
     let geometryDrawing = "";
     if (item.customSvg) {
         geometryDrawing = `<div class="visual geometry-drawing">${item.customSvg}</div>`;
-    } else if (geometryVisualTypes.includes(item.visual)) {
+    } else if (GEOMETRY_VISUAL_TYPES.has(item.visual)) {
         geometryDrawing = `<div class="visual geometry-drawing">${VISUALS[item.visual]||''}</div>`;
     }
     
